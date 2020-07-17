@@ -1,0 +1,27 @@
+footer {
+    background-color: #fff;
+    border-top: 1.2px solid rgb(235, 235, 235);
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+h1, .about-link {
+    font-size: 1.4rem;
+    margin: 1rem 0;
+}
+
+h1 {
+    background: -webkit-linear-gradient(45deg, #ff9494, #b257e6, #e657e6, #ff9494, #e657e6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.about-link {
+    color: #00376b;
+}
