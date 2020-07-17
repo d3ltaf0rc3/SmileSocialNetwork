@@ -12,7 +12,7 @@ const Header = () => {
         <header>
             <nav>
                 <Logo />
-                <Input type="text" placeholder="Search" button/>
+                <Input name="search" type="text" placeholder="Search" button/>
                 <ul className={styles["nav-icons"]}>
                     <li><Link to="/"><img className={styles.icon} src={homeIcon} alt="home" /></Link></li>
                     <li><Link to="/requests"><img className={styles.icon} src={heartIcon} alt="heart" /></Link></li>
