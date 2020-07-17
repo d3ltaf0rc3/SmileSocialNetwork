@@ -1,0 +1,55 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	outline: none;
+	list-style: none;
+	text-decoration: none;
+	font-family: 'Roboto', sans-serif;
+}
+
+form {
+	margin: 30px 0 0 0;
+}
+
+.container {
+	max-width: 350px;
+	width: 100%;
+	height: auto;
+	margin: 200px auto;
+}
+
+.form, .signup {
+	background: #fff;
+	border: 1px solid #e6e6e6;
+	border-radius: 1px;
+	padding: 70px 40px 50px;
+}
+
+.btn {
+	margin: 20px 0;
+	background-color: #3897f0;
+	border: 1px solid #3897f0;
+	border-radius: 4px;
+	text-align: center;
+	padding: 5px;
+	width: 100%;
+}
+
+.btn a {
+	color: #fff;
+	display: block;
+}
+
+.signup {
+	font-size: 12px;
+	margin: 10px 0 20px;
+	padding: 25px 40px;
+	text-align: center;
+	color: #262626;
+}
+
+.signup a {
+	color: #3897f0;
+}
