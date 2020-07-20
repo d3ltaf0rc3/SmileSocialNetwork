@@ -11,6 +11,7 @@ const HomePage = () => {
             <Header />
             <div className={styles.feed}>
                 <Post />
+                <Post />
             </div>
         </Fragment>
     )
