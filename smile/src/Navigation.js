@@ -1,8 +1,9 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import HomePage from './components/home-page';
-import LoginPage from './components/login-page';
-import RegisterPage from './components/register-page';
+import HomePage from './pages/home-page';
+import LoginPage from './pages/login-page';
+import RegisterPage from './pages/register-page';
+import ErrorPage from './pages/error-page';
 
 const Navigation = () => {
   return (
@@ -11,6 +12,7 @@ const Navigation = () => {
         <Route path="/" exact component={HomePage} />
         <Route path="/login" component={LoginPage} />
         <Route path="/register" component={RegisterPage}/>
+        <Route component={ErrorPage} />
       </Switch>
     </BrowserRouter>
   );

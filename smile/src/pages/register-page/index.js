@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react';
-import Footer from '../footer';
-import CredentialsForm from '../credentials-form';
+import Footer from '../../components/footer';
+import CredentialsForm from '../../components/credentials-form';
 
 const RegisterPage = () => {
     return (
