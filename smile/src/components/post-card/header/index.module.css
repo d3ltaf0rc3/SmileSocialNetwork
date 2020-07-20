@@ -1,0 +1,19 @@
+.post-header {
+    padding: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.post-avatar {
+    height: 32px;
+    width: 32px;
+    border-radius: 100%;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.post-author {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 5px;
+}

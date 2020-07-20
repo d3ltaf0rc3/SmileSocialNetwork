@@ -11,7 +11,7 @@ footer {
     align-items: center;
 }
 
-.copyright, .about-link {
+.copyright, .home-link {
     font-size: 1.4rem;
     margin: 1rem 0;
 }
@@ -22,6 +22,6 @@ footer {
     -webkit-text-fill-color: transparent;
 }
 
-.about-link {
+.home-link {
     color: #00376b;
 }

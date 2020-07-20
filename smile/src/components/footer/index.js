@@ -6,7 +6,7 @@ const Footer = () => {
     return (
         <footer>
             <h1 className={styles.copyright}>&copy; 2020 Smile</h1>
-            <Link to="/about" className={styles["about-link"]}>About</Link>
+            <Link to="/" className={styles["home-link"]}>Home</Link>
         </footer>
     );
 };

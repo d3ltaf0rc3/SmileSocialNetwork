@@ -3,10 +3,12 @@ import { Link } from 'react-router-dom';
 import styles from './index.module.css';
 import Header from '../../components/header';
 import Footer from '../../components/footer';
+import Head from '../../components/head';
 
 const ErrorPage = () => {
     return (
         <Fragment>
+            <Head title="Page Not Found | Smile" />
             <Header />
             <div className={styles.container}>
                 <h1>Sorry, this page isn't available.</h1>
