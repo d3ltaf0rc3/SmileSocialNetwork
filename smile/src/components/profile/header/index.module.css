@@ -1,0 +1,75 @@
+.header {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 4rem;
+    padding: 2.5rem;
+    border-bottom: 1.6px solid rgb(235, 235, 235);
+}
+
+.stats-container {
+    width: 40%;
+}
+
+.image-container img {
+    border-radius: 100%;
+    object-fit: cover;
+    width: 150px;
+    height: 150px;
+    margin-right: 8rem;
+}
+
+.stats {
+    display: flex;
+    align-items: center;
+}
+
+.title {
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+}
+
+.username {
+    font-family: "Montserrat", sans-serif;
+    margin-right: 25px;
+    font-size: 28px;
+    font-weight: 200;
+}
+
+.title a {
+    margin-right: 10px;
+    text-decoration: none;
+    color: inherit;
+    font-weight: 600;
+    padding: 5px 25px;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    transition: all 0.3s ease-in-out;
+}
+
+.title a:hover {
+    background-color: #3f99ed;
+    color: white;
+    border-color: #3f99ed;
+}
+
+.stats {
+    margin-bottom: 30px;
+}
+
+.stats, .bio {
+    font-family: "Montserrat", sans-serif;
+    font-size: 14px;
+}
+
+.full-name {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 0.4rem;
+}
+
+.bio {
+    line-height: 125%;
+}
