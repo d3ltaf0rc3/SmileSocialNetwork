@@ -4,12 +4,8 @@
     align-items: center;
 }
 
-.post-avatar {
-    height: 32px;
-    width: 32px;
-    border-radius: 100%;
+.image-container {
     margin-right: 10px;
-    cursor: pointer;
 }
 
 .post-author {

@@ -1,36 +1,26 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import styles from './index.module.css';
 import commentIcon from '../../../images/comment.svg';
 import heartIcon from '../../../images/heart.svg';
 import redHeartIcon from '../../../images/redHeart.svg'
 
-class PostActions extends Component {
-    constructor(props) {
-        super(props)
+const PostActions = (props) => {
+    const [hasLiked, setState] = useState(false)
 
-        this.state = {
-            hasLiked: false
-        }
+    const changeIcon = () => {
+        setState(!hasLiked)
     }
 
-    changeIcon = () => {
-        this.setState({
-            hasLiked: !this.state.hasLiked
-        })
-    }
-
-    render() {
-        return (
-            <div className={styles["post-actions"]}>
-                <span>
-                    <img src={this.state.hasLiked ? redHeartIcon : heartIcon} className={styles["post-action"]} alt="heart" onClick={this.changeIcon} />
-                </span>
-                <span>
-                    <label htmlFor={this.props.imageUrl}><img src={commentIcon} className={styles["post-action"]} alt="comment" /></label>
-                </span>
-            </div>
-        )
-    }
+    return (
+        <div className={styles["post-actions"]}>
+            <span>
+                <img src={hasLiked ? redHeartIcon : heartIcon} className={styles["post-action"]} alt="heart" onClick={changeIcon} />
+            </span>
+            <span>
+                <img src={commentIcon} className={styles["post-action"]} alt="comment" />
+            </span>
+        </div>
+    )
 };
 
 export default PostActions;

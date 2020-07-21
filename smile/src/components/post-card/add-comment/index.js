@@ -5,7 +5,7 @@ import arrow from '../../../images/next.svg';
 const AddComment = (props) => {
     return (
         <div className={styles["add-comment"]}>
-            <textarea id={props.imageUrl} name="comment" placeholder="Add a comment..."></textarea>
+            <textarea name="comment" placeholder="Add a comment..."></textarea>
             <img src={arrow} alt="arrow" />
         </div>
     )
