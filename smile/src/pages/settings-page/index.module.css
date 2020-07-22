@@ -1,0 +1,43 @@
+.form-container {
+    font-family: "Montserrat", sans-serif;
+    border: 1.2px solid rgb(205, 205, 205);
+    width: 30%;
+    margin: 7rem auto;
+    padding: 2rem;
+    font-size: 16px;
+    background-color: #fff;
+    border-radius: 4px;
+}
+
+.user-data, .buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.user-data span {
+    font-size: 18px;
+    margin-left: 1rem;
+}
+
+.buttons>button:first-child {
+    color: #0095f6;
+}
+
+.btn {
+    background-color: #fff;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    margin-top: 1rem;
+    margin-right: 1rem;
+    font-size: 14px;
+    font-weight: 600;
+    color: #ed4956;
+}
+
+.avatar-actions {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}

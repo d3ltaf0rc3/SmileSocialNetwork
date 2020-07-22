@@ -5,6 +5,7 @@ import LoginPage from './pages/login-page';
 import RegisterPage from './pages/register-page';
 import ErrorPage from './pages/error-page';
 import ProfilePage from './pages/profile-page';
+import SettingsPage from './pages/settings-page';
 
 const Navigation = () => {
   return (
@@ -14,6 +15,7 @@ const Navigation = () => {
         <Route path="/login" component={LoginPage} />
         <Route path="/register" component={RegisterPage}/>
         <Route path="/user/:username" component={ProfilePage} />
+        <Route path="/settings" component={SettingsPage}/>
         <Route component={ErrorPage} />
       </Switch>
     </BrowserRouter>

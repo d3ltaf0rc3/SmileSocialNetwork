@@ -1,0 +1,87 @@
+.container, .checkbox-container {
+    margin: 2rem 0;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+}
+
+.container label, .checkbox-container label {
+    font-family: "Montserrat", sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.container textarea {
+    border-radius: 3px;
+    border: 1px solid rgb(219,219,219);
+    color: rgb(38, 38, 38);
+    padding: 0 10px;
+    height: 72px;
+    width: 100%;
+}
+
+.checkbox-container input[type="checkbox"] {
+    appearance: none;
+    background-color: #fff;
+	border: 1px solid rgb(218, 218, 218);
+	box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05);
+	padding: 9px;
+	border-radius: 3px;
+	display: inline-block;
+    position: relative;
+    margin-left: 0.5rem;
+}
+
+.checkbox-container input[type="checkbox"]:active {
+	box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px 1px 3px rgba(0,0,0,0.1);
+}
+
+.checkbox-container input[type="checkbox"]:checked {
+	background-color: #fff;
+	border: 1px solid rgb(218, 218, 218);
+	box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05), inset 15px 10px -12px rgba(255,255,255,0.1);
+	color: #99a1a7;
+}
+
+.checkbox-container input[type="checkbox"]:checked::after {
+    content: '\2714';
+	font-size: 14px;
+	position: absolute;
+	top: 0px;
+	left: 3px;
+	color: #0095f6;;
+}
+
+.actions {
+    margin-top: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.actions button {
+    color: #fff;
+    border-radius: 5px;
+    border: 1px solid #fff;
+    background-color: #0095f6;
+    cursor: pointer;
+    padding: 0.5rem 1.5rem;
+}
+
+.actions button:hover {
+    border: 1px solid #0095f6;
+    background-color: #fff;
+    color: #0095f6;
+}
+
+.actions a {
+    color: #0095f6;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.actions a:nth-child(2) {
+    color: #ed4956
+}
