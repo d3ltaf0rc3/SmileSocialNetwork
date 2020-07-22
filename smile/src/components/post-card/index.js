@@ -11,12 +11,12 @@ const Post = (props) => {
             <PostHeader />
             <img className={styles["post-image"]} src={props.imageUrl} alt="post" />
             <div className={styles["post-info"]}>
-                <PostActions />
+                <PostActions imageUrl={props.imageUrl} />
                 <span className={styles["post-likes"]}>147 likes</span>
                 <ul className={styles["post-comments"]}>
-                    <Comment author="marinov_m" comment="Beautiful"/>
+                    <Comment author="marinov_m" comment="Beautiful" />
                 </ul>
-                <AddComment />
+                <AddComment imageUrl={props.imageUrl} />
             </div>
         </div>
     )

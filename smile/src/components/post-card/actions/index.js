@@ -17,7 +17,7 @@ const PostActions = (props) => {
                 <img src={hasLiked ? redHeartIcon : heartIcon} className={styles["post-action"]} alt="heart" onClick={changeIcon} />
             </span>
             <span>
-                <img src={commentIcon} className={styles["post-action"]} alt="comment" />
+                <label htmlFor={props.imageUrl}><img src={commentIcon} className={styles["post-action"]} alt="comment" /></label>
             </span>
         </div>
     )
