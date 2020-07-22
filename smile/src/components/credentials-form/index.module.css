@@ -35,11 +35,8 @@
 	text-align: center;
 	padding: 5px;
 	width: 100%;
-}
-
-.btn a {
 	color: #fff;
-	display: block;
+	cursor: pointer;
 }
 
 .signup {
