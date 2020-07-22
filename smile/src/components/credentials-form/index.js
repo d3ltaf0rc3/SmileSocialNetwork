@@ -7,9 +7,9 @@ import Logo from '../logo';
 const CredentialsForm = (props) => {
     return (
         <div className={styles.container}>
-            <div className={styles.form}>
+            <div className={styles["form-container"]}>
                 <Logo />
-                <form>
+                <form className={styles.form}>
                     <Input type="text" placeholder="Username" name="username" />
                     <Input type="password" placeholder="Password" name="password" />
                     {props.formType === "register" ? 
