@@ -3,8 +3,8 @@ import styles from './index.module.css';
 import Head from '../../components/head';
 import Header from '../../components/header';
 import Footer from '../../components/footer';
-import ProfileHeader from '../../components/profile/header';
-import PhotosGrid from '../../components/profile/photos-grid';
+import ProfileHeader from '../../components/profile-components/header';
+import PhotosGrid from '../../components/profile-components/photos-grid';
 
 const ProfilePage = (props) => {
     return (

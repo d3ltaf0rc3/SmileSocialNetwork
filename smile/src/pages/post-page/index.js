@@ -1,5 +1,5 @@
 import React from 'react';
-import Post from '../../components/post';
+import Post from '../../components/post-components';
 import ProfilePage from '../profile-page';
 
 const PostPage = () => {
