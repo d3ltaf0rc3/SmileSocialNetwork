@@ -8,6 +8,7 @@ import ProfilePage from './pages/profile-page';
 import SettingsPage from './pages/settings-page';
 import AddPostPage from './pages/add-post-page';
 import PostPage from './pages/post-page';
+import ChangePasswordPage from './pages/change-password-page';
 
 const Navigation = () => {
   return (
@@ -20,6 +21,7 @@ const Navigation = () => {
         <Route path="/settings" component={SettingsPage} />
         <Route path="/add-post" component={AddPostPage} />
         <Route path="/post/:id" component={PostPage} />
+        <Route path="/change-password" component={ChangePasswordPage} />
         <Route component={ErrorPage} />
       </Switch>
     </BrowserRouter>
