@@ -14,9 +14,9 @@ const Input = (props) => {
         <div className={styles["input-container"]}>
             <input className={styles["custom-input"]} value={props.value} onChange={props.onChange} name={props.name} type={props.type} placeholder={props.placeholder} />
             {props.button ?
-                (<button onClick={routeChange} className={styles["custom-input-button"]}>
+                <button onClick={routeChange} className={styles["custom-input-button"]}>
                     <img src={arrow} alt="arrow" />
-                </button>) : null}
+                </button> : null}
         </div>
     );
 };

@@ -1,30 +1,41 @@
+.form {
+    margin: 2rem 1rem 0;    
+}
+
 .container, .checkbox-container {
-    margin: 2rem 0;
-}
-
-.checkbox-container {
-    display: flex;
-    align-items: center;
-}
-
-.container label, .checkbox-container label {
-    font-family: "Montserrat", sans-serif;
-    font-size: 16px;
-    font-weight: 600;
+    margin: 1rem 0;
 }
 
 .container textarea {
     border-radius: 3px;
     border: 1px solid rgb(219,219,219);
     color: rgb(38, 38, 38);
-    padding: 0 10px;
+    padding: 10px;
     height: 72px;
     width: 100%;
+    background-color: rgb(235,235,235);
+    font-size: 16px;
+}
+
+.container textarea::placeholder {
+    color: #000;
+    text-align: center;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.checkbox-container label {
+    font-size: 16px;
+    font-weight: 600;
 }
 
 .checkbox-container input[type="checkbox"] {
     appearance: none;
-    background-color: #fff;
+    background-color: rgb(235, 235, 235);
 	border: 1px solid rgb(218, 218, 218);
 	box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05);
 	padding: 9px;
@@ -39,7 +50,7 @@
 }
 
 .checkbox-container input[type="checkbox"]:checked {
-	background-color: #fff;
+	background-color: rgb(235, 235, 235);
 	border: 1px solid rgb(218, 218, 218);
 	box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05), inset 15px 10px -12px rgba(255,255,255,0.1);
 	color: #99a1a7;

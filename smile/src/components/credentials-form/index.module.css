@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
-* {
+
+.container>* {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
@@ -49,4 +50,5 @@
 
 .signup a {
 	color: #3897f0;
+	text-decoration: underline;
 }

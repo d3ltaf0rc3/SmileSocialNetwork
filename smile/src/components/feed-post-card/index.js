@@ -1,25 +1,25 @@
 import React from 'react';
 import styles from './index.module.css';
 import PostHeader from './header';
-import Comment from './comment';
+import CommentSection from './comment-section';
 import PostActions from './actions';
 import AddComment from './add-comment';
+import Likes from './likes';
 
-const Post = (props) => {
+const PostCard = (props) => {
     return (
         <div className={styles.card}>
             <PostHeader />
             <img className={styles["post-image"]} src={props.imageUrl} alt="post" />
+            
             <div className={styles["post-info"]}>
                 <PostActions imageUrl={props.imageUrl} />
-                <span className={styles["post-likes"]}>147 likes</span>
-                <ul className={styles["post-comments"]}>
-                    <Comment author="marinov_m" comment="Beautiful" />
-                </ul>
+                <Likes />
+                <CommentSection />
                 <AddComment imageUrl={props.imageUrl} />
             </div>
         </div>
     )
 }
 
-export default Post;
+export default PostCard;

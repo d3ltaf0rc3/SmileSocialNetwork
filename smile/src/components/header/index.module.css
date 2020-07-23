@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
-header {
+.header {
     background-color: #fff;
     border-bottom: 1.2px solid rgb(235, 235, 235);
     position: fixed;
@@ -8,7 +8,7 @@ header {
     right: 0;
 }
 
-nav {
+.nav {
     display: flex;
     justify-content: space-around;
     align-items: center;

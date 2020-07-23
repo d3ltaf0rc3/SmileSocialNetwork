@@ -27,6 +27,7 @@ const CredentialsForm = (props) => {
                         "Register" : "Login"}</button>
                 </form>
             </div>
+            
             <div className={styles.signup}>
                 {props.formType === "register" ?
                     <p>Already have an account? <Link to="/login">Login instead</Link></p> :

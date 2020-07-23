@@ -4,7 +4,7 @@ import styles from './index.module.css';
 
 const Footer = () => {
     return (
-        <footer>
+        <footer className={styles.footer}>
             <h1 className={styles.copyright}>&copy; 2020 Smile</h1>
             <Link to="/" className={styles["home-link"]}>Home</Link>
         </footer>

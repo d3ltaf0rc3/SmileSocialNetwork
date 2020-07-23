@@ -1,7 +1,5 @@
 .photos {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    grid-gap: 1rem;
-    width: 936px;
-    /* width: 100%; */
+    grid-gap: 1.5rem;
 }
