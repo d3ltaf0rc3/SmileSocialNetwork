@@ -9,15 +9,10 @@
     border-radius: 4px;
 }
 
-.user-data, .buttons {
+.buttons {
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
-
-.user-data span {
-    font-size: 18px;
-    margin-left: 1rem;
 }
 
 .buttons>button:first-child {

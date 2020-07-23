@@ -6,16 +6,17 @@ import Footer from '../../components/footer';
 import ProfileHeader from '../../components/profile/header';
 import PhotosGrid from '../../components/profile/photos-grid';
 
-const ProfilePage = () => {
+const ProfilePage = (props) => {
     return (
         <Fragment>
-            <Head title="Lora Marinova (@lmm_47) | Smile"/>
+            <Head title="Lora Marinova (@lmm_47) | Smile" />
             <Header />
             <div className={styles.container}>
                 <ProfileHeader />
                 <PhotosGrid />
             </div>
             <Footer />
+            {props.children}
         </Fragment>
     )
 };
