@@ -2,7 +2,6 @@ import React, { Fragment, useState } from 'react';
 import styles from './index.module.css';
 import Head from '../../components/head';
 import Header from '../../components/header';
-import Footer from '../../components/footer';
 import Input from '../../components/input';
 import Textarea from '../../components/textarea';
 import { Link } from 'react-router-dom';
