@@ -20,6 +20,12 @@ async function register(req, res) {
                     res.cookie("auth-token", token);
                     return res.send(userObject);
                 } catch (error) {
+                    if (error.code === 11000) {
+                        return res.status(401).send({
+                            error: "Username already taken!"
+                        });
+                    }
+                    
                     return res.status(500).send({
                         error
                     });
@@ -27,7 +33,9 @@ async function register(req, res) {
             });
         });
     } else {
-        return res.status(401).send("Both passwords should match!");
+        return res.status(401).send({
+            error: "Both passwords should match!"
+        });
     }
 }
 
@@ -58,7 +66,15 @@ async function login(req, res) {
 }
 
 async function logout(req, res) {
-    return res.clearCookie("auth-token").send('Logout successful!');
+    if (!res.cookies) {
+        return res.status(422).send({
+            error: "Auth cookie missing!"
+        });
+    }
+    
+    return res.clearCookie("auth-token").send({
+        message: "Logout is successful!"
+    });
 }
 
 module.exports = {
