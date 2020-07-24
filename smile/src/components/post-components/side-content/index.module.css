@@ -6,12 +6,16 @@
     border-top: 1px solid rgb(205, 205, 205);
 }
 
+.comment-section::-webkit-scrollbar {
+    width: 0 !important
+}
+
 .comment-section {
     display: flex;
     flex-direction: column;
     height: 80%;
     border-bottom: 1px solid rgb(205, 205, 205);
-    overflow: auto;
+    overflow-y: scroll;
 }
 
 .actions {
