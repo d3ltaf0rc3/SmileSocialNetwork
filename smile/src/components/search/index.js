@@ -1,16 +1,23 @@
-import React from 'react';
-import styles from './index.module.css';
-import Profile from './result-profile';
+import React, { useState } from 'react';
+import Input from '../input';
+import SearchBox from './search-box';
 
-const Search = (props) => {
+const Search = () => {
+    const [displaySearch, setDisplay] = useState(false);
+
+    const displaySearchBox = () => {
+        setDisplay(true);
+    }
+
+    const hideSearchBox = () => {
+        setDisplay(false);
+    }
+
+
     return (
-        <div onMouseLeave={props.onMouseLeave}>
-            <div className={styles.arrow}></div>
-            <div className={styles["search-box"]}>
-                <Profile />
-                <Profile />
-                <Profile />
-            </div>
+        <div>
+            <Input name="search" onChange={displaySearchBox} type="text" placeholder="Search" />
+            {displaySearch ? <SearchBox onMouseLeave={hideSearchBox} /> : null}
         </div>
     )
 };
