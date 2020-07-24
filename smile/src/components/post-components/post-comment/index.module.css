@@ -1,0 +1,10 @@
+.comment {
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+}
+
+.comment img {
+    margin-right: 14px;
+}
