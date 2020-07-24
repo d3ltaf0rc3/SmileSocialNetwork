@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './index.module.css';
 import { Link } from 'react-router-dom';
 import Input from '../input';
+import Textarea from '../textarea';
 
 const SettingsForm = () => {
     return (
@@ -9,9 +10,7 @@ const SettingsForm = () => {
             <Input placeholder="Username" />
             <Input placeholder="Name" />
 
-            <div className={styles.container}>
-                <textarea placeholder="Bio"></textarea>
-            </div>
+            <Textarea placeholder="Bio" />
 
             <div className={styles["checkbox-container"]}>
                 <label htmlFor="private-profile-checkbox">Private profile</label>
