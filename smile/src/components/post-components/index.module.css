@@ -34,3 +34,7 @@
 .aside {
     width: 100%;
 }
+
+.menu-icon {
+    cursor: pointer;
+}

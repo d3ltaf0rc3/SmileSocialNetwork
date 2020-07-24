@@ -10,6 +10,11 @@ const Search = (props) => {
                 <Profile />
                 <Profile />
                 <Profile />
+                <Profile />
+                <Profile />
+                <Profile />
+                <Profile />
+                <Profile />
             </div>
         </div>
     )
