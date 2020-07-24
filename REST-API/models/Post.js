@@ -6,6 +6,10 @@ const PostSchema = new mongoose.Schema({
         ref: "User",
         required: true
     },
+    location: {
+        type: String,
+        default: ""
+    },
     imageUrl: {
         type: String,
         required: true

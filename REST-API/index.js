@@ -9,8 +9,8 @@ const PORT = 7777;
 expressConfig(app);
 connectToDB();
 
-app.use("/api/", indexRouter);
-app.use("/api/posts/", postRouter);
+app.use("/api", indexRouter);
+app.use("/api/posts", postRouter);
 
 app.listen(PORT, err => {
     if (err) throw err;

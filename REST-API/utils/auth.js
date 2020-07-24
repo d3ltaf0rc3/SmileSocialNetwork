@@ -1,18 +1,12 @@
 const jwt = require('./jwt');
 const User = require('../models/User');
-const TokenBlacklist = require("../models/TokenBlacklist");
 
 module.exports = (redirectAuthenticated = true) => {
     return function (req, res, next) {
-        const token = req.cookies[config.authCookieName] || '';
+        const token = req.cookies[config.authCookieName] || 'auth-token';
 
-        Promise.all([
-            jwt.verifyToken(token),
-            TokenBlacklist.findOne({ token })
-        ])
-            .then(([data, blacklistToken]) => {
-                if (blacklistToken) { return Promise.reject(new Error('blacklisted token')); }
-
+        jwt.verifyToken(token)
+            .then(data => {
                 User.findById(data.id)
                     .then((user) => {
                         req.user = user;

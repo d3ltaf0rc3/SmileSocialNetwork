@@ -1,57 +1,68 @@
 const User = require("../models/User");
-const TokenBlacklist = require("../models/TokenBlacklist");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+
+async function register(req, res) {
+    const { username, password, repeatPassword } = req.body;
+
+    if (password === repeatPassword) {
+        bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(password, salt, async (err, hash) => {
+                try {
+                    const user = new User({ username, password: hash });
+                    const userObject = await user.save();
+
+                    const token = jwt.sign({
+                        userID: userObject._id,
+                        username: userObject.username
+                    }, process.env.JWT_KEY);
+
+                    res.cookie("auth-token", token);
+                    return res.send(userObject);
+                } catch (error) {
+                    return res.status(500).send({
+                        error
+                    });
+                }
+            });
+        });
+    } else {
+        return res.status(401).send("Both passwords should match!");
+    }
+}
+
+async function login(req, res) {
+    const { username, password } = req.body;
+    const user = await User.findOne({ username });
+
+    if (user === null) {
+        return res.status(401).send({
+            error: "Wrong username or password!"
+        });
+    }
+
+    const status = await bcrypt.compare(password, user.password);
+
+    if (status) {
+        const token = jwt.sign({
+            userID: user._id,
+            username: user.username
+        }, process.env.JWT_KEY, { expiresIn: "1w" });
+
+        return res.cookie("auth-token", token).send(user);
+    } else {
+        return res.status(401).send({
+            error: "Wrong username or password!"
+        });
+    }
+}
+
+async function logout(req, res) {
+    return res.clearCookie("auth-token").send('Logout successful!');
+}
 
 module.exports = {
-    getProfile: (userID) => {
-        const user = User.findById(userID)
-            .populate("followers")
-            .populate("following")
-            .populate("posts")
-            .lean();
-        return user;
-    },
-    register: async (req, res, next) => {
-        const { username, password, repeatPassword } = req.body;
-
-        if (password === repeatPassword) {
-            const newUser = await User.create({ username, password });
-            return res.send(newUser);
-        } else {
-            return res.status(422).send("Both passwords should match!");
-        }
-    },
-
-    login: (req, res, next) => {
-        const { username, password } = req.body;
-        User.findOne({ username })
-            .then((user) => Promise.all([user, user.matchPassword(password)]))
-            .then(([user, match]) => {
-                if (!match) {
-                    res.status(401).send('Invalid password');
-                    return;
-                }
-
-                const token = jwt.sign({ id: user._id }, process.env.KEY, { expiresIn: '1h' });
-                res.cookie("x-auth-token", token).send(user);
-            })
-            .catch(next);
-    },
-
-    logout: (req, res, next) => {
-        const token = req.cookies["x-auth-token"];
-        TokenBlacklist.create({ token })
-            .then(() => {
-                res.clearCookie("x-auth-token").send('Logout successfully!');
-            })
-            .catch(next);
-    },
-
-    editUser: (req, res, next) => {
-        const id = req.params.id;
-        const { username, password } = req.body;
-        User.update({ _id: id }, { username, password })
-            .then((updatedUser) => res.send(updatedUser))
-            .catch(next);
-    }
+    register,
+    login,
+    logout
 };
