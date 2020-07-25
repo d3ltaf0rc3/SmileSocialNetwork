@@ -98,6 +98,29 @@ async function editUser(req, res) {
     }
 }
 
+async function getUser(req, res) {
+    const username = req.params.username;
+
+    try {
+        const user = (await User.findOne({ username }))
+            .populate("posts")
+            .populate("followers")
+            .populate("following");
+
+        if (user === null) {
+            return res.status(404).send({
+                error: "User not found!"
+            });
+        }
+
+        return res.send(user);
+    } catch (error) {
+        return res.status(500).send({
+            error: error.message
+        });
+    }
+}
+
 async function changePassword(req, res) {
     const { oldPassword, password, repeatPassword } = req.body;
 
@@ -106,7 +129,7 @@ async function changePassword(req, res) {
             const decodedCookie = decodeCookie(req.cookies["auth-token"]);
             const currentUser = await User.findById(decodedCookie.userID);
             const result = await bcrypt.compare(oldPassword, currentUser.password);
-            
+
             if (result) {
                 const salt = bcrypt.genSaltSync(10);
                 const hash = bcrypt.hashSync(password, salt);
@@ -137,5 +160,6 @@ module.exports = {
     login,
     logout,
     editUser,
-    changePassword
+    changePassword,
+    getUser
 };
