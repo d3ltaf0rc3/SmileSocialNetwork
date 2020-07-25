@@ -11,7 +11,7 @@
     align-items: center;
 }
 
-.copyright, .home-link {
+.copyright {
     font-size: 1.4rem;
     margin: 1rem 0;
 }
@@ -20,8 +20,4 @@
     background: -webkit-linear-gradient(45deg, #ff9494, #b257e6, #e657e6, #ff9494, #e657e6);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-}
-
-.home-link {
-    color: #00376b;
 }
