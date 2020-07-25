@@ -1,14 +1,7 @@
 const express = require("express");
+const { createAPost } = require("../controllers/post");
 const router = express.Router();
 
-router.get('/feed');
-
-router.post('/add');
-
-router.get("/user-posts");
-
-router.put("/post/:id");
-
-router.delete("post/:id");
+router.post('/add-post', createAPost);
 
 module.exports = router;
