@@ -18,8 +18,7 @@ async function register(req, res) {
                         username: userObject.username
                     }, process.env.JWT_KEY);
 
-                    req.cookie("auth-token", token);
-                    return res.send(userObject);
+                    res.cookie("auth-token", token).send(user);
                 } catch (error) {
                     if (error.code === 11000) {
                         return res.status(401).send({
