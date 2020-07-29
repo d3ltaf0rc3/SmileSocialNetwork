@@ -37,6 +37,10 @@ const UserSchema = new mongoose.Schema({
     posts: [{
         type: mongoose.SchemaTypes.ObjectId,
         ref: "Post"
+    }],
+    requests: [{
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: "User"
     }]
 });
 

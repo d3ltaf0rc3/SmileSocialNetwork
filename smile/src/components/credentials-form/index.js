@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styles from './index.module.css';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Input from '../input';
 import Logo from '../logo';
 
@@ -8,13 +8,11 @@ const CredentialsForm = (props) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [rePassword, setRePassword] = useState("");
-    const history = useHistory();
 
     const submitHandler = async (e) => {
         e.preventDefault();
-        await props.onSubmit(username, password, rePassword)
-        history.push("/");
-    }
+        await props.onSubmit(username, password, rePassword);
+    };
 
     return (
         <div className={styles.container}>

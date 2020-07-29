@@ -7,11 +7,11 @@ router.post('/register', register);
 
 router.post('/login', login);
 
-router.get('/logout', auth(), logout);
+router.get('/logout', auth, logout);
 
-router.put("/edit", auth(), editUser);
+router.put("/edit", auth, editUser);
 
-router.put("/change-password", auth(), changePassword);
+router.put("/change-password", auth, changePassword);
 
 router.get("/user/:username", getUser);
 

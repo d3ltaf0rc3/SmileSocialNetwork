@@ -18,7 +18,7 @@ async function register(req, res) {
                         username: userObject.username
                     }, process.env.JWT_KEY);
 
-                    res.cookie("auth-token", token).send(user);
+                    res.cookie("auth-token", token, { expiresIn: '1w' }).send(user);
                 } catch (error) {
                     if (error.code === 11000) {
                         return res.status(401).send({
@@ -57,7 +57,7 @@ async function login(req, res) {
             username: user.username
         }, process.env.JWT_KEY, { expiresIn: "1w" });
 
-        return res.cookie("auth-token", token).send(user);
+        return res.cookie("auth-token", token, { expiresIn: '1w' }).send(user);
     } else {
         return res.status(401).send({
             error: "Wrong username or password!"

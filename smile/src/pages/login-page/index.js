@@ -1,14 +1,16 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useContext } from 'react';
 import Footer from '../../components/footer';
 import CredentialsForm from '../../components/credentials-form';
 import Head from "../../components/head";
+import AuthContext from '../../Context';
 
-const LoginPage = () => {
+const LoginPage = (props) => {
+    const context = useContext(AuthContext);
+    
     const submitHandler = (username, password) => {
         fetch("http://localhost:7777/api/login", {
             method: "POST",
             headers: {
-
                 "Content-Type": "application/json"
             },
             credentials: "include",
@@ -16,9 +18,16 @@ const LoginPage = () => {
                 username,
                 password
             })
+        }).then(res => {
+            if (res.status === 200) {
+                props.history.push("/");
+                return res.json();
+            }
+        }).then(user => {
+            context.logIn(user);
         })
             .catch(err => console.log(err));
-    }
+    };
 
     return (
         <Fragment>
