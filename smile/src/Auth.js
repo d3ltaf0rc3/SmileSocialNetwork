@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AuthContext from './Context';
 
 const Auth = (props) => {
@@ -14,6 +14,28 @@ const Auth = (props) => {
         setLogged(false);
         setUser(null);
     };
+
+    useEffect(() => {
+        fetch("http://localhost:7777/api/verify", {
+            method: "post",
+            credentials: "include"
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.error) {
+                    logOut();
+                } else if (res) {
+                    logIn(res);
+                }
+            })
+            .catch(err => console.error(err));
+    }, []);
+
+    if (loggedIn === null) {
+        return (
+            <div>{/* To do spinner*/}</div>
+        )
+    }
 
     return (
         <AuthContext.Provider value={{

@@ -2,6 +2,7 @@ const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { decodeCookie } = require("../utils/decode-cookie");
+const { use } = require("../routes");
 
 async function register(req, res) {
     const { username, password, repeatPassword } = req.body;
@@ -154,11 +155,30 @@ async function changePassword(req, res) {
     }
 }
 
+async function verifyLoggedIn(req, res) {
+    if (!req.cookies["auth-token"]) {
+        res.status(401).send({
+            error: "No cookie was sent!"
+        });
+    }
+    
+    try {
+        const decoded = decodeCookie(req.cookies["auth-token"]);
+        const user = await User.findOne({ username: decoded.username });
+        return res.send(user);
+    } catch (error) {
+        res.status(401).send({
+            error: error.message
+        });
+    }
+}
+
 module.exports = {
     register,
     login,
     logout,
     editUser,
     changePassword,
-    getUser
+    getUser,
+    verifyLoggedIn
 };

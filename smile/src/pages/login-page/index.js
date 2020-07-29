@@ -6,7 +6,7 @@ import AuthContext from '../../Context';
 
 const LoginPage = (props) => {
     const context = useContext(AuthContext);
-    
+
     const submitHandler = (username, password) => {
         fetch("http://localhost:7777/api/login", {
             method: "POST",
@@ -18,14 +18,11 @@ const LoginPage = (props) => {
                 username,
                 password
             })
-        }).then(res => {
-            if (res.status === 200) {
-                props.history.push("/");
-                return res.json();
-            }
-        }).then(user => {
-            context.logIn(user);
         })
+            .then(res => res.json())
+            .then(user => {
+                context.logIn(user);
+            })
             .catch(err => console.log(err));
     };
 

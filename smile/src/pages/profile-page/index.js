@@ -14,7 +14,7 @@ const ProfilePage = (props) => {
             <Header />
             <div className={styles.container}>
                 <ProfileHeader />
-                <PhotosGrid />}
+                <PhotosGrid />
             </div>
             <Footer />
             {props.children}

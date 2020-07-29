@@ -1,10 +1,8 @@
 import React, { useContext } from 'react';
 import styles from "./index.module.css";
-import { useHistory } from 'react-router-dom';
 import AuthContext from '../../Context';
 
 const Logout = () => {
-    const history = useHistory();
     const context = useContext(AuthContext);
 
     const clickHandler = (e) => {
@@ -14,7 +12,6 @@ const Logout = () => {
             credentials: "include"
         })
             .then(() => {
-                history.push("/login");
                 context.logOut();
             })
             .catch(err => console.log(err));

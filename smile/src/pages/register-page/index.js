@@ -19,12 +19,8 @@ const RegisterPage = (props) => {
                 password,
                 repeatPassword: rePassword
             })
-        }).then(res => {
-            if (res.status === 200) {
-                props.history.push("/");
-                return res.json();
-            }
         })
+            .then(res => res.json())
             .then(user => {
                 context.logIn(user);
             })
