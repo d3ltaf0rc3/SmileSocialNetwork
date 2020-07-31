@@ -5,6 +5,7 @@ import Avatar from '../../user-avatar';
 import { Link, withRouter } from 'react-router-dom';
 import UserContext from '../../../contexts/AuthContext';
 import PostContext from '../../../contexts/PostContext';
+import greySquare from '../../../images/greySquare.jpg';
 
 const ProfileHeader = (props) => {
     const context = useContext(UserContext);
@@ -51,10 +52,33 @@ const ProfileHeader = (props) => {
     }, [props.match.params.username, props.history, props.match.url, postContext.post]);
 
     if (context.user === null) {
-        return <div></div>
+        return (
+            <div>
+                <Avatar size="150" imageUrl={greySquare} />
+
+                <div className={styles["stats-container"]}>
+                    <div className={styles.title}>
+                        <h3 className={styles.username}>Loading...</h3>
+                        <Link className={styles.button} to={`/follow/${username}`}>Loading</Link>
+                    </div>
+
+                    <Stats
+                        posts="Loading"
+                        followers="Loading"
+                        following="Loading" />
+
+                    <div className={styles.bio}>
+                        <span className={styles["full-name"]}>
+                            Loading...
+                        </span>
+                        <pre>Loading...</pre>
+                    </div>
+                </div>
+            </div>
+        )
     }
 
-    return (
+    return username && (
         <div className={styles.header}>
             <Avatar size="150" imageUrl={profilePicture} />
 

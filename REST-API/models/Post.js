@@ -8,7 +8,7 @@ const PostSchema = new mongoose.Schema({
     },
     createdAt: {
         type: Date,
-        default: Date.now()
+        default: new Date()
     },
     location: {
         type: String,
