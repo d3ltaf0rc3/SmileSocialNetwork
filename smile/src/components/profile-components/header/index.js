@@ -3,10 +3,13 @@ import styles from './index.module.css';
 import Stats from '../stats';
 import Avatar from '../../user-avatar';
 import { Link, withRouter } from 'react-router-dom';
-import UserContext from '../../../Context';
+import UserContext from '../../../contexts/AuthContext';
+import PostContext from '../../../contexts/PostContext';
 
 const ProfileHeader = (props) => {
     const context = useContext(UserContext);
+    const postContext = useContext(PostContext);
+
     const [username, setUsername] = useState("");
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
@@ -18,25 +21,34 @@ const ProfileHeader = (props) => {
     useEffect(() => {
         if (props.match.url.includes("/user/")) {
             fetch(`http://localhost:7777/api/user/${props.match.params.username}`)
-            .then(res => res.json())
-            .then(user => {
-                if (user.error) {
-                    return props.history.push("/error");
-                }
-                setUsername(user.username);
-                setName(user.name);
-                setDescription(user.description);
-                setFollowers(user.followers);
-                setFollowing(user.following);
-                setPosts(user.posts);
-                setPicture(user.profilePicture);
-            })
-            .catch(err => {
-                props.history.push("/error");
-            });
+                .then(res => res.json())
+                .then(user => {
+                    if (user.error) {
+                        return props.history.push("/error");
+                    }
+                    setUsername(user.username);
+                    setName(user.name);
+                    setDescription(user.description);
+                    setFollowers(user.followers);
+                    setFollowing(user.following);
+                    setPosts(user.posts);
+                    setPicture(user.profilePicture);
+                })
+                .catch(err => {
+                    props.history.push("/error");
+                });
+        } else if (props.match.url.includes("/post/")) {
+            if (postContext.post !== null) {
+                setUsername(postContext.post.postedBy.username);
+                setName(postContext.post.postedBy.name);
+                setDescription(postContext.post.postedBy.description);
+                setFollowers(postContext.post.postedBy.followers);
+                setFollowing(postContext.post.postedBy.following);
+                setPosts(postContext.post.postedBy.posts);
+                setPicture(postContext.post.postedBy.profilePicture);
+            }
         }
-    }, [props.match.params.username, props.history, props.match.url]);
-
+    }, [props.match.params.username, props.history, props.match.url, postContext.post]);
     if (context.user === null) {
         return <div></div>
     }
@@ -49,8 +61,8 @@ const ProfileHeader = (props) => {
                 <div className={styles.title}>
                     <h3 className={styles.username}>{username}</h3>
                     {context.user.username === username ?
-                        <Link className={styles["edit-button"]} to="/settings">Edit profile</Link> :
-                        <Link className={styles["edit-button"]} to={`/follow/${username}`}>Follow</Link>}
+                        <Link className={styles.button} to="/settings">Edit profile</Link> :
+                        <Link className={styles.button} to={`/follow/${username}`}>Follow</Link>}
                 </div>
 
                 <Stats
@@ -62,7 +74,7 @@ const ProfileHeader = (props) => {
                     <span className={styles["full-name"]}>
                         {name}
                     </span>
-                    <p>{description}</p>
+                    <pre>{description}</pre>
                 </div>
             </div>
         </div>

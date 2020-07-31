@@ -7,7 +7,7 @@ import userIcon from '../../images/user.svg';
 import addIcon from '../../images/plus.svg';
 import Search from '../search';
 import Requests from '../requests';
-import AuthContext from '../../Context';
+import AuthContext from '../../contexts/AuthContext';
 
 const Header = () => {
     const context = useContext(AuthContext);

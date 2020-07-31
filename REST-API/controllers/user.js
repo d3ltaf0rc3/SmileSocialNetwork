@@ -78,18 +78,11 @@ async function logout(req, res) {
 }
 
 async function editUser(req, res) {
+    const user = req.body.user;
+    
     try {
-        const decodedCookie = decodeCookie(req.cookies["auth-token"]);
-        const currentUser = await User.findById(decodedCookie.userID);
-
-        for (const prop in currentUser) {
-            if (req.body.hasOwnProperty(prop)) {
-                currentUser[prop] = req.body[prop];
-            }
-        }
-
-        await User.findByIdAndUpdate({ _id: decodedCookie.userID }, currentUser);
-        return res.send(currentUser);
+        await User.findByIdAndUpdate({ _id: user._id }, user);
+        return res.send(user);
     } catch (error) {
         return res.status(500).send({
             error: error.message

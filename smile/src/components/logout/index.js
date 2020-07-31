@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import styles from "./index.module.css";
-import AuthContext from '../../Context';
+import AuthContext from '../../contexts/AuthContext';
 
 const Logout = () => {
     const context = useContext(AuthContext);

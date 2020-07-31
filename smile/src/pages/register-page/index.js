@@ -2,7 +2,7 @@ import React, { Fragment, useContext } from 'react';
 import Footer from '../../components/footer';
 import CredentialsForm from '../../components/credentials-form';
 import Head from '../../components/head';
-import AuthContext from '../../Context';
+import AuthContext from '../../contexts/AuthContext';
 
 const RegisterPage = (props) => {
     const context = useContext(AuthContext);

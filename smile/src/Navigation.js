@@ -9,7 +9,7 @@ import SettingsPage from './pages/settings-page';
 import AddPostPage from './pages/add-post-page';
 import PostPage from './pages/post-page';
 import ChangePasswordPage from './pages/change-password-page';
-import AuthContext from './Context';
+import AuthContext from './contexts/AuthContext';
 
 const Navigation = () => {
   const context = useContext(AuthContext);

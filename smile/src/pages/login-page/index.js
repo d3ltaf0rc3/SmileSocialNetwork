@@ -2,7 +2,7 @@ import React, { Fragment, useContext } from 'react';
 import Footer from '../../components/footer';
 import CredentialsForm from '../../components/credentials-form';
 import Head from "../../components/head";
-import AuthContext from '../../Context';
+import AuthContext from '../../contexts/AuthContext';
 
 const LoginPage = (props) => {
     const context = useContext(AuthContext);
@@ -21,7 +21,9 @@ const LoginPage = (props) => {
         })
             .then(res => res.json())
             .then(user => {
-                context.logIn(user);
+                if (!user.error) {
+                    context.logIn(user);
+                }
             })
             .catch(err => console.log(err));
     };

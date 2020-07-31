@@ -6,7 +6,7 @@ import Footer from '../../components/footer';
 import ProfileHeader from '../../components/profile-components/header';
 import PhotosGrid from '../../components/profile-components/photos-grid';
 import Private from '../../components/profile-components/private-profile';
-import UserContext from '../../Context';
+import UserContext from '../../contexts/AuthContext';
 
 const ProfilePage = (props) => {
     const context = useContext(UserContext);

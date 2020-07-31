@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import AuthContext from './Context';
+import AuthContext from './contexts/AuthContext';
 
 const Auth = (props) => {
     const [loggedIn, setLogged] = useState(null);
@@ -13,6 +13,10 @@ const Auth = (props) => {
     const logOut = () => {
         setLogged(false);
         setUser(null);
+    };
+
+    const updateContext = (user) => {
+        setUser(user);
     };
 
     useEffect(() => {
@@ -42,7 +46,8 @@ const Auth = (props) => {
             loggedIn,
             user,
             logIn,
-            logOut
+            logOut,
+            updateContext
         }}>
             {props.children}
         </AuthContext.Provider>
