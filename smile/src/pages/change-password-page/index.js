@@ -6,7 +6,7 @@ import Footer from '../../components/footer';
 const ChangePasswordPage = () => {
     return (
         <Fragment>
-            <Head title="Login | Smile" />
+            <Head title="Change Password | Smile" />
             <Form />
             <Footer />
         </Fragment>

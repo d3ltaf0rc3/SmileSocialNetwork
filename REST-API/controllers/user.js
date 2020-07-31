@@ -129,7 +129,9 @@ async function changePassword(req, res) {
                 currentUser.password = hash;
 
                 await User.findByIdAndUpdate(decodedCookie.userID, currentUser);
-                return res.clearCookie("auth-token").send("Password successfully changed!");
+                return res.clearCookie("auth-token").send({
+                    message: "Password successfully changed!"
+                });
             } else {
                 return res.status(401).send({
                     error: "Wrong current password!"

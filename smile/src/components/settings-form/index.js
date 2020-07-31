@@ -7,7 +7,6 @@ import UserContext from '../../contexts/AuthContext';
 
 const SettingsForm = (props) => {
     const context = useContext(UserContext);
-    console.log(context.user);
 
     const [name, setName] = useState(context.user.name);
     const [bio, setBio] = useState(context.user.description);
