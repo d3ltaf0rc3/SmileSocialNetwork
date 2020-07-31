@@ -1,9 +1,9 @@
 import React from 'react';
 import styles from './index.module.css';
 
-const Likes = () => {
+const Likes = (props) => {
     return (
-        <span className={styles["post-likes"]}>147 likes</span>
+        <span className={styles["post-likes"]}>{props.likes} likes</span>
     )
 }
 

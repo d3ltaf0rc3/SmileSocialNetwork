@@ -5,7 +5,7 @@ import UserData from '../../user-data';
 const PostHeader = (props) => {
     return (
         <div className={styles["post-header"]}>
-            <UserData location="Varna, Bulgaria"/>
+            <UserData imageUrl={props.imageUrl} username={props.username} location={props.location}/>
             {props.children}
         </div>
     )

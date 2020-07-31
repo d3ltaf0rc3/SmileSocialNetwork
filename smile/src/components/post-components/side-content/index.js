@@ -6,7 +6,7 @@ import Likes from '../../feed-post-card/likes';
 import PostComment from '../post-comment';
 
 
-const SideContent = () => {
+const SideContent = (props) => {
     return (
         <div className={styles.content}>
             <ul className={styles["comment-section"]}>
@@ -15,7 +15,7 @@ const SideContent = () => {
 
             <section className={styles.actions}>
                 <Actions imageUrl="1" />
-                <Likes />
+                <Likes likes={props.likes} />
                 <AddComment imageUrl="1" />
             </section>
         </div>
