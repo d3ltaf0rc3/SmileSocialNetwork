@@ -49,6 +49,7 @@ const ProfileHeader = (props) => {
             }
         }
     }, [props.match.params.username, props.history, props.match.url, postContext.post]);
+
     if (context.user === null) {
         return <div></div>
     }
