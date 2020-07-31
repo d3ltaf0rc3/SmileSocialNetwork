@@ -12,7 +12,7 @@ const PostSchema = new mongoose.Schema({
     },
     location: {
         type: String,
-        default: null
+        default: ""
     },
     imageUrl: {
         type: String,

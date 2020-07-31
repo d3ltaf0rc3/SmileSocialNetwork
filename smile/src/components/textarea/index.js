@@ -4,7 +4,7 @@ import styles from './index.module.css';
 const Textarea = (props) => {
     return (
         <div className={styles.container}>
-            <textarea placeholder={props.placeholder}></textarea>
+            <textarea onChange={props.onChange} placeholder={props.placeholder}></textarea>
         </div>
     )
 }

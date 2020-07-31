@@ -9,7 +9,7 @@ async function createAPost(req, res) {
         const newPost = new Post({
             imageUrl,
             description,
-            location: location || null,
+            location,
             postedBy: decoded.userID
         });
         const post = await newPost.save();
@@ -44,7 +44,8 @@ async function getPosts(req, res) {
 
     try {
         const user = await User.findOne({ username }).populate("posts");
-        return res.send(user.posts);
+        const sortedPosts = user.posts.sort((a,b) => b.createdAt - a.createdAt);
+        return res.send(sortedPosts);
     } catch (err) {
         return res.status(500).send({
             error: err.message
