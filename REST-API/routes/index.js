@@ -1,5 +1,5 @@
 const express = require("express");
-const { register, login, logout, editUser, changePassword, getUser, verifyLoggedIn } = require("../controllers/user");
+const { register, login, logout, editUser, changePassword, getUser, verifyLoggedIn, searchUsers } = require("../controllers/user");
 const auth = require("../utils/auth");
 const router = express.Router();
 
@@ -16,5 +16,7 @@ router.put("/change-password", auth, changePassword);
 router.get("/user/:username", getUser);
 
 router.post("/verify", verifyLoggedIn);
+
+router.get("/search/:query", searchUsers);
 
 module.exports = router;

@@ -79,7 +79,7 @@ async function logout(req, res) {
 
 async function editUser(req, res) {
     const user = req.body.user;
-    
+
     try {
         await User.findByIdAndUpdate({ _id: user._id }, user);
         return res.send(user);
@@ -155,13 +155,31 @@ async function verifyLoggedIn(req, res) {
             error: "No cookie was sent!"
         });
     }
-    
+
     try {
         const decoded = decodeCookie(req.cookies["auth-token"]);
         const user = await User.findOne({ username: decoded.username });
         return res.send(user);
     } catch (error) {
         res.status(401).send({
+            error: error.message
+        });
+    }
+}
+
+async function searchUsers(req, res) {
+    const query = req.params.query;
+
+    try {
+        const users = await User.find({ "username": { "$regex": `${query}`, "$options": "i" } });
+        if (users === null) {
+            return res.status(404).send({
+                message: "No users matching your criteria were found"
+            });
+        }
+        return res.send(users);
+    } catch (error) {
+        return res.status(500).send({
             error: error.message
         });
     }
@@ -174,5 +192,6 @@ module.exports = {
     editUser,
     changePassword,
     getUser,
-    verifyLoggedIn
+    verifyLoggedIn,
+    searchUsers
 };

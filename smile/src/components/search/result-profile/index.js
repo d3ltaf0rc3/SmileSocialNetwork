@@ -3,11 +3,11 @@ import styles from './index.module.css';
 import UserData from '../../feed-post-card/header';
 import { Link } from 'react-router-dom';
 
-const Profile = () => {
+const Profile = (props) => {
     return (
-        <Link className={styles.link} to="/user/lmm_47">
+        <Link className={styles.link} to={`/user/${props.username}`}>
             <div className={styles.container}>
-                <UserData />
+                <UserData location={props.location} imageUrl={props.imageUrl} username={props.username} />
             </div>
         </Link>
     )
