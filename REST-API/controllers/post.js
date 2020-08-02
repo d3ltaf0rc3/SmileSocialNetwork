@@ -39,22 +39,7 @@ async function getPost(req, res) {
     }
 }
 
-async function getPosts(req, res) {
-    const username = req.params.username;
-
-    try {
-        const user = await User.findOne({ username }).populate("posts");
-        const sortedPosts = user.posts.sort((a,b) => b.createdAt - a.createdAt);
-        return res.send(sortedPosts);
-    } catch (err) {
-        return res.status(500).send({
-            error: err.message
-        });
-    }
-}
-
 module.exports = {
     createAPost,
-    getPost,
-    getPosts
+    getPost
 };

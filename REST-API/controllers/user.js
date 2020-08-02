@@ -94,8 +94,11 @@ async function getUser(req, res) {
     const username = req.params.username;
 
     try {
-        const user = (await User.findOne({ username }))
-            .populate("posts")
+        const user = await User.findOne({ username })
+            .populate({
+                path: "posts",
+                options: { sort: { createdAt: -1 } }
+            })
             .populate("followers")
             .populate("following");
 
