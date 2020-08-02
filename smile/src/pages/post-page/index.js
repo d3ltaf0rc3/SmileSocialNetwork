@@ -7,15 +7,15 @@ const PostPage = (props) => {
     const [post, setPost] = useState(null);
 
     useEffect(() => {
-        fetch(`http://localhost:7777/api/posts/get-post/${props.match.params.id}`)
+        fetch(`http://localhost:7777/api/posts/get-post/${props.id}`)
             .then(res => res.json())
             .then(post => setPost(post))
             .catch(err => console.error(err));
-    }, [props.match.params.id]);
+    }, [props.id]);
 
     return (
         <PostContext.Provider value={{ post }}>
-            <Post />
+            <Post closeImage={props.closeImage}/>
         </PostContext.Provider>
     )
 };
