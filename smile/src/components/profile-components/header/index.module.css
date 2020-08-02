@@ -24,7 +24,7 @@
     align-items: center;
 }
 
-.title a {
+.button {
     margin-right: 10px;
     text-decoration: none;
     color: inherit;
@@ -33,9 +33,10 @@
     border: 1px solid #e6e6e6;
     border-radius: 3px;
     transition: all 0.3s ease-in-out;
+    font-size: 16px;
 }
 
-.title a:hover {
+.button:hover {
     background-color: #3f99ed;
     color: white;
     border-color: #3f99ed;
@@ -50,9 +51,4 @@
     font-weight: 600;
     display: block;
     margin-bottom: 0.4rem;
-}
-
-.button {
-    font-size: 16px;
-    font-weight: 200;
 }

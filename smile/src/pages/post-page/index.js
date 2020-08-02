@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import Post from '../../components/post-components';
-import ProfilePage from '../profile-page';
 import { withRouter } from 'react-router-dom';
 import PostContext from '../../contexts/PostContext';
 
@@ -16,9 +15,7 @@ const PostPage = (props) => {
 
     return (
         <PostContext.Provider value={{ post }}>
-            <ProfilePage>
-                <Post />
-            </ProfilePage>
+            <Post />
         </PostContext.Provider>
     )
 };

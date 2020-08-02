@@ -37,7 +37,7 @@ const Auth = (props) => {
 
     if (loggedIn === null) {
         return (
-            <div>{/* To do spinner*/}</div>
+            <div></div>
         )
     }
 

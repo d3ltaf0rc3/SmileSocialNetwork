@@ -19,7 +19,6 @@ const SettingsForm = (props) => {
         user.name = name;
         user.description = bio;
         user.isPrivate = isPrivate;
-        console.log(user);
 
         fetch("http://localhost:7777/api/edit", {
             method: "put",
