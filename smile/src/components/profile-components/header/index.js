@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import UserContext from '../../../contexts/AuthContext';
 import ProfileContext from '../../../contexts/ProfileContext';
 
-const ProfileHeader = () => {
+const ProfileHeader = (props) => {
     const context = useContext(UserContext);
     const profileContext = useContext(ProfileContext);
 
@@ -15,6 +15,7 @@ const ProfileHeader = () => {
             method: "post",
             credentials: "include"
         })
+            .then(() => props.rerender())
             .catch(err => console.log(err));
     };
 
@@ -23,6 +24,7 @@ const ProfileHeader = () => {
             method: "post",
             credentials: "include"
         })
+            .then(() => props.rerender())
             .catch(err => console.log(err));
     };
 
@@ -31,6 +33,7 @@ const ProfileHeader = () => {
             method: "post",
             credentials: "include"
         })
+            .then(() => props.rerender())
             .catch(err => console.log(err));
     };
 

@@ -13,6 +13,7 @@ import UserContext from '../../contexts/AuthContext';
 const ProfilePage = (props) => {
     const context = useContext(UserContext);
     const [profile, setProfile] = useState(null);
+    const [rerender, setRerender] = useState();
 
     useEffect(() => {
         fetch(`http://localhost:7777/api/user/${props.match.params.username}`)
@@ -38,7 +39,7 @@ const ProfilePage = (props) => {
                 console.log(err);
                 props.history.push("/error");
             });
-    }, [props.history, props.match.params.username, props.match.url]);
+    }, [props.history, props.match.params.username, rerender]);
 
     if (profile === null || context.user === null) {
         return <div></div>
@@ -49,7 +50,7 @@ const ProfilePage = (props) => {
             <Head title={`${profile.name || profile.username} (@${profile.username}) | Smile`} />
             <Header />
             <div className={styles.container}>
-                <ProfileHeader />
+                <ProfileHeader rerender={() => setRerender(!rerender)} />
                 {context.user.username === profile.username ||
                     profile.followers.includes(context.user.username) ||
                     profile.isPrivate === false ?
