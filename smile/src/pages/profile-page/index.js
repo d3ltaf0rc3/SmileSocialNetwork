@@ -46,13 +46,13 @@ const ProfilePage = (props) => {
     }
 
     return (
-        <ProfileContext.Provider value={{ ...profile, doesUserFollow: profile.followers.includes(context.user.username) }}>
+        <ProfileContext.Provider value={{ ...profile, doesUserFollow: profile.followers.some(user => user.username === context.user.username) }}>
             <Head title={`${profile.name || profile.username} (@${profile.username}) | Smile`} />
             <Header />
             <div className={styles.container}>
                 <ProfileHeader rerender={() => setRerender(!rerender)} />
                 {context.user.username === profile.username ||
-                    profile.followers.includes(context.user.username) ||
+                    profile.followers.some(user => user.username === context.user.username) ||
                     profile.isPrivate === false ?
                     <PhotosGrid /> : <Private />}
             </div>

@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './index.module.css';
 import UserData from '../../user-data';
 
 const Request = (props) => {
+    const [hide, setHide] = useState(false);
+
     const acceptRequest = () => {
         fetch("http://localhost:7777/api/handle-request", {
             method: "post",
@@ -15,7 +17,7 @@ const Request = (props) => {
                 username: props.username
             })
         })
-            .then(() => props.hideBox())
+            .then(() => setHide(true))
             .catch(err => console.log(err));
     };
 
@@ -31,11 +33,11 @@ const Request = (props) => {
                 username: props.username
             })
         })
-            .then(() => props.hideBox())
+            .then(() => setHide(true))
             .catch(err => console.log(err));
     };
 
-    return (
+    return hide ? null : (
         <div className={styles.container}>
             <div className={styles.info}>
                 <UserData imageUrl={props.imageUrl} username={props.username} />

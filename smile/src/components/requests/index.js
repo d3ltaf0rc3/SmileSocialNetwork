@@ -10,14 +10,10 @@ const Requests = () => {
         setDisplay(!displayBox);
     };
 
-    const hideBox = () => {
-        setDisplay(false);
-    };
-
     return (
         <div className={styles.container}>
             <img className={styles.icon} src={heartIcon} onClick={handleClick} alt="heart" />
-            {displayBox ? <Box hideBox={hideBox} /> : null}
+            {displayBox ? <Box /> : null}
         </div>
     )
 }

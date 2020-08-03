@@ -41,7 +41,11 @@ async function register(req, res) {
 
 async function login(req, res) {
     const { username, password } = req.body;
-    const user = await User.findOne({ username }).populate("requests");
+    const user = await User.findOne({ username })
+        .populate("followers")
+        .populate("following")
+        .populate("posts")
+        .populate("requests");
 
     if (user === null) {
         return res.status(401).send({
@@ -99,6 +103,8 @@ async function getUser(req, res) {
                 path: "posts",
                 options: { sort: { createdAt: -1 } }
             })
+            .populate("followers")
+            .populate("following")
             .populate("requests");
 
         if (user === null) {
@@ -160,7 +166,10 @@ async function verifyLoggedIn(req, res) {
 
     try {
         const decoded = decodeCookie(req.cookies["auth-token"]);
-        const user = await User.findOne({ username: decoded.username }).populate("requests");
+        const user = await User.findOne({ username: decoded.username })
+            .populate("followers")
+            .populate("following")
+            .populate("requests");
         return res.send(user);
     } catch (error) {
         res.status(401).send({
@@ -196,8 +205,8 @@ async function followUser(req, res) {
         if (user.isPrivate) {
             await User.findByIdAndUpdate(user._id, { $addToSet: { requests: decoded.userID } });
         } else {
-            await User.findByIdAndUpdate(user._id, { $addToSet: { followers: decoded.username } });
-            await User.findByIdAndUpdate(decoded.userID, { $addToSet: { following: user.username } });
+            await User.findByIdAndUpdate(user._id, { $addToSet: { followers: decoded.userID } });
+            await User.findByIdAndUpdate(decoded.userID, { $addToSet: { following: user._id } });
         }
         return res.send({
             message: "Success!"
@@ -215,8 +224,8 @@ async function unfollowUser(req, res) {
     try {
         const decoded = decodeCookie(req.cookies["auth-token"]);
         const user = await User.findOne({ username: userToUnfollow });
-        await User.findByIdAndUpdate(user._id, { $pull: { followers: decoded.username } });
-        await User.findByIdAndUpdate(decoded.userID, { $pull: { following: user.username } });
+        await User.findByIdAndUpdate(user._id, { $pull: { followers: decoded.userID } });
+        await User.findByIdAndUpdate(decoded.userID, { $pull: { following: user._id } });
         return res.send({
             message: "Success!"
         });
@@ -251,15 +260,15 @@ async function handleRequest(req, res) {
     try {
         const decoded = decodeCookie(req.cookies["auth-token"]);
         const user = await User.findOne({ username: userToHandle });
-        await User.findByIdAndUpdate(decoded.userID, { $pull: { requests: user._id} });
-        
+        await User.findByIdAndUpdate(decoded.userID, { $pull: { requests: user._id } });
+
         if (action === "accept") {
-            await User.findByIdAndUpdate(user._id, { $addToSet: { following: decoded.username } });
-            await User.findByIdAndUpdate(decoded.userID, { $addToSet: { followers: user.username } });
+            await User.findByIdAndUpdate(user._id, { $addToSet: { following: decoded.userID } });
+            await User.findByIdAndUpdate(decoded.userID, { $addToSet: { followers: user._id } });
         }
         return res.send({
             message: "Success!"
-        })
+        });
     } catch (error) {
         return res.status(500).send({
             error: error.message

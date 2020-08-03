@@ -1,10 +1,11 @@
 const express = require("express");
-const { createAPost, getPost } = require("../controllers/post");
+const { createAPost, getPost, getFeed } = require("../controllers/post");
 const router = express.Router();
-
-router.post('/add-post', createAPost);
 
 router.get("/get-post/:id", getPost);
 
+router.post("/get/feed", getFeed);
+
+router.post('/add-post', createAPost);
 
 module.exports = router;

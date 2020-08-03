@@ -39,7 +39,35 @@ async function getPost(req, res) {
     }
 }
 
+async function getFeed(req, res) {
+    const following = req.body.following;
+    const postsRefs = [];
+    const posts = [];
+
+    try {
+        following.forEach(user => {
+            user.posts.forEach(post => {
+                postsRefs.push(post);
+            });
+        });
+        for (let i = 0; i < postsRefs.length; i++) {
+            const id = postsRefs[i];
+            const post = await Post.findById(id).populate("postedBy");
+            posts.push(post);
+        }
+        const sorted = posts.sort((a,b) => b.createdAt - a.createdAt);
+        return res.send({
+            posts: sorted
+        });
+    } catch (error) {
+        return res.status(500).send({
+            error: error.message
+        });
+    }
+}
+
 module.exports = {
     createAPost,
-    getPost
+    getPost,
+    getFeed
 };

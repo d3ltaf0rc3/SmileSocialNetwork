@@ -9,13 +9,13 @@ import Likes from './likes';
 const PostCard = (props) => {
     return (
         <div className={styles.card}>
-            <PostHeader />
+            <PostHeader username={props.username} location={props.location} imageUrl={props.profilePicture} />
             <img className={styles["post-image"]} src={props.imageUrl} alt="post" />
-            
+
             <div className={styles["post-info"]}>
                 <PostActions imageUrl={props.imageUrl} />
-                <Likes />
-                <CommentSection />
+                <Likes likes={props.likes} />
+                <CommentSection comments={props.comments} />
                 <AddComment imageUrl={props.imageUrl} />
             </div>
         </div>
