@@ -47,6 +47,10 @@
     line-height: 125%;
 }
 
+.bio pre {
+    line-height: 24px;
+}
+
 .full-name {
     font-weight: 600;
     display: block;
