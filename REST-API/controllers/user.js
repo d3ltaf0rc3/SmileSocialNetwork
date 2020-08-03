@@ -99,8 +99,7 @@ async function getUser(req, res) {
                 path: "posts",
                 options: { sort: { createdAt: -1 } }
             })
-            .populate("followers")
-            .populate("following");
+            .populate("requests");
 
         if (user === null) {
             return res.status(404).send({
@@ -188,6 +187,63 @@ async function searchUsers(req, res) {
     }
 }
 
+async function followUser(req, res) {
+    const userToFollow = req.params.username;
+
+    try {
+        const decoded = decodeCookie(req.cookies["auth-token"]);
+        const user = await User.findOne({ username: userToFollow });
+        if (user.isPrivate) {
+            await User.findByIdAndUpdate(user._id, { $addToSet: { requests: decoded.userID } });
+        } else {
+            await User.findByIdAndUpdate(user._id, { $addToSet: { followers: decoded.username } });
+            await User.findByIdAndUpdate(decoded.userID, { $addToSet: { following: user.username } });
+        }
+        return res.send({
+            message: "Success!"
+        });
+    } catch (error) {
+        return res.status(500).send({
+            error: error.message
+        });
+    }
+}
+
+async function unfollowUser(req, res) {
+    const userToUnfollow = req.params.username;
+
+    try {
+        const decoded = decodeCookie(req.cookies["auth-token"]);
+        const user = await User.findOne({ username: userToUnfollow });
+        await User.findByIdAndUpdate(user._id, { $pull: { followers: decoded.username } });
+        await User.findByIdAndUpdate(decoded.userID, { $pull: { following: user.username } });
+        return res.send({
+            message: "Success!"
+        });
+    } catch (error) {
+        return res.status(500).send({
+            error: error.message
+        });
+    }
+}
+
+async function cancelRequest(req, res) {
+    const username = req.params.username;
+
+    try {
+        const decoded = decodeCookie(req.cookies["auth-token"]);
+        const user = await User.findOne({ username });
+        await User.findByIdAndUpdate(user._id, { $pull: { requests: decoded.userID } });
+        return res.send({
+            message: "Success!"
+        });
+    } catch (error) {
+        return res.status(500).send({
+            error: error.message
+        });
+    }
+}
+
 module.exports = {
     register,
     login,
@@ -196,5 +252,8 @@ module.exports = {
     changePassword,
     getUser,
     verifyLoggedIn,
-    searchUsers
+    searchUsers,
+    followUser,
+    unfollowUser,
+    cancelRequest
 };

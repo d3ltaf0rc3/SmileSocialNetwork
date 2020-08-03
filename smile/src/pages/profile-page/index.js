@@ -30,7 +30,8 @@ const ProfilePage = (props) => {
                     following: user.following,
                     posts: user.posts,
                     profilePicture: user.profilePicture,
-                    isPrivate: user.isPrivate
+                    isPrivate: user.isPrivate,
+                    requests: user.requests
                 });
             })
             .catch(err => {
@@ -39,17 +40,20 @@ const ProfilePage = (props) => {
             });
     }, [props.history, props.match.params.username, props.match.url]);
 
-    if (profile === null) {
+    if (profile === null || context.user === null) {
         return <div></div>
     }
 
     return (
-        <ProfileContext.Provider value={profile}>
+        <ProfileContext.Provider value={{ ...profile, doesUserFollow: profile.followers.includes(context.user.username) }}>
             <Head title={`${profile.name || profile.username} (@${profile.username}) | Smile`} />
             <Header />
             <div className={styles.container}>
                 <ProfileHeader />
-                {context.user.username === profile.username ? <PhotosGrid /> : profile.isPrivate ? <Private /> : <PhotosGrid />}
+                {context.user.username === profile.username ||
+                    profile.followers.includes(context.user.username) ||
+                    profile.isPrivate === false ?
+                    <PhotosGrid /> : <Private />}
             </div>
             <Footer />
         </ProfileContext.Provider>

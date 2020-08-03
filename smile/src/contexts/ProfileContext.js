@@ -8,7 +8,9 @@ const ProfileContext = React.createContext({
     followers: null,
     following: null,
     posts: null,
-    username: null
+    username: null,
+    doesUserFollow: null,
+    requests: null
 });
 
 export default ProfileContext;

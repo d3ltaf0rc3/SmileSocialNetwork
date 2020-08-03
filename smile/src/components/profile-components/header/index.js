@@ -10,6 +10,30 @@ const ProfileHeader = () => {
     const context = useContext(UserContext);
     const profileContext = useContext(ProfileContext);
 
+    const followUser = () => {
+        fetch(`http://localhost:7777/api/follow/${profileContext.username}`, {
+            method: "post",
+            credentials: "include"
+        })
+            .catch(err => console.log(err));
+    };
+
+    const unfollowUser = () => {
+        fetch(`http://localhost:7777/api/unfollow/${profileContext.username}`, {
+            method: "post",
+            credentials: "include"
+        })
+            .catch(err => console.log(err));
+    };
+
+    const cancelRequest = () => {
+        fetch(`http://localhost:7777/api/cancel-request/${profileContext.username}`, {
+            method: "post",
+            credentials: "include"
+        })
+            .catch(err => console.log(err));
+    };
+
     return (
         <div className={styles.header}>
             <Avatar size="150" imageUrl={profileContext.profilePicture} />
@@ -19,7 +43,8 @@ const ProfileHeader = () => {
                     <h3 className={styles.username}>{profileContext.username}</h3>
                     {context.user.username === profileContext.username ?
                         <Link className={styles.button} to="/settings">Edit profile</Link> :
-                        <button className={styles.button}>Follow</button>}
+                        profileContext.doesUserFollow ? <button onClick={unfollowUser} className={styles.button}>Unfollow</button> :
+                            profileContext.requests.some(user => user.username === context.user.username) ? <button onClick={cancelRequest} className={styles.button}>Requested</button> : <button onClick={followUser} className={styles.button}>Follow</button>}
                 </div>
 
                 <Stats
