@@ -8,26 +8,24 @@ const Search = (props) => {
     useEffect(() => {
         if (props.query !== "") {
             fetch(`http://localhost:7777/api/search/${props.query}`)
-            .then(res => res.json())
-            .then(users => setUsers(users))
-            .catch(err => console.error(err));
+                .then(res => res.json())
+                .then(users => setUsers(users))
+                .catch(err => console.error(err));
         }
     }, [props.query]);
 
-    if (JSON.stringify(users) !== JSON.stringify([])) {
-        return (
-            <div onMouseLeave={props.onMouseLeave}>
-                <div className={styles.arrow}></div>
-                <div className={styles["search-box"]}>
-                    {users.map(user => {
+    return (
+        <div onMouseLeave={props.onMouseLeave}>
+            <div className={styles.arrow}></div>
+            <div className={styles["search-box"]}>
+                {JSON.stringify(users) !== JSON.stringify([]) ?
+                    users.map(user => {
                         return <Profile key={user.username} location={user.name} username={user.username} imageUrl={user.profilePicture} />
-                    })}
-                </div>
+                    }) :
+                    <div className={styles.error}>No results found</div>}
             </div>
-        )
-    } else {
-        return null
-    }
+        </div>
+    )
 };
 
 export default Search;

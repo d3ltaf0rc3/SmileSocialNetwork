@@ -41,7 +41,7 @@ async function register(req, res) {
 
 async function login(req, res) {
     const { username, password } = req.body;
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ username }).populate("requests");
 
     if (user === null) {
         return res.status(401).send({
@@ -160,7 +160,7 @@ async function verifyLoggedIn(req, res) {
 
     try {
         const decoded = decodeCookie(req.cookies["auth-token"]);
-        const user = await User.findOne({ username: decoded.username });
+        const user = await User.findOne({ username: decoded.username }).populate("requests");
         return res.send(user);
     } catch (error) {
         res.status(401).send({
@@ -244,6 +244,29 @@ async function cancelRequest(req, res) {
     }
 }
 
+async function handleRequest(req, res) {
+    const action = req.body.action;
+    const userToHandle = req.body.username;
+
+    try {
+        const decoded = decodeCookie(req.cookies["auth-token"]);
+        const user = await User.findOne({ username: userToHandle });
+        await User.findByIdAndUpdate(decoded.userID, { $pull: { requests: user._id} });
+        
+        if (action === "accept") {
+            await User.findByIdAndUpdate(user._id, { $addToSet: { following: decoded.username } });
+            await User.findByIdAndUpdate(decoded.userID, { $addToSet: { followers: user.username } });
+        }
+        return res.send({
+            message: "Success!"
+        })
+    } catch (error) {
+        return res.status(500).send({
+            error: error.message
+        });
+    }
+}
+
 module.exports = {
     register,
     login,
@@ -255,5 +278,6 @@ module.exports = {
     searchUsers,
     followUser,
     unfollowUser,
-    cancelRequest
+    cancelRequest,
+    handleRequest
 };

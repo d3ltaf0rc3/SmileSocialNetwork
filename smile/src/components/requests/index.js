@@ -8,16 +8,16 @@ const Requests = () => {
 
     const handleClick = () => {
         setDisplay(!displayBox);
-    }
+    };
 
     const hideBox = () => {
         setDisplay(false);
-    }
+    };
 
     return (
         <div className={styles.container}>
             <img className={styles.icon} src={heartIcon} onClick={handleClick} alt="heart" />
-            {displayBox ? <Box onMouseLeave={hideBox} /> : null}
+            {displayBox ? <Box hideBox={hideBox} /> : null}
         </div>
     )
 }

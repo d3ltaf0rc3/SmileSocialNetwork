@@ -27,3 +27,9 @@
     border-radius: 3px;
     z-index: 9;
 }
+
+.error {
+    padding: 15px;
+    text-align: center;
+    font-size: 14px;
+}

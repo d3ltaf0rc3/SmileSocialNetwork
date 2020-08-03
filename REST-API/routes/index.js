@@ -10,7 +10,8 @@ const {
     searchUsers,
     followUser,
     unfollowUser,
-    cancelRequest
+    cancelRequest,
+    handleRequest
 } = require("../controllers/user");
 const auth = require("../utils/auth");
 const router = express.Router();
@@ -36,5 +37,7 @@ router.post("/follow/:username", followUser);
 router.post("/unfollow/:username", unfollowUser);
 
 router.post("/cancel-request/:username", cancelRequest);
+
+router.post("/handle-request", handleRequest);
 
 module.exports = router;
