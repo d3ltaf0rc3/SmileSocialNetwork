@@ -30,7 +30,7 @@ async function getPost(req, res) {
     const postId = req.params.id;
 
     try {
-        const post = await Post.findOne({_id: postId}).populate("postedBy");
+        const post = await Post.findOne({ _id: postId }).populate("postedBy");
         return res.send(post);
     } catch (error) {
         return res.status(500).send({
@@ -55,7 +55,7 @@ async function getFeed(req, res) {
             const post = await Post.findById(id).populate("postedBy");
             posts.push(post);
         }
-        const sorted = posts.sort((a,b) => b.createdAt - a.createdAt);
+        const sorted = posts.sort((a, b) => b.createdAt - a.createdAt);
         return res.send({
             posts: sorted
         });
@@ -66,8 +66,42 @@ async function getFeed(req, res) {
     }
 }
 
+async function likePost(req, res) {
+    const postId = req.params.postId;
+
+    try {
+        const decoded = decodeCookie(req.cookies["auth-token"]);
+        await Post.findByIdAndUpdate(postId, { $addToSet: { likes: decoded.userID } });
+        return res.send({
+            message: "Success!"
+        });
+    } catch (error) {
+        return res.status(500).send({
+            error: error.message
+        }); 
+    }
+}
+
+async function unlikePost(req, res) {
+    const postId = req.params.postId;
+
+    try {
+        const decoded = decodeCookie(req.cookies["auth-token"]);
+        await Post.findByIdAndUpdate(postId, { $pull: { likes: decoded.userID } });
+        return res.send({
+            message: "Success!"
+        });
+    } catch (error) {
+        return res.status(500).send({
+            error: error.message
+        }); 
+    }
+}
+
 module.exports = {
     createAPost,
     getPost,
-    getFeed
+    getFeed,
+    likePost,
+    unlikePost
 };
