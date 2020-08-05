@@ -16,12 +16,12 @@ const PostPage = (props) => {
             .then(post => setPost(post))
             .catch(err => {
                 if (err.name !== "AbortError") {
-                    console.log(err)
+                    console.log(err);
                 }
             });
         return () => {
             controller.abort();
-        }
+        };
     }, [props.id, post]);
 
     return (

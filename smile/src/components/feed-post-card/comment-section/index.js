@@ -2,9 +2,13 @@ import React from 'react';
 import Comment from '../comment';
 
 const CommentSection = (props) => {
+    if (!props.comments) {
+        return <div></div>
+    }
+    
     return (
         <ul>
-            <Comment author="marinov_m" comment="Beautiful" />
+            {props.comments.map(comment => <Comment key={comment._id} author={comment.postedBy.username} comment={comment.comment} />)}
         </ul>
     )
 };

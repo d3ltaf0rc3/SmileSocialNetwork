@@ -1,6 +1,7 @@
 .post-comment {
     font-size: 14px;
     height: auto;
+    line-height: 24px;
 }
 
 .comment-author {

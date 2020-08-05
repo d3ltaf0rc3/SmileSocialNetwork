@@ -1,5 +1,6 @@
 const Post = require("../models/Post");
 const User = require("../models/User");
+const Comment = require("../models/Comment");
 const { decodeCookie } = require("../utils/decode-cookie");
 
 async function createAPost(req, res) {
@@ -30,7 +31,14 @@ async function getPost(req, res) {
     const postId = req.params.id;
 
     try {
-        const post = await Post.findOne({ _id: postId }).populate("postedBy");
+        const post = await Post.findOne({ _id: postId })
+            .populate("postedBy")
+            .populate({
+                path: "comments",
+                populate: {
+                    path: "postedBy"
+                }
+            });
         return res.send(post);
     } catch (error) {
         return res.status(500).send({
@@ -52,7 +60,14 @@ async function getFeed(req, res) {
         });
         for (let i = 0; i < postsRefs.length; i++) {
             const id = postsRefs[i];
-            const post = await Post.findById(id).populate("postedBy");
+            const post = await Post.findById(id)
+                .populate("postedBy")
+                .populate({
+                    path: "comments",
+                    populate: {
+                        path: "postedBy"
+                    }
+                });
             posts.push(post);
         }
         const sorted = posts.sort((a, b) => b.createdAt - a.createdAt);
@@ -78,7 +93,7 @@ async function likePost(req, res) {
     } catch (error) {
         return res.status(500).send({
             error: error.message
-        }); 
+        });
     }
 }
 
@@ -94,7 +109,28 @@ async function unlikePost(req, res) {
     } catch (error) {
         return res.status(500).send({
             error: error.message
-        }); 
+        });
+    }
+}
+
+async function addComment(req, res) {
+    const postId = req.params.postId;
+
+    try {
+        const decoded = decodeCookie(req.cookies["auth-token"]);
+        const comment = new Comment({
+            postedBy: decoded.userID,
+            comment: req.body.comment
+        });
+        const createdComment = await comment.save();
+        await Post.findByIdAndUpdate(postId, { $addToSet: { comments: createdComment._id } });
+        return res.send({
+            message: "Success!"
+        });
+    } catch (error) {
+        return res.status(500).send({
+            error: error.message
+        });
     }
 }
 
@@ -103,5 +139,6 @@ module.exports = {
     getPost,
     getFeed,
     likePost,
-    unlikePost
+    unlikePost,
+    addComment
 };

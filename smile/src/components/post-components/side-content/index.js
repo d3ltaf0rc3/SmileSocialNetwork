@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import styles from './index.module.css';
-import Actions from '../../feed-post-card/actions';
-import AddComment from '../../feed-post-card/add-comment';
+import Actions from '../actions';
+import AddComment from '../add-comment';
 import Likes from '../../feed-post-card/likes';
 import PostComment from '../post-comment';
 import PostContext from '../../../contexts/PostContext';
@@ -22,8 +22,9 @@ const SideContent = (props) => {
                     comment={context.post.description} /> : null}
                 {context.post.comments.map(comment =>
                     <PostComment
-                        imageUrl={comment.profilePicture}
-                        author={comment.username}
+                        key={comment._id}
+                        imageUrl={comment.postedBy.profilePicture}
+                        author={comment.postedBy.username}
                         comment={comment.comment} />)}
             </ul>
 

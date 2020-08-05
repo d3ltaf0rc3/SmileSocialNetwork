@@ -12,6 +12,8 @@ const HomePage = () => {
 
     useEffect(() => {
         if (context.user) {
+            const controller = new AbortController();
+
             fetch("http://localhost:7777/api/posts/get/feed", {
                 method: "post",
                 credentials: "include",
@@ -20,15 +22,23 @@ const HomePage = () => {
                 },
                 body: JSON.stringify({
                     following: context.user.following
-                })
+                }),
+                signal: controller.signal
             })
                 .then(res => res.json())
                 .then(posts => {
                     setFeed(posts.posts);
                 })
-                .catch(err => console.log(err));
+                .catch(err => {
+                    if (err.name !== "AbortError")
+                        console.error(err);
+                });
+
+            return () => {
+                controller.abort();
+            };
         }
-    }, [context.user]);
+    }, [context.user, feed]);
 
     if (!context.user || !feed) {
         return (
@@ -36,7 +46,7 @@ const HomePage = () => {
                 <Head title="Feed | Smile" />
                 <Header />
                 <div className={styles.feed}>
-                    <PostCard imageUrl={greySquare} profilePicture={greySquare}/>)
+                    <PostCard likes={[]} imageUrl={greySquare} profilePicture={greySquare} />)
                 </div>
             </Fragment>
         )
@@ -48,11 +58,12 @@ const HomePage = () => {
             <Header />
             <div className={styles.feed}>
                 {feed.map(post => <PostCard
+                    id={post._id}
                     key={post._id}
                     username={post.postedBy.username}
                     location={post.location}
                     profilePicture={post.postedBy.profilePicture}
-                    likes={post.likes.length}
+                    likes={post.likes}
                     comments={post.comments}
                     imageUrl={post.imageUrl} />)}
             </div>

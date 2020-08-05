@@ -3,13 +3,15 @@ import styles from './index.module.css';
 import commentIcon from '../../../images/comment.svg';
 import heartIcon from '../../../images/heart.svg';
 import redHeartIcon from '../../../images/redHeart.svg';
+import PostContext from '../../../contexts/PostContext';
 import UserContext from '../../../contexts/AuthContext';
 
 const PostActions = (props) => {
+    const context = useContext(PostContext);
     const user = useContext(UserContext);
 
     const likePost = () => {
-        fetch(`http://localhost:7777/api/posts/like/${props.id}`, {
+        fetch(`http://localhost:7777/api/posts/like/${context.post._id}`, {
             method: "put",
             credentials: "include"
         })
@@ -17,21 +19,21 @@ const PostActions = (props) => {
     };
 
     const unlikePost = () => {
-        fetch(`http://localhost:7777/api/posts/unlike/${props.id}`, {
+        fetch(`http://localhost:7777/api/posts/unlike/${context.post._id}`, {
             method: "put",
             credentials: "include"
         })
             .catch(err => console.error(err));
     };
 
-    if (!user.user) {
+    if (!context.post || !user.user) {
         return <div></div>
     }
 
     return (
         <div className={styles["post-actions"]}>
             <span>
-                {props.likes.includes(user.user._id) ?
+                {context.post.likes.includes(user.user._id) ?
                     <img src={redHeartIcon} className={styles["post-action"]} alt="heart" onClick={unlikePost} /> :
                     <img src={heartIcon} className={styles["post-action"]} alt="heart" onClick={likePost} />}
             </span>
