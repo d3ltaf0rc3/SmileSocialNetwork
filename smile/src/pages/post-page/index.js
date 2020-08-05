@@ -16,7 +16,7 @@ const PostPage = (props) => {
             .then(post => setPost(post))
             .catch(err => {
                 if (err.name !== "AbortError") {
-                    console.log(err);
+                    console.error(err);
                 }
             });
         return () => {

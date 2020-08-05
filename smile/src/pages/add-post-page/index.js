@@ -47,7 +47,6 @@ const AddPostPage = (props) => {
         })
         .then(res => res.json())
         .then(data => {
-            console.log(data);
             props.history.push("/");
         })
         .catch(err => console.error(err));

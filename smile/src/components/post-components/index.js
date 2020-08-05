@@ -5,9 +5,12 @@ import PostHeader from '../feed-post-card/header';
 import SideContent from './side-content';
 import PostMenu from './post-menu';
 import PostContext from '../../contexts/PostContext';
+import UserContext from '../../contexts/AuthContext';
 
 const Post = (props) => {
     const context = useContext(PostContext);
+    const user = useContext(UserContext);
+
     const [display, setDisplay] = useState(false);
 
     if (context.post === null) {
@@ -26,10 +29,11 @@ const Post = (props) => {
                 <img className={styles["post-image"]} src={context.post.imageUrl} alt="post" />
                 <aside className={styles.aside}>
                     <PostHeader imageUrl={context.post.postedBy.profilePicture} location={context.post.location} username={context.post.postedBy.username}>
-                        <div className={styles["menu-icon"]}>
-                            <svg onClick={displayMenu} aria-label="More options" className="_8-yf5 " fill="#262626" height="16" viewBox="0 0 48 48" width="16"><circle clipRule="evenodd" cx="8" cy="24" fillRule="evenodd" r="4.5"></circle><circle clipRule="evenodd" cx="24" cy="24" fillRule="evenodd" r="4.5"></circle><circle clipRule="evenodd" cx="40" cy="24" fillRule="evenodd" r="4.5"></circle></svg>
-                            {display ? <PostMenu /> : null}
-                        </div>
+                        {context.post.postedBy.username === user.user.username ?
+                            <div className={styles["menu-icon"]}>
+                                <svg onClick={displayMenu} aria-label="More options" className="_8-yf5 " fill="#262626" height="16" viewBox="0 0 48 48" width="16"><circle clipRule="evenodd" cx="8" cy="24" fillRule="evenodd" r="4.5"></circle><circle clipRule="evenodd" cx="24" cy="24" fillRule="evenodd" r="4.5"></circle><circle clipRule="evenodd" cx="40" cy="24" fillRule="evenodd" r="4.5"></circle></svg>
+                                {display ? <PostMenu /> : null}
+                            </div> : null}
                     </PostHeader>
 
                     <SideContent likes={context.post.likes.length} />

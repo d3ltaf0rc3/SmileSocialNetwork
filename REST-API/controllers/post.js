@@ -134,11 +134,44 @@ async function addComment(req, res) {
     }
 }
 
+async function deletePost(req, res) {
+    const id = req.params.postId;
+
+    try {
+        const decoded = decodeCookie(req.cookies["auth-token"]);
+        await User.findByIdAndUpdate(decoded.userID, { $pull: { posts: id } });
+        await Post.findByIdAndDelete(id);
+        return res.send({
+            message: "Success!"
+        });
+    } catch (error) {
+        return res.status(500).send(error);
+    }
+}
+
+async function editPost(req, res) {
+    const postId = req.params.postId;
+
+    try {
+        await Post.findByIdAndUpdate(postId, {
+            location: req.body.location,
+            description: req.body.description
+        });
+        return res.send({
+            message: "Success!"
+        });
+    } catch (error) {
+        return res.status(500).send(error);
+    }
+}
+
 module.exports = {
     createAPost,
     getPost,
     getFeed,
     likePost,
     unlikePost,
-    addComment
+    addComment,
+    deletePost,
+    editPost
 };
