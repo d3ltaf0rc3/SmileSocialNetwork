@@ -13,6 +13,7 @@ const PostActions = (props) => {
             method: "put",
             credentials: "include"
         })
+        .then(() => props.setLiked(true))
             .catch(err => console.error(err));
     };
 
@@ -21,6 +22,7 @@ const PostActions = (props) => {
             method: "put",
             credentials: "include"
         })
+        .then(() => props.setLiked(false))
             .catch(err => console.error(err));
     };
 

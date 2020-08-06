@@ -9,6 +9,7 @@ import PhotosGrid from '../../components/profile-components/photos-grid';
 import Private from '../../components/profile-components/private-profile';
 import ProfileContext from '../../contexts/ProfileContext';
 import UserContext from '../../contexts/AuthContext';
+import camera from '../../images/camera.svg';
 
 const ProfilePage = (props) => {
     const context = useContext(UserContext);
@@ -54,7 +55,12 @@ const ProfilePage = (props) => {
                 {context.user.username === profile.username ||
                     profile.followers.some(user => user.username === context.user.username) ||
                     profile.isPrivate === false ?
-                    <PhotosGrid /> : <Private />}
+                    profile.posts.length === 0 ?
+                        <div className={styles["empty-profile"]}>
+                            <img src={camera} alt="camera" />
+                            <span>No posts yet</span>
+                        </div> :
+                        <PhotosGrid /> : <Private />}
             </div>
             <Footer />
         </ProfileContext.Provider>

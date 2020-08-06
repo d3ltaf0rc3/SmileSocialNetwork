@@ -17,7 +17,11 @@ const AddComment = (props) => {
                     comment
                 })
             })
-            .then(() => setComment(""))
+            .then((res) => {
+                setComment("");
+                return res.json();
+            })
+            .then(comment => props.setCommented(comment._id))
                 .catch(err => console.log(err));
         }
     };

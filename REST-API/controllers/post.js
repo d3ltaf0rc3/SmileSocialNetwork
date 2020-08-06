@@ -48,32 +48,32 @@ async function getPost(req, res) {
 }
 
 async function getFeed(req, res) {
-    const following = req.body.following;
-    const postsRefs = [];
     const posts = [];
-
+    
     try {
-        following.forEach(user => {
+        const decoded = decodeCookie(req.cookies["auth-token"]);
+        const user = await User.findById(decoded.userID)
+            .populate({
+                path: "following",
+                populate: {
+                    path: "posts",
+                    populate: {
+                        path: "postedBy comments",
+                        populate: {
+                            path: "postedBy"
+                        }
+                    }
+                }
+            });
+        
+        user.following.forEach(user => {
             user.posts.forEach(post => {
-                postsRefs.push(post);
+                posts.push(post);
             });
         });
-        for (let i = 0; i < postsRefs.length; i++) {
-            const id = postsRefs[i];
-            const post = await Post.findById(id)
-                .populate("postedBy")
-                .populate({
-                    path: "comments",
-                    populate: {
-                        path: "postedBy"
-                    }
-                });
-            posts.push(post);
-        }
+
         const sorted = posts.sort((a, b) => b.createdAt - a.createdAt);
-        return res.send({
-            posts: sorted
-        });
+        return res.send(sorted);
     } catch (error) {
         return res.status(500).send({
             error: error.message
@@ -123,10 +123,8 @@ async function addComment(req, res) {
             comment: req.body.comment
         });
         const createdComment = await comment.save();
-        await Post.findByIdAndUpdate(postId, { $addToSet: { comments: createdComment._id } });
-        return res.send({
-            message: "Success!"
-        });
+        const post = await Post.findByIdAndUpdate(postId, { $addToSet: { comments: createdComment._id } });
+        return res.send(createdComment);
     } catch (error) {
         return res.status(500).send({
             error: error.message

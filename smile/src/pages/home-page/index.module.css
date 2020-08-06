@@ -4,3 +4,20 @@
     flex-direction: column;
     margin-top: 30px;
 }
+
+.empty-feed {
+    background-color: #fff;
+    border-radius: 3px;
+    border: 1px solid rgb(219, 219, 219);
+    padding: 80px;
+    font-size: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.empty-feed img {
+    height: 8vh;
+    width: 10%;
+    margin-bottom: 30px;
+}

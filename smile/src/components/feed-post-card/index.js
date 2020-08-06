@@ -13,10 +13,10 @@ const PostCard = (props) => {
             <img className={styles["post-image"]} src={props.imageUrl} alt="post" />
 
             <div className={styles["post-info"]}>
-                <PostActions id={props.id} likes={props.likes} imageUrl={props.imageUrl} />
+                <PostActions setLiked={props.setLiked} id={props.id} likes={props.likes} imageUrl={props.imageUrl} />
                 <Likes likes={props.likes.length} />
                 <CommentSection comments={props.comments} />
-                <AddComment id={props.id} imageUrl={props.imageUrl} />
+                <AddComment setCommented={props.setCommented} id={props.id} imageUrl={props.imageUrl} />
             </div>
         </div>
     )
