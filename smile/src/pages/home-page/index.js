@@ -46,7 +46,7 @@ const HomePage = () => {
                 <Head title="Feed | Smile" />
                 <Header />
                 <div className={styles.feed}>
-                    <PostCard likes={[]} imageUrl={greySquare} profilePicture={greySquare} />)
+                    <PostCard likes={[]} imageUrl={greySquare} profilePicture={greySquare} />
                 </div>
             </Fragment>
         )

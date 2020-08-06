@@ -13,6 +13,7 @@ const {
     cancelRequest,
     handleRequest
 } = require("../controllers/user");
+const verifyReCaptcha = require("../utils/verifyReCaptcha");
 const auth = require("../utils/auth");
 const router = express.Router();
 
@@ -39,5 +40,7 @@ router.post("/unfollow/:username", unfollowUser);
 router.post("/cancel-request/:username", cancelRequest);
 
 router.post("/handle-request", handleRequest);
+
+router.post("/verify/reCaptcha", verifyReCaptcha);
 
 module.exports = router;
