@@ -47,6 +47,7 @@ const HomePage = () => {
                         feed.map(post => <PostCard
                             id={post._id}
                             key={post._id}
+                            description={post.description}
                             username={post.postedBy.username}
                             location={post.location}
                             profilePicture={post.postedBy.profilePicture}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import styles from './index.module.css';
 import Head from '../../components/head';
@@ -10,6 +10,7 @@ import Private from '../../components/profile-components/private-profile';
 import ProfileContext from '../../contexts/ProfileContext';
 import UserContext from '../../contexts/AuthContext';
 import camera from '../../images/camera.svg';
+import Spinner from '../../components/loading-spinner';
 
 const ProfilePage = (props) => {
     const context = useContext(UserContext);
@@ -43,7 +44,16 @@ const ProfilePage = (props) => {
     }, [props.history, props.match.params.username, rerender]);
 
     if (profile === null || context.user === null) {
-        return <div></div>
+        return (
+            <Fragment>
+                <Head title="Smile" />
+                <Header />
+                <div className={styles.container}>
+                    <Spinner />
+                </div>
+                <Footer />
+            </Fragment>
+        )
     }
 
     return (

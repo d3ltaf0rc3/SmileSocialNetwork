@@ -123,7 +123,7 @@ async function addComment(req, res) {
             comment: req.body.comment
         });
         const createdComment = await comment.save();
-        const post = await Post.findByIdAndUpdate(postId, { $addToSet: { comments: createdComment._id } });
+        await Post.findByIdAndUpdate(postId, { $addToSet: { comments: createdComment._id } });
         return res.send(createdComment);
     } catch (error) {
         return res.status(500).send({

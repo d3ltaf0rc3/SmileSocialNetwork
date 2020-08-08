@@ -21,7 +21,7 @@ async function register(req, res) {
                     res.cookie("auth-token", token, { expires: new Date(Date.now() + 604800000) }).send(user);
                 } catch (error) {
                     if (error.code === 11000) {
-                        return res.status(401).send({
+                        return res.status(409).send({
                             error: "Username already taken!"
                         });
                     }

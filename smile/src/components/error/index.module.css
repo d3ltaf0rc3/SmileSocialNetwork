@@ -1,0 +1,12 @@
+.container {
+    padding: 30px;
+    background-color: rgba(255, 104, 104, 0.767);
+    width: 250px;
+    border: 3px solid rgba(236, 56, 56, 0.6);
+    border-radius: 3px;
+    margin: 10px auto 20px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+}

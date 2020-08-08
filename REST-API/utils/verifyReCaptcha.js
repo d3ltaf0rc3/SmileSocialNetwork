@@ -17,11 +17,11 @@ async function verifyReCaptcha(req, res) {
         .then(res => res.json())
         .then(json => json.success)
         .catch(err => {
-            throw new Error(`Error in Google Siteverify API. ${err.message}`);
+            return res.status(503).send(`Error in Google Siteverify API. ${err.message}`);
         });
 
     if (humanKey === null || !isHuman) {
-        throw new Error(`YOU ARE NOT A HUMAN.`);
+        return res.status(401).send("YOU ARE NOT A HUMAN");
     }
 
     return res.send({

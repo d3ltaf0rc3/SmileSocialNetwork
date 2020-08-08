@@ -15,7 +15,7 @@ const PostCard = (props) => {
             <div className={styles["post-info"]}>
                 <PostActions setLiked={props.setLiked} id={props.id} likes={props.likes} imageUrl={props.imageUrl} />
                 <Likes likes={props.likes.length} />
-                <CommentSection comments={props.comments} />
+                <CommentSection creator={props.username} description={props.description} comments={props.comments} />
                 <AddComment setCommented={props.setCommented} id={props.id} imageUrl={props.imageUrl} />
             </div>
         </div>
