@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styles from './index.module.css';
-import arrow from '../../../images/next.svg';
+import arrow from '../../images/next.svg';
 
 const AddComment = (props) => {
     const [comment, setComment] = useState("");
@@ -28,7 +28,7 @@ const AddComment = (props) => {
 
     return (
         <div className={styles["add-comment"]}>
-            <textarea value={comment} onChange={(e) => setComment(e.target.value)} id={props.imageUrl} name="comment" placeholder="Add a comment..."></textarea>
+            <textarea value={comment} onChange={(e) => setComment(e.target.value)} id={props.imageUrl} placeholder="Add a comment..."></textarea>
             <img onClick={addComment} src={arrow} alt="arrow" />
         </div>
     )

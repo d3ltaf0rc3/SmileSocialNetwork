@@ -38,3 +38,9 @@
 .menu-icon {
     cursor: pointer;
 }
+
+.spinner-container {
+    position: absolute;
+    left: 50%;
+    bottom: 50%;
+}

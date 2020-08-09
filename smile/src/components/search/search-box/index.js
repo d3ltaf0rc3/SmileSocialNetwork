@@ -18,7 +18,7 @@ const Search = (props) => {
         <div onMouseLeave={props.onMouseLeave}>
             <div className={styles.arrow}></div>
             <div className={styles["search-box"]}>
-                {JSON.stringify(users) !== JSON.stringify([]) ?
+                {users.length > 0 ?
                     users.map(user => {
                         return <Profile key={user.username} location={user.name} username={user.username} imageUrl={user.profilePicture} />
                     }) :

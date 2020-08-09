@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import styles from './index.module.css';
 import Actions from '../actions';
-import AddComment from '../add-comment';
+import AddComment from '../../add-comment';
 import Likes from '../../feed-post-card/likes';
 import PostComment from '../post-comment';
 import PostContext from '../../../contexts/PostContext';
@@ -29,9 +29,14 @@ const SideContent = (props) => {
             </ul>
 
             <section className={styles.actions}>
-                <Actions imageUrl={context.post.imageUrl} />
+                <Actions
+                    setHasLiked={props.setHasLiked}
+                    imageUrl={context.post.imageUrl} />
                 <Likes likes={props.likes} />
-                <AddComment imageUrl={context.post.imageUrl} />
+                <AddComment
+                    setCommented={props.setNewComment}
+                    id={context.post._id}
+                    imageUrl={context.post.imageUrl} />
             </section>
         </div>
     )

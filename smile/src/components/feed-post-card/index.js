@@ -3,7 +3,7 @@ import styles from './index.module.css';
 import PostHeader from './header';
 import CommentSection from './comment-section';
 import PostActions from './actions';
-import AddComment from './add-comment';
+import AddComment from '../add-comment';
 import Likes from './likes';
 
 const PostCard = (props) => {

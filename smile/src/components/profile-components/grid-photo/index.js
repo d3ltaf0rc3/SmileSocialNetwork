@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styles from './index.module.css';
-import PostPage from '../../../pages/post-page';
+import Post from '../../post-components';
 
 const GridPhoto = (props) => {
     const [displayPost, setDisplay] = useState(false);
@@ -10,7 +10,7 @@ const GridPhoto = (props) => {
             <div onClick={() => setDisplay(true)} className={styles["photo"]}>
                 <img src={props.image} alt="grid part" />
             </div>
-            {displayPost ? <PostPage closeImage={() => setDisplay(false)} id={props.id} /> : null}
+            {displayPost ? <Post closeImage={() => setDisplay(false)} id={props.id} /> : null}
         </div>
     )
 };

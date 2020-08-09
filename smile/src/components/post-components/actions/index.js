@@ -15,6 +15,7 @@ const PostActions = (props) => {
             method: "put",
             credentials: "include"
         })
+            .then(() => props.setHasLiked(true))
             .catch(err => console.error(err));
     };
 
@@ -23,12 +24,9 @@ const PostActions = (props) => {
             method: "put",
             credentials: "include"
         })
+            .then(() => props.setHasLiked(false))
             .catch(err => console.error(err));
     };
-
-    if (!context.post || !user.user) {
-        return <div></div>
-    }
 
     return (
         <div className={styles["post-actions"]}>
