@@ -21,7 +21,7 @@ const AddComment = (props) => {
                 setComment("");
                 return res.json();
             })
-            .then(comment => props.setCommented(comment._id))
+            .then(comment => props.setUpdate(comment._id))
                 .catch(err => console.log(err));
         }
     };

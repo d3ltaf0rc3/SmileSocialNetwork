@@ -1,7 +1,8 @@
 .post-comment {
     font-size: 14px;
-    height: auto;
     line-height: 24px;
+    max-width: 257px;
+    overflow-wrap: break-word;
 }
 
 .comment-author {

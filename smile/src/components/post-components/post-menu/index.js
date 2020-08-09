@@ -28,7 +28,7 @@ const PostMenu = (props) => {
                     <span>Delete</span>
                 </div>
             </div>
-            {displayEdit ? <Edit /> : null}
+            {displayEdit ? <Edit setUpdate={props.setUpdate} closeMenu={props.closeMenu} /> : null}
         </div>
     )
 };

@@ -30,11 +30,11 @@ const SideContent = (props) => {
 
             <section className={styles.actions}>
                 <Actions
-                    setHasLiked={props.setHasLiked}
+                    setUpdate={props.setUpdate}
                     imageUrl={context.post.imageUrl} />
                 <Likes likes={props.likes} />
                 <AddComment
-                    setCommented={props.setNewComment}
+                    setUpdate={props.setUpdate}
                     id={context.post._id}
                     imageUrl={context.post.imageUrl} />
             </section>

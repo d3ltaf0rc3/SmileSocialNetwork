@@ -11,15 +11,14 @@ const Post = (props) => {
     const user = useContext(UserContext);
     const [display, setDisplay] = useState(false);
     const [post, setPost] = useState(null);
-    const [hasLiked, setHasLiked] = useState();
-    const [newComment, setNewComment] = useState();
+    const [didUpdate, setUpdate] = useState();
 
     useEffect(() => {
         fetch(`http://localhost:7777/api/posts/get-post/${props.id}`)
             .then(res => res.json())
             .then(post => setPost(post))
             .catch(err => console.error(err));
-    }, [props.id, hasLiked, newComment]);
+    }, [props.id, didUpdate]);
 
     return (
         <PostContext.Provider value={{ post }}>
@@ -39,13 +38,12 @@ const Post = (props) => {
                                 {post.postedBy.username === user.user.username ?
                                     <div className={styles["menu-icon"]}>
                                         <svg onClick={() => setDisplay(!display)} aria-label="More options" className="_8-yf5 " fill="#262626" height="16" viewBox="0 0 48 48" width="16"><circle clipRule="evenodd" cx="8" cy="24" fillRule="evenodd" r="4.5"></circle><circle clipRule="evenodd" cx="24" cy="24" fillRule="evenodd" r="4.5"></circle><circle clipRule="evenodd" cx="40" cy="24" fillRule="evenodd" r="4.5"></circle></svg>
-                                        {display ? <PostMenu /> : null}
+                                        {display ? <PostMenu setUpdate={setUpdate} closeMenu={() => setDisplay(false)} /> : null}
                                     </div> : null}
                             </PostHeader>
 
                             <SideContent
-                                setHasLiked={setHasLiked}
-                                setNewComment={setNewComment}
+                                setUpdate={setUpdate}
                                 likes={post.likes.length} />
                         </aside>
                     </div>}
