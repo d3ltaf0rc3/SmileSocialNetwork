@@ -7,5 +7,5 @@ Smile is an Instagram-like social network. You have the same basic features, lik
 * [The front-end](./smile) portion uses **React**.
 
 ## 2. Functionality
-    * Unauthorized users are only allowed to login or register.
-    * Authorized users can upload photos, change their profile picture and info, follow other people, like and comment posts.
+* Unauthorized users are only allowed to login or register.
+* Authorized users can upload photos, change their profile picture and info, follow other people, like and comment posts.
