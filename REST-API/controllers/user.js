@@ -179,7 +179,7 @@ async function verifyLoggedIn(req, res) {
 }
 
 async function searchUsers(req, res) {
-    const query = req.params.query;
+    const query = req.query.q;
 
     try {
         const users = await User.find({ "username": { "$regex": `${query}`, "$options": "i" } });

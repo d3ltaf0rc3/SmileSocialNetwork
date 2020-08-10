@@ -17,7 +17,7 @@ const verifyReCaptcha = require("../utils/verifyReCaptcha");
 const auth = require("../utils/auth");
 const router = express.Router();
 
-router.get("/search/:query", searchUsers);
+router.get("/search", searchUsers);
 
 router.get('/logout', auth, logout);
 
