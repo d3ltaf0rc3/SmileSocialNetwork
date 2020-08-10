@@ -4,6 +4,7 @@ import AuthContext from './contexts/AuthContext';
 const Auth = (props) => {
     const [loggedIn, setLogged] = useState(null);
     const [user, setUser] = useState(null);
+    const [update, setUpdate] = useState(false);
 
     const logIn = (user) => {
         setLogged(true);
@@ -15,8 +16,8 @@ const Auth = (props) => {
         setUser(null);
     };
 
-    const updateContext = (user) => {
-        setUser(user);
+    const triggerUpdate = () => {
+        setUpdate(!update);
     };
 
     useEffect(() => {
@@ -33,7 +34,7 @@ const Auth = (props) => {
                 }
             })
             .catch(err => console.error(err));
-    }, []);
+    }, [update]);
 
     if (loggedIn === null) {
         return (
@@ -47,7 +48,7 @@ const Auth = (props) => {
             user,
             logIn,
             logOut,
-            updateContext
+            triggerUpdate
         }}>
             {props.children}
         </AuthContext.Provider>

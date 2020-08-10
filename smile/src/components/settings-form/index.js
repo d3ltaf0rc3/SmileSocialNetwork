@@ -32,7 +32,7 @@ const SettingsForm = (props) => {
         })
             .then(res => res.json())
             .then(user => {
-                context.updateContext(user);
+                context.triggerUpdate();
                 props.history.push(`/user/${user.username}`);
             })
             .catch(err => console.error(err));

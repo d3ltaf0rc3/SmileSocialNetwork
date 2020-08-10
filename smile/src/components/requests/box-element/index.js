@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import styles from './index.module.css';
+import UserContext from '../../../contexts/AuthContext';
 import UserData from '../../user-data';
 
 const Request = (props) => {
-    const [hide, setHide] = useState(false);
+    const context = useContext(UserContext);
 
     const acceptRequest = () => {
         fetch("http://localhost:7777/api/handle-request", {
@@ -17,7 +18,7 @@ const Request = (props) => {
                 username: props.username
             })
         })
-            .then(() => setHide(true))
+            .then(() => context.triggerUpdate())
             .catch(err => console.log(err));
     };
 
@@ -33,11 +34,11 @@ const Request = (props) => {
                 username: props.username
             })
         })
-            .then(() => setHide(true))
+            .then(() => context.triggerUpdate())
             .catch(err => console.log(err));
     };
 
-    return hide ? null : (
+    return (
         <div className={styles.container}>
             <div className={styles.info}>
                 <UserData imageUrl={props.imageUrl} username={props.username} />

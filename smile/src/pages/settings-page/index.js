@@ -37,7 +37,7 @@ const SettingsPage = (props) => {
                     .then(res => res.json())
                     .then(user => {
                         props.history.push(`/user/${context.user.username}`);
-                        context.updateContext(user)
+                        context.triggerUpdate()
                     })
                     .catch(err => console.error(err));
             } else if (error) {
@@ -65,7 +65,7 @@ const SettingsPage = (props) => {
             .then(res => res.json())
             .then(user => {
                 props.history.push(`/user/${context.user.username}`);
-                context.updateContext(user)
+                context.triggerUpdate();
             })
             .catch(err => console.error(err));
     };
