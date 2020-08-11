@@ -10,7 +10,8 @@ const ProfileContext = React.createContext({
     posts: null,
     username: null,
     doesUserFollow: null,
-    requests: null
+    requests: null,
+    triggerUpdate: () => {}
 });
 
 export default ProfileContext;

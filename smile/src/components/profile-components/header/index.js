@@ -5,36 +5,22 @@ import Avatar from '../../user-avatar';
 import { Link } from 'react-router-dom';
 import UserContext from '../../../contexts/AuthContext';
 import ProfileContext from '../../../contexts/ProfileContext';
+import profileActions from '../../../utils/profileActions';
 
-const ProfileHeader = (props) => {
+const ProfileHeader = () => {
     const context = useContext(UserContext);
     const profileContext = useContext(ProfileContext);
 
     const followUser = () => {
-        fetch(`http://localhost:7777/api/follow/${profileContext.username}`, {
-            method: "post",
-            credentials: "include"
-        })
-            .then(() => props.rerender())
-            .catch(err => console.log(err));
+        profileActions("follow", profileContext.username, profileContext.triggerUpdate);
     };
 
     const unfollowUser = () => {
-        fetch(`http://localhost:7777/api/unfollow/${profileContext.username}`, {
-            method: "post",
-            credentials: "include"
-        })
-            .then(() => props.rerender())
-            .catch(err => console.log(err));
+        profileActions("unfollow", profileContext.username, profileContext.triggerUpdate);
     };
 
     const cancelRequest = () => {
-        fetch(`http://localhost:7777/api/cancel-request/${profileContext.username}`, {
-            method: "post",
-            credentials: "include"
-        })
-            .then(() => props.rerender())
-            .catch(err => console.log(err));
+        profileActions("cancel-request", profileContext.username, profileContext.triggerUpdate);
     };
 
     return (

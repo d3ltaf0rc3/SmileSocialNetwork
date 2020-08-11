@@ -15,9 +15,8 @@ const RequestsBox = (props) => {
             <div className={styles.arrow}></div>
             <div className={styles.box}>
                 {context.user.requests.length === 0 ?
-                    <div className={styles.error}>When people ask to follow you, you'll see their requests here</div> :
+                    <div className={styles.error}>When people ask to follow you, you'll see their requests here.</div> :
                     context.user.requests.map(req => <Request
-                        hideBox={props.hideBox}
                         username={req.username}
                         imageUrl={req.profilePicture}
                         key={req._id} />)}

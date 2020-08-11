@@ -22,6 +22,6 @@ const ReCaptcha = (props) => {
     };
 
     return <ReCAPTCHA sitekey="6LfBPrsZAAAAALhleYy4u0a0Te4D6G3WewLQ3mXr" onChange={onChange} />
-}
+};
 
 export default ReCaptcha;

@@ -37,9 +37,7 @@ const Auth = (props) => {
     }, [update]);
 
     if (loggedIn === null) {
-        return (
-            <div></div>
-        )
+        return <div></div>
     }
 
     return (

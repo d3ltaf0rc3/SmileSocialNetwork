@@ -7,7 +7,6 @@ import UserContext from '../../contexts/AuthContext';
 
 const SettingsForm = (props) => {
     const context = useContext(UserContext);
-
     const [name, setName] = useState(context.user.name);
     const [bio, setBio] = useState(context.user.description);
     const [isPrivate, setIsPrivate] = useState(context.user.isPrivate);
@@ -15,38 +14,44 @@ const SettingsForm = (props) => {
     const updateUser = (e) => {
         e.preventDefault();
 
-        const user = context.user;
-        user.name = name;
-        user.description = bio;
-        user.isPrivate = isPrivate;
+        if (name !== context.user.name ||
+            bio !== context.user.description ||
+            isPrivate !== context.user.isPrivate) {     
+            const user = context.user;
+            user.name = name;
+            user.description = bio;
+            user.isPrivate = isPrivate;
 
-        fetch("http://localhost:7777/api/edit", {
-            method: "put",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            credentials: "include",
-            body: JSON.stringify({
-                user
+            fetch("http://localhost:7777/api/edit", {
+                method: "put",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                credentials: "include",
+                body: JSON.stringify({
+                    user
+                })
             })
-        })
-            .then(res => res.json())
-            .then(user => {
-                context.triggerUpdate();
-                props.history.push(`/user/${user.username}`);
-            })
-            .catch(err => console.error(err));
+                .then(() => {
+                    context.triggerUpdate();
+                    props.history.push(`/user/${context.user.username}`);
+                })
+                .catch(err => console.error(err));
+        }
     };
 
     return (
         <form className={styles.form}>
             <Input value={props.name} onChange={(e) => setName(e.target.value)} placeholder="Name" />
-
             <Textarea onChange={(e) => setBio(e.target.value)} value={props.bio} placeholder="Bio" />
 
             <div className={styles["checkbox-container"]}>
                 <label htmlFor="private-profile-checkbox">Private profile</label>
-                <input onChange={(e) => setIsPrivate(e.target.checked)} defaultChecked={props.isPrivate} id="private-profile-checkbox" type="checkbox"></input>
+                <input
+                    onChange={(e) => setIsPrivate(e.target.checked)}
+                    defaultChecked={props.isPrivate}
+                    id="private-profile-checkbox"
+                    type="checkbox" />
             </div>
 
             <div className={styles.actions}>

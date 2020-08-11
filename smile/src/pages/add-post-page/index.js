@@ -26,10 +26,6 @@ const AddPostPage = (props) => {
         widget.open();
     };
 
-    const removeImage = () => {
-        setImage("");
-    };
-
     const addPost = (e) => {
         e.preventDefault();
 
@@ -45,10 +41,7 @@ const AddPostPage = (props) => {
                 description: caption
             })
         })
-        .then(res => res.json())
-        .then(data => {
-            props.history.push("/");
-        })
+        .then(() => props.history.push("/"))
         .catch(err => console.error(err));
     };
 
@@ -59,7 +52,7 @@ const AddPostPage = (props) => {
 
             <div className={styles.container}>
                 {image ? <img src={image} alt="preview" /> : null}
-                {image ? <button onClick={removeImage} className={`${styles.btn} ${styles.remove}`}>Remove image</button> : <button className={styles["btn"]} onClick={openWidget}>Upload image</button>}
+                {image ? <button onClick={() => setImage("")} className={`${styles.btn} ${styles.remove}`}>Remove image</button> : <button className={styles["btn"]} onClick={openWidget}>Upload image</button>}
                 <form className={styles.form} onSubmit={(e) => e.preventDefault()}>
                     <Input onChange={(e) => setLocation(e.target.value)} type="text" placeholder="Location" />
                     <Textarea onChange={(e) => setCaption(e.target.value)} placeholder="Write a caption..." />

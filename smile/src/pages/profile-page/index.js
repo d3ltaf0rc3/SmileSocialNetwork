@@ -11,37 +11,16 @@ import ProfileContext from '../../contexts/ProfileContext';
 import UserContext from '../../contexts/AuthContext';
 import camera from '../../images/camera.svg';
 import Spinner from '../../components/loading-spinner';
+import getUser from '../../utils/getUser';
 
 const ProfilePage = (props) => {
     const context = useContext(UserContext);
     const [profile, setProfile] = useState(null);
-    const [rerender, setRerender] = useState();
+    const [didUpdate, setUpdate] = useState();
 
     useEffect(() => {
-        fetch(`http://localhost:7777/api/user/${props.match.params.username}`)
-            .then(res => res.json())
-            .then(user => {
-                if (user.error) {
-                    console.log(user.error);
-                    return props.history.push("/error");
-                }
-                setProfile({
-                    username: user.username,
-                    name: user.name,
-                    description: user.description,
-                    followers: user.followers,
-                    following: user.following,
-                    posts: user.posts,
-                    profilePicture: user.profilePicture,
-                    isPrivate: user.isPrivate,
-                    requests: user.requests
-                });
-            })
-            .catch(err => {
-                console.log(err);
-                props.history.push("/error");
-            });
-    }, [props.history, props.match.params.username, rerender]);
+        getUser(props.history, props.match.params.username, setProfile);
+    }, [props.history, props.match.params.username, didUpdate]);
 
     if (profile === null || context.user === null) {
         return (
@@ -57,11 +36,15 @@ const ProfilePage = (props) => {
     }
 
     return (
-        <ProfileContext.Provider value={{ ...profile, doesUserFollow: profile.followers.some(user => user.username === context.user.username) }}>
+        <ProfileContext.Provider value={{
+            ...profile,
+            doesUserFollow: profile.followers.some(user => user.username === context.user.username),
+            triggerUpdate: () => setUpdate(!didUpdate)
+        }}>
             <Head title={`${profile.name || profile.username} (@${profile.username}) | Smile`} />
             <Header />
             <div className={styles.container}>
-                <ProfileHeader rerender={() => setRerender(!rerender)} />
+                <ProfileHeader />
                 {context.user.username === profile.username ||
                     profile.followers.some(user => user.username === context.user.username) ||
                     profile.isPrivate === false ?

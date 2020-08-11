@@ -27,6 +27,7 @@
 	display: inline-block;
     position: relative;
     margin-left: 0.5rem;
+    cursor: pointer;
 }
 
 .checkbox-container input[type="checkbox"]:active {

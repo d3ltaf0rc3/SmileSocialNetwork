@@ -13,10 +13,10 @@ const PostMenu = (props) => {
             method: "delete",
             credentials: "include"
         })
-        .then(() => props.history.push("/"))
-        .catch(err => console.error(err));
+            .then(() => props.history.push("/"))
+            .catch(err => console.error(err));
     };
-    
+
     return (
         <div>
             <div className={styles.arrow}></div>

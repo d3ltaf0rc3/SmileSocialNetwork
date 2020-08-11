@@ -8,10 +8,14 @@ const Search = () => {
 
     return (
         <div>
-            <Input name="search" onChange={(e) => {
-                setDisplay(true);
-                setQuery(e.target.value);
-            }} type="text" placeholder="Search" />
+            <Input
+                name="search"
+                onChange={(e) => {
+                    setDisplay(true);
+                    setQuery(e.target.value);
+                }}
+                type="text"
+                placeholder="Search" />
             {displaySearch ? <SearchBox query={query} onMouseLeave={() => setDisplay(false)} /> : null}
         </div>
     )

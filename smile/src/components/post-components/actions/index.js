@@ -15,7 +15,7 @@ const PostActions = (props) => {
             method: "put",
             credentials: "include"
         })
-            .then(() => props.setUpdate(true))
+            .then(() => props.setUpdate())
             .catch(err => console.error(err));
     };
 
@@ -24,7 +24,7 @@ const PostActions = (props) => {
             method: "put",
             credentials: "include"
         })
-            .then(() => props.setUpdate(false))
+            .then(() => props.setUpdate())
             .catch(err => console.error(err));
     };
 

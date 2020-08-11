@@ -39,6 +39,11 @@
 	color: #fff;
 }
 
+.btn:disabled {
+	background-color: #a1a1a171;
+	cursor: default;
+}
+
 .logo-container {
 	margin-bottom: 1.5rem;
 }

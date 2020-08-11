@@ -10,32 +10,23 @@ import sadFace from '../../images/sad.svg';
 const HomePage = () => {
     const context = useContext(UserContext);
     const [feed, setFeed] = useState();
-    const [hasLiked, setLiked] = useState();
-    const [hasCommented, setCommented] = useState(false);
+    const [didUpdate, setUpdate] = useState(false);
 
     useEffect(() => {
         if (context.user) {
-            const controller = new AbortController();
-
             fetch("http://localhost:7777/api/posts/get/feed", {
                 method: "post",
-                credentials: "include",
-                signal: controller.signal
+                credentials: "include"
             })
                 .then(res => res.json())
                 .then(posts => {
                     setFeed(posts);
                 })
                 .catch(err => {
-                    if (err.name !== "AbortError")
-                        console.error(err);
+                    console.error(err);
                 });
-
-            return () => {
-                controller.abort();
-            };
         }
-    }, [context.user, hasLiked, hasCommented]);
+    }, [context.user, didUpdate]);
 
     return (
         <Fragment>
@@ -51,8 +42,7 @@ const HomePage = () => {
                             username={post.postedBy.username}
                             location={post.location}
                             profilePicture={post.postedBy.profilePicture}
-                            setCommented={setCommented}
-                            setLiked={setLiked}
+                            setUpdate={() => setUpdate(!didUpdate)}
                             likes={post.likes}
                             comments={post.comments}
                             imageUrl={post.imageUrl} />) :

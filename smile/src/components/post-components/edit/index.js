@@ -26,7 +26,7 @@ const Edit = (props) => {
             })
                 .then(() => {
                     props.closeMenu();
-                    props.setUpdate(location + description);
+                    props.setUpdate();
                 })
                 .catch(err => console.error(err));
         }
@@ -35,8 +35,15 @@ const Edit = (props) => {
     return (
         <div className={styles.container}>
             <form className={styles.form}>
-                <Input value={location} onChange={(e) => setLocation(e.target.value)} placeholder="Location" type="text" />
-                <Textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Caption..." />
+                <Input
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
+                    placeholder="Location"
+                    type="text" />
+                <Textarea
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    placeholder="Caption..." />
                 <button onClick={editPost} className={styles.btn}>Save changes</button>
             </form>
         </div>

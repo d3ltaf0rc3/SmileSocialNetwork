@@ -2,40 +2,17 @@ import React, { useContext } from 'react';
 import styles from './index.module.css';
 import UserContext from '../../../contexts/AuthContext';
 import UserData from '../../user-data';
+import handleRequest from '../../../utils/handleRequest';
 
 const Request = (props) => {
     const context = useContext(UserContext);
 
     const acceptRequest = () => {
-        fetch("http://localhost:7777/api/handle-request", {
-            method: "post",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            credentials: "include",
-            body: JSON.stringify({
-                action: "accept",
-                username: props.username
-            })
-        })
-            .then(() => context.triggerUpdate())
-            .catch(err => console.log(err));
+        handleRequest("accept", props.username, context);
     };
 
     const declineRequest = () => {
-        fetch("http://localhost:7777/api/handle-request", {
-            method: "post",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            credentials: "include",
-            body: JSON.stringify({
-                action: "decline",
-                username: props.username
-            })
-        })
-            .then(() => context.triggerUpdate())
-            .catch(err => console.log(err));
+        handleRequest("decline", props.username, context);
     };
 
     return (

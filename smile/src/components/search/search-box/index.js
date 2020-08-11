@@ -24,7 +24,11 @@ const Search = (props) => {
                     <div className={styles.error}>Loading...</div> :
                     users.length > 0 ?
                         users.map(user => {
-                            return <Profile key={user.username} location={user.name} username={user.username} imageUrl={user.profilePicture} />
+                            return <Profile
+                                key={user.username}
+                                location={user.name}
+                                username={user.username}
+                                imageUrl={user.profilePicture} />
                         }) :
                         <div className={styles.error}>No results found</div>}
             </div>

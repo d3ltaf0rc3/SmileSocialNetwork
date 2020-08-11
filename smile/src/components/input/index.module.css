@@ -35,24 +35,6 @@
     animation: gradient 3s linear infinite;
 }
 
-.custom-input-button {
-    display: flex;
-    align-items: center;
-    position: absolute;
-    right: 18px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    color: #cedbf8;
-    border: none;
-    outline: none;
-    cursor: pointer;
-}
-
-.custom-input-button img {
-    width: 18px;
-}
-
 @keyframes gradient {
     0% {
         background-position: 0 0;
