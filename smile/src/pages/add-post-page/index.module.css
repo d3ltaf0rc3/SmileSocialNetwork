@@ -10,7 +10,7 @@
     background-color: #fff;
 }
 
-.container img {
+.preview {
     width: 300px;
     height: 300px;
     object-fit: cover;

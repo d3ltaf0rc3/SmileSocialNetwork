@@ -6,6 +6,7 @@ import PostMenu from './post-menu';
 import PostContext from '../../contexts/PostContext';
 import UserContext from '../../contexts/AuthContext';
 import Spinner from '../loading-spinner';
+import Video from '../video';
 
 const Post = (props) => {
     const user = useContext(UserContext);
@@ -27,8 +28,9 @@ const Post = (props) => {
                 {!post ?
                     <div className={styles["spinner-container"]}><Spinner /></div> :
                     <div className={styles["post-container"]}>
-                        <img className={styles["post-image"]} src={post.imageUrl} alt="post" />
-
+                        {post.imageUrl.includes("video") ?
+                            <Video videoUrl={post.imageUrl} /> :
+                            <img className={styles["post-image"]} src={post.imageUrl} alt="post" />}
                         <aside className={styles.aside}>
                             <PostHeader
                                 imageUrl={post.postedBy.profilePicture}

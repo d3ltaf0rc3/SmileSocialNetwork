@@ -8,7 +8,9 @@ const GridPhoto = (props) => {
     return (
         <div>
             <div onClick={() => setDisplay(true)} className={styles["photo"]}>
-                <img src={props.image} alt="grid part" />
+                {props.image.includes("video") ?
+                    <video className={styles.content} src={props.image} alt="grid part" /> :
+                    <img className={styles.content} src={props.image} alt="grid part" />}
             </div>
             {displayPost ? <Post closeImage={() => setDisplay(false)} id={props.id} /> : null}
         </div>

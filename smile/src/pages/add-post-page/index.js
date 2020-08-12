@@ -7,7 +7,7 @@ import Textarea from '../../components/textarea';
 import { Link, withRouter } from 'react-router-dom';
 
 const AddPostPage = (props) => {
-    const [image, setImage] = useState("");
+    const [post, setPost] = useState("");
     const [location, setLocation] = useState("");
     const [caption, setCaption] = useState("");
 
@@ -17,7 +17,7 @@ const AddPostPage = (props) => {
             uploadPreset: "user_posts"
         }, (error, result) => {
             if (result.event === "success") {
-                setImage(result.info.url);
+                setPost(result.info.url);
             } else if (error) {
                 console.error(error);
             }
@@ -36,13 +36,13 @@ const AddPostPage = (props) => {
             },
             credentials: "include",
             body: JSON.stringify({
-                imageUrl: image,
+                imageUrl: post,
                 location,
                 description: caption
             })
         })
-        .then(() => props.history.push("/"))
-        .catch(err => console.error(err));
+            .then(() => props.history.push("/"))
+            .catch(err => console.error(err));
     };
 
     return (
@@ -51,8 +51,12 @@ const AddPostPage = (props) => {
             <Header />
 
             <div className={styles.container}>
-                {image ? <img src={image} alt="preview" /> : null}
-                {image ? <button onClick={() => setImage("")} className={`${styles.btn} ${styles.remove}`}>Remove image</button> : <button className={styles["btn"]} onClick={openWidget}>Upload image</button>}
+                {post ? post.includes("video") ? 
+                <video className={styles.preview} src={post} alt="preview" autoPlay loop /> : 
+                <img className={styles.preview} src={post} alt="preview" /> : null}
+                {post ?
+                    <button onClick={() => setPost("")} className={`${styles.btn} ${styles.remove}`}>Remove image/video</button> :
+                    <button className={styles["btn"]} onClick={openWidget}>Upload image/video</button>}
                 <form className={styles.form} onSubmit={(e) => e.preventDefault()}>
                     <Input onChange={(e) => setLocation(e.target.value)} type="text" placeholder="Location" />
                     <Textarea onChange={(e) => setCaption(e.target.value)} placeholder="Write a caption..." />

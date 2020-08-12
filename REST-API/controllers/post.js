@@ -11,7 +11,8 @@ async function createAPost(req, res) {
             imageUrl,
             description,
             location,
-            postedBy: decoded.userID
+            postedBy: decoded.userID,
+            createdAt: Date.now()
         });
         const post = await newPost.save();
         await User.findByIdAndUpdate(decoded.userID, {

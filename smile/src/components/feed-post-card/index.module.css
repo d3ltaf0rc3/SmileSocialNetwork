@@ -14,3 +14,8 @@
 .post-info {
     padding: 15px 20px;
 }
+
+.container {
+    max-height: 700px;
+    width: 648px;
+}
