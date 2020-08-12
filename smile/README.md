@@ -9,7 +9,7 @@
 | /register        | Register page                                          |
 | /user/(username) | User's profile page which contains their posts         |
 | /settings        | The settings page allows you to edit your profile info |
-| /add-post        | Allows you to upload photos                            |
+| /add-post        | Allows you to upload photos and videos                 |
 | /change-password | Change Password Page                                   |
 | any other route  | Error Page                                             |
 
