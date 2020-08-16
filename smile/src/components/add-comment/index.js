@@ -27,7 +27,11 @@ const AddComment = (props) => {
 
     return (
         <div className={styles["add-comment"]}>
-            <textarea value={comment} onChange={(e) => setComment(e.target.value)} id={props.imageUrl} placeholder="Add a comment..."></textarea>
+            <textarea
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                id={props.id}
+                placeholder="Add a comment..."></textarea>
             <img onClick={addComment} src={arrow} alt="arrow" />
         </div>
     )

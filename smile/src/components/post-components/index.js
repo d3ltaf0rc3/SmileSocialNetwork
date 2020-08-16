@@ -30,25 +30,21 @@ const Post = (props) => {
                     <div className={styles["post-container"]}>
                         {post.imageUrl.includes("video") ?
                             <Video videoUrl={post.imageUrl} /> :
-                            <img className={styles["post-image"]} src={post.imageUrl} alt="post" />}
+                            <img className={styles["post-image"]} src={post.imageUrl} alt="post" />
+                        }
                         <aside className={styles.aside}>
-                            <PostHeader
-                                imageUrl={post.postedBy.profilePicture}
-                                location={post.location}
-                                username={post.postedBy.username}>
-
+                            <PostHeader imageUrl={post.postedBy.profilePicture} location={post.location} username={post.postedBy.username}>
                                 {post.postedBy.username === user.user.username ?
                                     <div className={styles["menu-icon"]}>
                                         <svg onClick={() => setDisplay(!display)} aria-label="More options" className="_8-yf5 " fill="#262626" height="16" viewBox="0 0 48 48" width="16"><circle clipRule="evenodd" cx="8" cy="24" fillRule="evenodd" r="4.5"></circle><circle clipRule="evenodd" cx="24" cy="24" fillRule="evenodd" r="4.5"></circle><circle clipRule="evenodd" cx="40" cy="24" fillRule="evenodd" r="4.5"></circle></svg>
                                         {display ? <PostMenu
                                             setUpdate={() => setUpdate(!didUpdate)}
                                             closeMenu={() => setDisplay(false)} /> : null}
-                                    </div> : null}
+                                    </div> : null
+                                }
                             </PostHeader>
 
-                            <SideContent
-                                setUpdate={() => setUpdate(!didUpdate)}
-                                likes={post.likes.length} />
+                            <SideContent setUpdate={() => setUpdate(!didUpdate)} />
                         </aside>
                     </div>}
             </div>

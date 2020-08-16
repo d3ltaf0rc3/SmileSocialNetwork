@@ -16,10 +16,10 @@ const PostCard = (props) => {
                 <img className={styles["post-image"]} src={props.imageUrl} alt="post" />}
 
             <div className={styles["post-info"]}>
-                <PostActions setUpdate={props.setUpdate} id={props.id} likes={props.likes} imageUrl={props.imageUrl} />
+                <PostActions setUpdate={props.setUpdate} id={props.id} likes={props.likes} />
                 <Likes likes={props.likes.length} />
                 <CommentSection creator={props.username} description={props.description} comments={props.comments} />
-                <AddComment setUpdate={props.setUpdate} id={props.id} imageUrl={props.imageUrl} />
+                <AddComment setUpdate={props.setUpdate} id={props.id} />
             </div>
         </div>
     )

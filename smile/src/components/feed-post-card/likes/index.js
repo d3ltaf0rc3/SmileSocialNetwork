@@ -3,7 +3,7 @@ import styles from './index.module.css';
 
 const Likes = (props) => {
     return (
-        <span className={styles["post-likes"]}>{props.likes} likes</span>
+        <span className={styles["post-likes"]}>{props.likes} {props.likes === 1 ? "like" : "likes"}</span>
     )
 }
 

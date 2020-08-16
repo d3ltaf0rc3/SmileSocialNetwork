@@ -9,17 +9,14 @@ import PostContext from '../../../contexts/PostContext';
 const SideContent = (props) => {
     const context = useContext(PostContext);
 
-    if (!context.post) {
-        return <div></div>
-    }
-
     return (
         <div className={styles.content}>
             <ul className={styles["comment-section"]}>
-                {context.post.description ? <PostComment
-                    imageUrl={context.post.postedBy.profilePicture}
-                    author={context.post.postedBy.username}
-                    comment={context.post.description} /> : null}
+                {context.post.description ?
+                    <PostComment
+                        imageUrl={context.post.postedBy.profilePicture}
+                        author={context.post.postedBy.username}
+                        comment={context.post.description} /> : null}
                 {context.post.comments.map(comment =>
                     <PostComment
                         key={comment._id}
@@ -29,14 +26,9 @@ const SideContent = (props) => {
             </ul>
 
             <section className={styles.actions}>
-                <Actions
-                    setUpdate={props.setUpdate}
-                    imageUrl={context.post.imageUrl} />
-                <Likes likes={props.likes} />
-                <AddComment
-                    setUpdate={props.setUpdate}
-                    id={context.post._id}
-                    imageUrl={context.post.imageUrl} />
+                <Actions setUpdate={props.setUpdate} />
+                <Likes likes={context.post.likes.length} />
+                <AddComment setUpdate={props.setUpdate} id={context.post._id} />
             </section>
         </div>
     )

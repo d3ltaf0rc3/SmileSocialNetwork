@@ -36,7 +36,7 @@ const PostActions = (props) => {
                     <img src={heartIcon} className={styles["post-action"]} alt="heart" onClick={likePost} />}
             </span>
             <span>
-                <label htmlFor={props.imageUrl}><img src={commentIcon} className={styles["post-action"]} alt="comment" /></label>
+                <label htmlFor={context.post._id}><img src={commentIcon} className={styles["post-action"]} alt="comment" /></label>
             </span>
         </div>
     )
