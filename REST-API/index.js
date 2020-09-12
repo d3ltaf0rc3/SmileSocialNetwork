@@ -4,7 +4,6 @@ const expressConfig = require("./config/express");
 const indexRouter = require("./routes/index");
 const postRouter = require("./routes/post");
 const app = express();
-const PORT = 7777;
 
 expressConfig(app);
 connectToDB();
@@ -12,7 +11,7 @@ connectToDB();
 app.use("/api", indexRouter);
 app.use("/api/posts", postRouter);
 
-app.listen(PORT, err => {
+app.listen(process.env.PORT, err => {
     if (err) throw err;
-    console.log(`Server is running on port ${PORT}`);
+    console.log(`Server is running on port ${process.env.PORT}`);
 });
