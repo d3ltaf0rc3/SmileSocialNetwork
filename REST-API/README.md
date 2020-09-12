@@ -12,6 +12,7 @@
     | JWT_KEY              | JWT secret key       |
     | RECAPTCHA_SERVER_KEY | reCAPTCHA SERVER KEY |
     | PORT                 | Port for REST API    |
+    | APP_URL              | React App URL        |
 
 * Replace the DB URL located in [./config/database.js](./config/database.js)
 

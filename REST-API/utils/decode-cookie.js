@@ -9,4 +9,4 @@ module.exports = {
             throw new Error("Invalid cookie!");
         }
     }
-}
+};
