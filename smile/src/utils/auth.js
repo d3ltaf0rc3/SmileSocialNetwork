@@ -1,5 +1,5 @@
 const auth = (context, type, body, setError) => {
-    fetch(`${process.env.API_URL}/api/${type}`, {
+    fetch(`${process.env.REACT_APP_API_URL}/api/${type}`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"

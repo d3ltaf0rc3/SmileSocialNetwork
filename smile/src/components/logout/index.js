@@ -7,7 +7,7 @@ const Logout = () => {
 
     const clickHandler = (e) => {
         e.preventDefault();
-        fetch(`${process.env.API_URL}/api/logout`, {
+        fetch(`${process.env.REACT_APP_API_URL}/api/logout`, {
             method: "get",
             credentials: "include"
         })

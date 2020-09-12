@@ -29,7 +29,7 @@ const AddPostPage = (props) => {
     const addPost = (e) => {
         e.preventDefault();
 
-        fetch(`${process.env.API_URL}/api/posts/add-post`, {
+        fetch(`${process.env.REACT_APP_API_URL}/api/posts/add-post`, {
             method: "post",
             headers: {
                 "Content-Type": "application/json"

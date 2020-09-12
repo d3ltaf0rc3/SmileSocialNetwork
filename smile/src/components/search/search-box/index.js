@@ -7,7 +7,7 @@ const Search = (props) => {
 
     useEffect(() => {
         if (props.query !== "") {
-            fetch(`${process.env.API_URL}/api/search?q=${props.query}`)
+            fetch(`${process.env.REACT_APP_API_URL}/api/search?q=${props.query}`)
                 .then(res => res.json())
                 .then(users => setUsers(users))
                 .catch(err => console.error(err));

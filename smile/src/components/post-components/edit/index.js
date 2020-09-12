@@ -13,7 +13,7 @@ const Edit = (props) => {
         e.preventDefault();
 
         if (location !== context.post.location || description !== context.post.description) {
-            fetch(`${process.env.API_URL}/api/posts/edit/${context.post._id}`, {
+            fetch(`${process.env.REACT_APP_API_URL}/api/posts/edit/${context.post._id}`, {
                 method: "put",
                 headers: {
                     "Content-Type": "application/json"

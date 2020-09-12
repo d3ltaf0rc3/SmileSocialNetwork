@@ -11,7 +11,7 @@ const PostActions = (props) => {
     const user = useContext(UserContext);
 
     const likePost = () => {
-        fetch(`${process.env.API_URL}/api/posts/like/${context.post._id}`, {
+        fetch(`${process.env.REACT_APP_API_URL}/api/posts/like/${context.post._id}`, {
             method: "put",
             credentials: "include"
         })
@@ -20,7 +20,7 @@ const PostActions = (props) => {
     };
 
     const unlikePost = () => {
-        fetch(`${process.env.API_URL}/api/posts/unlike/${context.post._id}`, {
+        fetch(`${process.env.REACT_APP_API_URL}/api/posts/unlike/${context.post._id}`, {
             method: "put",
             credentials: "include"
         })
