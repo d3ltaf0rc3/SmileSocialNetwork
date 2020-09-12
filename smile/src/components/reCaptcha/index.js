@@ -3,7 +3,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 
 const ReCaptcha = (props) => {
     const onChange = (value) => {
-        fetch("http://localhost:7777/api/verify/reCaptcha", {
+        fetch(`${process.env.API_URL}/api/verify/reCaptcha`, {
             method: "post",
             headers: {
                 "Content-Type": "application/json"

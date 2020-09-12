@@ -1,5 +1,5 @@
 const handleRequest = (action, username, context) => {
-    fetch("http://localhost:7777/api/handle-request", {
+    fetch(`${process.env.API_URL}/api/handle-request`, {
             method: "post",
             headers: {
                 "Content-Type": "application/json"

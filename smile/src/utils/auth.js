@@ -1,5 +1,5 @@
 const auth = (context, type, body, setError) => {
-    fetch(`http://localhost:7777/api/${type}`, {
+    fetch(`${process.env.API_URL}/api/${type}`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"

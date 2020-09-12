@@ -1,5 +1,5 @@
 const profileActions = (type, username, rerender) => {
-    fetch(`http://localhost:7777/api/${type}/${username}`, {
+    fetch(`${process.env.API_URL}/api/${type}/${username}`, {
         method: "post",
         credentials: "include"
     })

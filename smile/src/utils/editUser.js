@@ -1,5 +1,5 @@
 const editUser = (user, context, history) => {
-    fetch("http://localhost:7777/api/edit", {
+    fetch(`${process.env.API_URL}/api/edit`, {
         method: "put",
         headers: {
             "Content-Type": "application/json"

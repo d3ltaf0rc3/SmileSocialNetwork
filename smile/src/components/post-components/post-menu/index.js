@@ -9,7 +9,7 @@ const PostMenu = (props) => {
     const [displayEdit, setDisplay] = useState(false);
 
     const deletePost = () => {
-        fetch(`http://localhost:7777/api/posts/delete/${context.post._id}`, {
+        fetch(`${process.env.API_URL}/api/posts/delete/${context.post._id}`, {
             method: "delete",
             credentials: "include"
         })

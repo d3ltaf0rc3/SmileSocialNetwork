@@ -15,6 +15,7 @@
 
 ## Project set up and running
 * After cloning the repo, run **`npm install`**
+* Set **``API_URL``** env variable
 * Run **`npm run start`**
 
 ### The app runs on **`localhost:3000`**

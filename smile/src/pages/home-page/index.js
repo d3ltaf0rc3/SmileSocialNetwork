@@ -14,7 +14,7 @@ const HomePage = () => {
 
     useEffect(() => {
         if (context.user) {
-            fetch("http://localhost:7777/api/posts/get/feed", {
+            fetch(`${process.env.API_URL}/api/posts/get/feed`, {
                 method: "post",
                 credentials: "include"
             })

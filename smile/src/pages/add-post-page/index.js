@@ -29,7 +29,7 @@ const AddPostPage = (props) => {
     const addPost = (e) => {
         e.preventDefault();
 
-        fetch("http://localhost:7777/api/posts/add-post", {
+        fetch(`${process.env.API_URL}/api/posts/add-post`, {
             method: "post",
             headers: {
                 "Content-Type": "application/json"

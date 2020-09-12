@@ -21,7 +21,7 @@ const Auth = (props) => {
     };
 
     useEffect(() => {
-        fetch("http://localhost:7777/api/verify", {
+        fetch(`${process.env.API_URL}/api/verify`, {
             method: "post",
             credentials: "include"
         })

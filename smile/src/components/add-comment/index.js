@@ -7,7 +7,7 @@ const AddComment = (props) => {
 
     const addComment = () => {
         if (comment !== "") {
-            fetch(`http://localhost:7777/api/posts/add-comment/${props.id}`, {
+            fetch(`${process.env.API_URL}/api/posts/add-comment/${props.id}`, {
                 method: "put",
                 headers: {
                     "Content-Type": "application/json"

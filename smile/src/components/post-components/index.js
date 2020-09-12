@@ -15,7 +15,7 @@ const Post = (props) => {
     const [didUpdate, setUpdate] = useState();
 
     useEffect(() => {
-        fetch(`http://localhost:7777/api/posts/get-post/${props.id}`)
+        fetch(`${process.env.API_URL}/api/posts/get-post/${props.id}`)
             .then(res => res.json())
             .then(post => setPost(post))
             .catch(err => console.error(err));
