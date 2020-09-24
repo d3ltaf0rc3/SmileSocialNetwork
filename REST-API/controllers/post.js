@@ -50,7 +50,7 @@ async function getPost(req, res) {
 
 async function getFeed(req, res) {
     const posts = [];
-    
+
     try {
         const decoded = decodeCookie(req.cookies["auth-token"]);
         const user = await User.findById(decoded.userID)
@@ -66,7 +66,7 @@ async function getFeed(req, res) {
                     }
                 }
             });
-        
+
         user.following.forEach(user => {
             user.posts.forEach(post => {
                 posts.push(post);

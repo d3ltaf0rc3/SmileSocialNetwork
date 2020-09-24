@@ -6,8 +6,16 @@ const Search = (props) => {
     const [users, setUsers] = useState();
 
     useEffect(() => {
-        if (props.query !== "") {
-            fetch(`${process.env.REACT_APP_API_URL}/api/search?q=${props.query}`)
+        if (props.query.trim() !== "") {
+            fetch(`${process.env.REACT_APP_API_URL}/api/search`, {
+                method: "post",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    query: props.query.trim()
+                })
+            })
                 .then(res => res.json())
                 .then(users => setUsers(users))
                 .catch(err => console.error(err));
