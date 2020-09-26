@@ -18,7 +18,7 @@ async function register(req, res) {
                         username: userObject.username
                     }, process.env.JWT_KEY);
 
-                    res.cookie("auth-token", token, { expires: new Date(Date.now() + 604800000) }).send(user);
+                    return res.cookie("auth-token", token, { expires: new Date(Date.now() + 604800000), sameSite: false }).send(user);
                 } catch (error) {
                     if (error.code === 11000) {
                         return res.status(409).send({
@@ -61,7 +61,7 @@ async function login(req, res) {
             username: user.username
         }, process.env.JWT_KEY);
 
-        return res.cookie("auth-token", token, { expires: new Date(Date.now() + 604800000) }).send(user);
+        return res.cookie("auth-token", token, { expires: new Date(Date.now() + 604800000), sameSite: false }).send(user);
     } else {
         return res.status(401).send({
             error: "Wrong username or password!"
