@@ -2,6 +2,11 @@ const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { decodeCookie } = require("../utils/decode-cookie");
+const cookieOptions = {
+    expires: new Date(Date.now() + 604800000),
+    sameSite: "None",
+    secure: true
+};
 
 async function register(req, res) {
     const { username, password, repeatPassword } = req.body;
@@ -18,7 +23,7 @@ async function register(req, res) {
                         username: userObject.username
                     }, process.env.JWT_KEY);
 
-                    return res.cookie("auth-token", token, { expires: new Date(Date.now() + 604800000), sameSite: false }).send(user);
+                    return res.cookie("auth-token", token, cookieOptions).send(user);
                 } catch (error) {
                     if (error.code === 11000) {
                         return res.status(409).send({
@@ -61,7 +66,7 @@ async function login(req, res) {
             username: user.username
         }, process.env.JWT_KEY);
 
-        return res.cookie("auth-token", token, { expires: new Date(Date.now() + 604800000), sameSite: false }).send(user);
+        return res.cookie("auth-token", token, cookieOptions).send(user);
     } else {
         return res.status(401).send({
             error: "Wrong username or password!"
