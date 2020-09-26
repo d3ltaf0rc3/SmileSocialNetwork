@@ -24,9 +24,7 @@ async function verifyReCaptcha(req, res) {
         return res.status(401).send("YOU ARE NOT A HUMAN");
     }
 
-    return res.send({
-        message: "Success!"
-    });
+    return res.status(204).send();
 }
 
 module.exports = verifyReCaptcha;

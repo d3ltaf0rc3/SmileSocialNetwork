@@ -20,7 +20,7 @@ async function createAPost(req, res) {
                 posts: post._id
             }
         });
-        return res.send(post);
+        return res.status(204).send();
     } catch (error) {
         return res.status(500).send({
             error: error.message
@@ -88,9 +88,7 @@ async function likePost(req, res) {
     try {
         const decoded = decodeCookie(req.cookies["auth-token"]);
         await Post.findByIdAndUpdate(postId, { $addToSet: { likes: decoded.userID } });
-        return res.send({
-            message: "Success!"
-        });
+        return res.status(204).send();
     } catch (error) {
         return res.status(500).send({
             error: error.message
@@ -104,9 +102,7 @@ async function unlikePost(req, res) {
     try {
         const decoded = decodeCookie(req.cookies["auth-token"]);
         await Post.findByIdAndUpdate(postId, { $pull: { likes: decoded.userID } });
-        return res.send({
-            message: "Success!"
-        });
+        return res.status(204).send();
     } catch (error) {
         return res.status(500).send({
             error: error.message
@@ -125,7 +121,7 @@ async function addComment(req, res) {
         });
         const createdComment = await comment.save();
         await Post.findByIdAndUpdate(postId, { $addToSet: { comments: createdComment._id } });
-        return res.send(createdComment);
+        return res.status(204).send();
     } catch (error) {
         return res.status(500).send({
             error: error.message
@@ -140,9 +136,7 @@ async function deletePost(req, res) {
         const decoded = decodeCookie(req.cookies["auth-token"]);
         await User.findByIdAndUpdate(decoded.userID, { $pull: { posts: id } });
         await Post.findByIdAndDelete(id);
-        return res.send({
-            message: "Success!"
-        });
+        return res.status(204).send();
     } catch (error) {
         return res.status(500).send(error);
     }
@@ -156,9 +150,7 @@ async function editPost(req, res) {
             location: req.body.location,
             description: req.body.description
         });
-        return res.send({
-            message: "Success!"
-        });
+        return res.status(204).send();
     } catch (error) {
         return res.status(500).send(error);
     }

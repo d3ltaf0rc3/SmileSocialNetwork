@@ -4,8 +4,7 @@ const bcrypt = require("bcrypt");
 const { decodeCookie } = require("../utils/decode-cookie");
 const cookieOptions = {
     expires: new Date(Date.now() + 604800000),
-    sameSite: "None",
-    secure: true
+    sameSite: "None"
 };
 
 async function register(req, res) {

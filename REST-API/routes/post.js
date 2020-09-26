@@ -1,5 +1,14 @@
 const express = require("express");
-const { createAPost, getPost, getFeed, likePost, unlikePost, addComment, deletePost, editPost } = require("../controllers/post");
+const {
+    createAPost,
+    getPost,
+    getFeed,
+    likePost,
+    unlikePost,
+    addComment,
+    deletePost,
+    editPost
+} = require("../controllers/post");
 const router = express.Router();
 
 router.get("/get-post/:id", getPost);

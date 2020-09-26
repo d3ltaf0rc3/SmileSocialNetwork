@@ -12,9 +12,8 @@ const ReCaptcha = (props) => {
                 key: value
             })
         })
-            .then(res => res.json())
-            .then(data => {
-                if (data.message === "Success!") {
+            .then(res => {
+                if (res.ok) {
                     props.setDisabled();
                 }
             })
