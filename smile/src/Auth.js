@@ -25,11 +25,15 @@ const Auth = (props) => {
             method: "post",
             credentials: "include"
         })
-            .then(res => res.json())
             .then(res => {
-                if (res.error) {
+                if (res.status === 200) {
+                    return res.json();
+                } else {
                     logOut();
-                } else if (res) {
+                }
+            })
+            .then(res => {
+                if (res) {
                     logIn(res);
                 }
             })

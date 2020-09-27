@@ -162,9 +162,7 @@ async function changePassword(req, res) {
 
 async function verifyLoggedIn(req, res) {
     if (!req.cookies["auth-token"]) {
-        return res.status(401).send({
-            error: "No cookie was sent!"
-        });
+        return res.status(204).send();
     }
 
     try {
