@@ -81,7 +81,7 @@ async function logout(req, res) {
         });
     }
 
-    return res.clearCookie("auth-token").send({
+    return res.clearCookie("auth-token", cookieOptions).send({
         message: "Logout is successful!"
     });
 }
