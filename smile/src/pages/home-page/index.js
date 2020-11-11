@@ -5,7 +5,7 @@ import PostCard from '../../components/feed-post-card';
 import styles from './index.module.css';
 import UserContext from '../../contexts/AuthContext';
 import Spinner from '../../components/loading-spinner';
-import sadFace from '../../images/sad.svg';
+import home from '../../images/home-run.svg';
 
 const HomePage = () => {
     const context = useContext(UserContext);
@@ -47,9 +47,11 @@ const HomePage = () => {
                             comments={post.comments}
                             imageUrl={post.imageUrl} />) :
                         <div className={styles["empty-feed"]}>
-                            <img src={sadFace} alt="sad face" />
-                            <span>Your feed seems empty!
-                        Go follow someone and their posts will appear here!</span>
+                            <div className={styles["img-container"]}>
+                                <img src={home} alt="home icon" />
+                            </div>
+                            <h1>Welcome to Smile</h1>
+                            <span>When you follow people, you'll see the photos and videos they post here.</span>
                         </div>}
             </div>
         </Fragment>
