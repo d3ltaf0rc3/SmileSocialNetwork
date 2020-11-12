@@ -2,6 +2,8 @@ const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { decodeCookie } = require("../utils/decode-cookie");
+const sanitizeString = require("../utils/sanitizeString");
+
 const cookieOptions = {
     expires: new Date(Date.now() + 604800000),
     sameSite: "None",
@@ -180,7 +182,14 @@ async function verifyLoggedIn(req, res) {
 }
 
 async function searchUsers(req, res) {
-    const { query } = req.body;
+    const query = sanitizeString(req.body.query);
+    console.log(query)
+
+    if (query === "") {
+        return res.status(404).send({
+            message: "No users matching your criteria were found"
+        });
+    }
 
     try {
         const users = await User.find({ "username": { "$regex": `${query}`, "$options": "i" } });
