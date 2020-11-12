@@ -183,7 +183,6 @@ async function verifyLoggedIn(req, res) {
 
 async function searchUsers(req, res) {
     const query = sanitizeString(req.body.query);
-    console.log(query)
 
     if (query === "") {
         return res.status(404).send({
