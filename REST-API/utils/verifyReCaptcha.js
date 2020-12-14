@@ -3,7 +3,6 @@ async function verifyReCaptcha(req, res) {
     require("isomorphic-fetch");
 
     const RECAPTCHA_SERVER_KEY = process.env.RECAPTCHA_SERVER_KEY;
-
     const humanKey = req.body.key;
 
     const isHuman = await fetch(`https://www.google.com/recaptcha/api/siteverify`, {

@@ -12,6 +12,7 @@ const Search = (props) => {
                 headers: {
                     "Content-Type": "application/json"
                 },
+                credentials: "include",
                 body: JSON.stringify({
                     query: props.query.trim()
                 })

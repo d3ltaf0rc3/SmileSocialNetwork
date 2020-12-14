@@ -6,8 +6,7 @@
 
     | Variable             | Value                |
     |----------------------|----------------------|
-    | DB_USER              | Database user        |
-    | DB_PASSWORD          | Database password    |
+    | DB_URL               | Database URL         |
     | SECRET               | CookieParser secret  |
     | JWT_KEY              | JWT secret key       |
     | RECAPTCHA_SERVER_KEY | reCAPTCHA SERVER KEY |

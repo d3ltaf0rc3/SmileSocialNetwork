@@ -6,7 +6,8 @@
   "author": "Martin Marinov",
   "license": "ISC",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "start:dev": "nodemon -r dotenv/config index.js"
   },
   "dependencies": {
     "bcrypt": "^5.0.0",

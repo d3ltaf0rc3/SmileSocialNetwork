@@ -1,5 +1,8 @@
 const getUser = (history, username, setProfile) => {
-    fetch(`${process.env.REACT_APP_API_URL}/api/user/${username}`)
+    fetch(`${process.env.REACT_APP_API_URL}/api/user/${username}`, {
+        method: "get",
+        credentials: "include"
+    })
         .then(res => res.json())
         .then(user => {
             if (user.error) {

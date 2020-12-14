@@ -1,14 +1,9 @@
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const { decodeCookie } = require("../utils/decode-cookie");
+const decodeCookie = require("../utils/decode-cookie");
 const sanitizeString = require("../utils/sanitizeString");
-
-const cookieOptions = {
-    expires: new Date(Date.now() + 604800000),
-    sameSite: "None",
-    secure: true
-};
+const cookieOptions = require("../config/cookie-options");
 
 async function register(req, res) {
     const { username, password, repeatPassword } = req.body;
@@ -32,7 +27,6 @@ async function register(req, res) {
                             error: "Username already taken!"
                         });
                     }
-
                     return res.status(500).send({
                         error: error.message
                     });
@@ -77,12 +71,6 @@ async function login(req, res) {
 }
 
 async function logout(req, res) {
-    if (!req.cookies["auth-token"]) {
-        return res.status(422).send({
-            error: "Auth cookie missing!"
-        });
-    }
-
     return res.clearCookie("auth-token", cookieOptions).send({
         message: "Logout is successful!"
     });
@@ -92,7 +80,7 @@ async function editUser(req, res) {
     const user = req.body.user;
 
     try {
-        await User.findByIdAndUpdate({ _id: user._id }, user);
+        await User.findByIdAndUpdate({ _id: user._id }, user, { new: true });
         return res.send(user);
     } catch (error) {
         return res.status(500).send({
@@ -217,7 +205,7 @@ async function followUser(req, res) {
             await User.findByIdAndUpdate(user._id, { $addToSet: { followers: decoded.userID } });
             await User.findByIdAndUpdate(decoded.userID, { $addToSet: { following: user._id } });
         }
-        return res.status(204).end();
+        return res.status(204).send();
     } catch (error) {
         return res.status(500).send({
             error: error.message

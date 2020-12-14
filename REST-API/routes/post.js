@@ -1,4 +1,5 @@
 const express = require("express");
+const auth = require("../utils/auth");
 const {
     createAPost,
     getPost,
@@ -11,20 +12,20 @@ const {
 } = require("../controllers/post");
 const router = express.Router();
 
-router.get("/get-post/:id", getPost);
+router.get("/get-post/:id", auth, getPost);
 
-router.post("/get/feed", getFeed);
+router.post("/get/feed", auth, getFeed);
 
-router.post('/add-post', createAPost);
+router.post('/add-post', auth, createAPost);
 
-router.put("/like/:postId", likePost);
+router.put("/like/:postId", auth, likePost);
 
-router.put("/unlike/:postId", unlikePost);
+router.put("/unlike/:postId", auth, unlikePost);
 
-router.put("/add-comment/:postId", addComment);
+router.put("/add-comment/:postId", auth, addComment);
 
-router.put("/edit/:postId", editPost);
+router.put("/edit/:postId", auth, editPost);
 
-router.delete("/delete/:postId", deletePost);
+router.delete("/delete/:postId", auth, deletePost);
 
 module.exports = router;

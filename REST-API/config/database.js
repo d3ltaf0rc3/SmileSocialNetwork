@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
-const dbUrl = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@softuni-hckfj.mongodb.net/smile?retryWrites=true&w=majority`;
 
 module.exports = () => {
-    mongoose.connect(dbUrl, {
+    mongoose.connect(process.env.DB_URL, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
         useFindAndModify: false,

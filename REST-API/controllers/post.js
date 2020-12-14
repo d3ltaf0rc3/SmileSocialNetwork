@@ -1,7 +1,7 @@
 const Post = require("../models/Post");
 const User = require("../models/User");
 const Comment = require("../models/Comment");
-const { decodeCookie } = require("../utils/decode-cookie");
+const decodeCookie = require("../utils/decode-cookie");
 
 async function createAPost(req, res) {
     const { imageUrl, description, location } = req.body;
@@ -20,7 +20,7 @@ async function createAPost(req, res) {
                 posts: post._id
             }
         });
-        return res.status(204).send();
+        return res.status(201).send(post);
     } catch (error) {
         return res.status(500).send({
             error: error.message

@@ -17,11 +17,11 @@ const verifyReCaptcha = require("../utils/verifyReCaptcha");
 const auth = require("../utils/auth");
 const router = express.Router();
 
-router.post("/search", searchUsers);
+router.post("/search", auth, searchUsers);
 
 router.get('/logout', auth, logout);
 
-router.get("/user/:username", getUser);
+router.get("/user/:username", auth, getUser);
 
 router.put("/edit", auth, editUser);
 
@@ -33,13 +33,13 @@ router.post('/login', login);
 
 router.post("/verify", verifyLoggedIn);
 
-router.post("/follow/:username", followUser);
+router.post("/follow/:username", auth, followUser);
 
-router.post("/unfollow/:username", unfollowUser);
+router.post("/unfollow/:username", auth, unfollowUser);
 
-router.post("/cancel-request/:username", cancelRequest);
+router.post("/cancel-request/:username", auth, cancelRequest);
 
-router.post("/handle-request", handleRequest);
+router.post("/handle-request", auth, handleRequest);
 
 router.post("/verify/reCaptcha", verifyReCaptcha);
 

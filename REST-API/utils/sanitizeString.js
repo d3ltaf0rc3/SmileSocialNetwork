@@ -1,5 +1,5 @@
 function sanitizeString(str) {
-    str = str.replace(/[^a-z0-9._]/gim, "");
+    str = str.replace(/[^\w.]/gim, "");
     return str.trim();
 }
 
