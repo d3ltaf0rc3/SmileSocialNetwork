@@ -5,15 +5,15 @@ import Textarea from "../../textarea";
 import PostContext from '../../../contexts/PostContext';
 
 const Edit = (props) => {
-    const context = useContext(PostContext);
-    const [location, setLocation] = useState(context.post.location);
-    const [description, setDescription] = useState(context.post.description);
+    const post = useContext(PostContext);
+    const [location, setLocation] = useState(post.location);
+    const [description, setDescription] = useState(post.description);
 
     const editPost = (e) => {
         e.preventDefault();
 
-        if (location !== context.post.location || description !== context.post.description) {
-            fetch(`${process.env.REACT_APP_API_URL}/api/posts/edit/${context.post._id}`, {
+        if (location !== post.location || description !== post.description) {
+            fetch(`${process.env.REACT_APP_API_URL}/api/posts/edit/${post._id}`, {
                 method: "put",
                 headers: {
                     "Content-Type": "application/json"

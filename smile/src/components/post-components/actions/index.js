@@ -7,11 +7,11 @@ import PostContext from '../../../contexts/PostContext';
 import UserContext from '../../../contexts/AuthContext';
 
 const PostActions = (props) => {
-    const context = useContext(PostContext);
+    const post = useContext(PostContext);
     const user = useContext(UserContext);
 
     const likePost = () => {
-        fetch(`${process.env.REACT_APP_API_URL}/api/posts/like/${context.post._id}`, {
+        fetch(`${process.env.REACT_APP_API_URL}/api/posts/like/${post._id}`, {
             method: "put",
             credentials: "include"
         })
@@ -20,7 +20,7 @@ const PostActions = (props) => {
     };
 
     const unlikePost = () => {
-        fetch(`${process.env.REACT_APP_API_URL}/api/posts/unlike/${context.post._id}`, {
+        fetch(`${process.env.REACT_APP_API_URL}/api/posts/unlike/${post._id}`, {
             method: "put",
             credentials: "include"
         })
@@ -31,12 +31,12 @@ const PostActions = (props) => {
     return (
         <div className={styles["post-actions"]}>
             <span>
-                {context.post.likes.includes(user.user._id) ?
+                {post.likes.includes(user.user._id) ?
                     <img src={redHeartIcon} className={styles["post-action"]} alt="heart" onClick={unlikePost} /> :
                     <img src={heartIcon} className={styles["post-action"]} alt="heart" onClick={likePost} />}
             </span>
             <span>
-                <label htmlFor={context.post._id}><img src={commentIcon} className={styles["post-action"]} alt="comment" /></label>
+                <label htmlFor={post._id}><img src={commentIcon} className={styles["post-action"]} alt="comment" /></label>
             </span>
         </div>
     )

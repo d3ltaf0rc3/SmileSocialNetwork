@@ -7,17 +7,17 @@ import PostComment from '../post-comment';
 import PostContext from '../../../contexts/PostContext';
 
 const SideContent = (props) => {
-    const context = useContext(PostContext);
+    const post = useContext(PostContext);
 
     return (
         <div className={styles.content}>
             <ul className={styles["comment-section"]}>
-                {context.post.description ?
+                {post.description ?
                     <PostComment
-                        imageUrl={context.post.postedBy.profilePicture}
-                        author={context.post.postedBy.username}
-                        comment={context.post.description} /> : null}
-                {context.post.comments.map(comment =>
+                        imageUrl={post.postedBy.profilePicture}
+                        author={post.postedBy.username}
+                        comment={post.description} /> : null}
+                {post.comments.map(comment =>
                     <PostComment
                         key={comment._id}
                         imageUrl={comment.postedBy.profilePicture}
@@ -27,8 +27,8 @@ const SideContent = (props) => {
 
             <section className={styles.actions}>
                 <Actions setUpdate={props.setUpdate} />
-                <Likes likes={context.post.likes.length} />
-                <AddComment setUpdate={props.setUpdate} id={context.post._id} />
+                <Likes likes={post.likes.length} />
+                <AddComment setUpdate={props.setUpdate} id={post._id} />
             </section>
         </div>
     )

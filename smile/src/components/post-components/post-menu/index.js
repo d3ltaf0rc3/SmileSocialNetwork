@@ -5,11 +5,11 @@ import { withRouter } from 'react-router-dom';
 import Edit from '../edit';
 
 const PostMenu = (props) => {
-    const context = useContext(PostContext);
+    const post = useContext(PostContext);
     const [displayEdit, setDisplay] = useState(false);
 
     const deletePost = () => {
-        fetch(`${process.env.REACT_APP_API_URL}/api/posts/delete/${context.post._id}`, {
+        fetch(`${process.env.REACT_APP_API_URL}/api/posts/delete/${post._id}`, {
             method: "delete",
             credentials: "include"
         })
