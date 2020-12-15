@@ -31,7 +31,7 @@ const ProfileHeader = () => {
                 <div className={styles.title}>
                     <h3 className={styles.username}>{profileContext.username}</h3>
                     {context.user.username === profileContext.username ?
-                        <Link className={styles.button} to="/settings">Edit profile</Link> :
+                        <Link className={styles.button} to="/account/settings">Edit profile</Link> :
                         profileContext.doesUserFollow ? <button onClick={unfollowUser} className={styles.button}>Unfollow</button> :
                             profileContext.requests.some(user => user.username === context.user.username) ? <button onClick={cancelRequest} className={styles.button}>Requested</button> : <button onClick={followUser} className={styles.button}>Follow</button>}
                 </div>

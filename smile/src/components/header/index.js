@@ -20,7 +20,7 @@ const Header = () => {
                 <ul className={styles["nav-icons"]}>
                     <li><Link to="/"><img className={styles.icon} src={homeIcon} alt="home" /></Link></li>
                     <li><Requests /></li>
-                    <li><Link to="/add-post"><img className={styles.icon} src={addIcon} alt="add post" /></Link></li>
+                    <li><Link to="/post/add"><img className={styles.icon} src={addIcon} alt="add post" /></Link></li>
                     <li>{context.user === null ? <img className={styles.icon} src={userIcon} alt="profile" />: <Link to={`/user/${context.user.username}`}><img className={styles.icon} src={userIcon} alt="profile" /></Link>}</li>
                 </ul>
             </nav>

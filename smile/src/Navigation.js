@@ -20,8 +20,8 @@ const Navigation = () => {
         <Route path="/login" render={() => context.loggedIn === false ? <LoginPage /> : <Redirect to="/" />} />
         <Route path="/register" render={() => context.loggedIn === false ? <RegisterPage /> : <Redirect to="/" />} />
         <Route path="/user/:username" render={() => context.loggedIn === true ? <ProfilePage /> : <Redirect to="/login" />} />
-        <Route path="/settings" render={() => context.loggedIn === true ? <SettingsPage /> : <Redirect to="/login" />} />
-        <Route path="/add-post" render={() => context.loggedIn === true ? <AddPostPage /> : <Redirect to="/login" />} />
+        <Route path="/account/settings" render={() => context.loggedIn === true ? <SettingsPage /> : <Redirect to="/login" />} />
+        <Route path="/post/add" render={() => context.loggedIn === true ? <AddPostPage /> : <Redirect to="/login" />} />
         <Route path="/change-password" render={() => context.loggedIn === true ? <ChangePasswordPage /> : <Redirect to="/login" />} />
         <Route component={ErrorPage} />
       </Switch>
