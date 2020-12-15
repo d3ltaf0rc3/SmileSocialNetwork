@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import AuthContext from './contexts/AuthContext';
+import Spinner from './components/loading-spinner';
 
 const Auth = (props) => {
     const [loggedIn, setLogged] = useState(null);
@@ -41,7 +42,7 @@ const Auth = (props) => {
     }, [update]);
 
     if (loggedIn === null) {
-        return <div></div>
+        return <div style={{ width: "100%", display: "grid", placeItems: "center" }}><Spinner /></div>
     }
 
     return (
