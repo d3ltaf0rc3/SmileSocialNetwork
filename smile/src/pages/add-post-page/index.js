@@ -4,7 +4,7 @@ import Head from '../../components/head';
 import Header from '../../components/header';
 import Input from '../../components/input';
 import Textarea from '../../components/textarea';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 const AddPostPage = (props) => {
     const [post, setPost] = useState(null);
@@ -48,6 +48,18 @@ const AddPostPage = (props) => {
 
     const removeImage = () => {
         setPost(null);
+
+        fetch(`${process.env.REACT_APP_API_URL}/api/posts/delete/cloudinary/${post.public_id}`, {
+            method: "delete",
+            credentials: "include"
+        });
+    };
+
+    const cancelHandler = () => {
+        if (post) {
+            removeImage();
+        }
+        props.history.push("/");
     };
 
     return (
@@ -77,7 +89,7 @@ const AddPostPage = (props) => {
 
                         <div className={styles.buttons}>
                             <button onClick={addPost} disabled={!post} className={styles.btn}><i className={`${styles.icon} fas fa-plus`}></i>Add post</button>
-                            <Link to="/"><button className={`${styles.btn} ${styles.remove}`}><i className={`${styles.icon} fas fa-times`}></i>Cancel</button></Link>
+                            <button onClick={cancelHandler} className={`${styles.btn} ${styles.remove}`}><i className={`${styles.icon} fas fa-times`}></i>Cancel</button>
                         </div>
                     </form>
                 </div>

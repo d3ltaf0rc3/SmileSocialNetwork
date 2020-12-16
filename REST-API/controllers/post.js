@@ -1,16 +1,20 @@
 const Post = require("../models/Post");
 const User = require("../models/User");
 const Comment = require("../models/Comment");
+const cloudinary = require("cloudinary");
 const decodeCookie = require("../utils/decode-cookie");
 
+cloudinary.config({
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.API_KEY,
+    api_secret: process.env.API_SECRET
+});
+
 async function createAPost(req, res) {
-    const { imageUrl, description, location } = req.body;
     try {
         const decoded = decodeCookie(req.cookies["auth-token"]);
         const newPost = new Post({
-            imageUrl,
-            description,
-            location,
+            ...req.body,
             postedBy: decoded.userID,
             createdAt: Date.now()
         });
@@ -129,13 +133,24 @@ async function addComment(req, res) {
     }
 }
 
+async function deletePostFromCloudinary(req, res) {
+    const public_id = req.params.id;
+
+    try {
+        await cloudinary.v2.uploader.destroy(public_id);
+    } catch (error) {
+        return res.status(500).send(error);
+    }
+}
+
 async function deletePost(req, res) {
     const id = req.params.postId;
 
     try {
         const decoded = decodeCookie(req.cookies["auth-token"]);
+        const post = await Post.findByIdAndDelete(id);
+        await cloudinary.v2.uploader.destroy(post.public_id);
         await User.findByIdAndUpdate(decoded.userID, { $pull: { posts: id } });
-        await Post.findByIdAndDelete(id);
         return res.status(204).send();
     } catch (error) {
         return res.status(500).send(error);
@@ -164,5 +179,6 @@ module.exports = {
     unlikePost,
     addComment,
     deletePost,
-    editPost
+    editPost,
+    deletePostFromCloudinary
 };

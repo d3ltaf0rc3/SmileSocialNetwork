@@ -8,7 +8,8 @@ const {
     unlikePost,
     addComment,
     deletePost,
-    editPost
+    editPost,
+    deletePostFromCloudinary
 } = require("../controllers/post");
 const router = express.Router();
 
@@ -27,5 +28,7 @@ router.put("/add-comment/:postId", auth, addComment);
 router.put("/edit/:postId", auth, editPost);
 
 router.delete("/delete/:postId", auth, deletePost);
+
+router.delete("/delete/cloudinary/:id", auth, deletePostFromCloudinary);
 
 module.exports = router;

@@ -12,6 +12,9 @@
     | RECAPTCHA_SERVER_KEY | reCAPTCHA SERVER KEY |
     | PORT                 | Port for REST API    |
     | APP_URL              | React App URL        |
+    | CLOUD_NAME           | Cloudinary Cloud Name|
+    | API_KEY              | Cloudinary API Key   |
+    | API_SECRET           | Cloudinary API Secret|
 
 * Replace the DB URL located in [./config/database.js](./config/database.js)
 

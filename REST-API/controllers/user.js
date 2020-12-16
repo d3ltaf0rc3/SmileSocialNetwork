@@ -77,10 +77,8 @@ async function logout(req, res) {
 }
 
 async function editUser(req, res) {
-    const user = req.body.user;
-
     try {
-        await User.findByIdAndUpdate({ _id: user._id }, user, { new: true });
+        const user = await User.findByIdAndUpdate({ _id: req.body._id }, { ...req.body }, { new: true });
         return res.send(user);
     } catch (error) {
         return res.status(500).send({

@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "bcrypt": "^5.0.0",
+    "cloudinary": "^1.23.0",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "es6-promise": "^4.2.8",

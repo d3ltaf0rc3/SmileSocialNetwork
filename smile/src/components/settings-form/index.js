@@ -16,12 +16,7 @@ const SettingsForm = (props) => {
 
         if (name !== context.user.name ||
             bio !== context.user.description ||
-            isPrivate !== context.user.isPrivate) {     
-            const user = context.user;
-            user.name = name;
-            user.description = bio;
-            user.isPrivate = isPrivate;
-
+            isPrivate !== context.user.isPrivate) {
             fetch(`${process.env.REACT_APP_API_URL}/api/edit`, {
                 method: "put",
                 headers: {
@@ -29,7 +24,10 @@ const SettingsForm = (props) => {
                 },
                 credentials: "include",
                 body: JSON.stringify({
-                    user
+                    ...context.user,
+                    name,
+                    description: bio,
+                    isPrivate
                 })
             })
                 .then(() => {
