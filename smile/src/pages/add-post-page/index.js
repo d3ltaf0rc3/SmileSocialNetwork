@@ -7,7 +7,7 @@ import Textarea from '../../components/textarea';
 import { Link, withRouter } from 'react-router-dom';
 
 const AddPostPage = (props) => {
-    const [post, setPost] = useState("");
+    const [post, setPost] = useState(null);
     const [location, setLocation] = useState("");
     const [caption, setCaption] = useState("");
 
@@ -17,7 +17,7 @@ const AddPostPage = (props) => {
             uploadPreset: "user_posts"
         }, (error, result) => {
             if (result.event === "success") {
-                setPost(result.info.url);
+                setPost({ url: result.info.secure_url, public_id: result.info.public_id });
             } else if (error) {
                 console.error(error);
             }
@@ -36,36 +36,51 @@ const AddPostPage = (props) => {
             },
             credentials: "include",
             body: JSON.stringify({
-                imageUrl: post,
+                imageUrl: post.url,
                 location,
-                description: caption
+                description: caption,
+                public_id: post.public_id
             })
         })
             .then(() => props.history.push("/"))
             .catch(err => console.error(err));
     };
 
+    const removeImage = () => {
+        setPost(null);
+    };
+
     return (
         <Fragment>
-            <Head title="Post a photo | Smile" />
+            <Head title="Add a post | Smile" />
             <Header />
 
             <div className={styles.container}>
-                {post ? post.includes("video") ? 
-                <video className={styles.preview} src={post} alt="preview" autoPlay loop /> : 
-                <img className={styles.preview} src={post} alt="preview" /> : null}
-                {post ?
-                    <button onClick={() => setPost("")} className={`${styles.btn} ${styles.remove}`}>Remove image/video</button> :
-                    <button className={styles["btn"]} onClick={openWidget}>Upload image/video</button>}
-                <form className={styles.form} onSubmit={(e) => e.preventDefault()}>
-                    <Input onChange={(e) => setLocation(e.target.value)} type="text" placeholder="Location" />
-                    <Textarea onChange={(e) => setCaption(e.target.value)} placeholder="Write a caption..." />
-
-                    <div className={styles.buttons}>
-                        <button onClick={addPost} className={styles.btn}>Add post</button>
-                        <Link to="/"><button className={`${styles.btn} ${styles.remove}`}>Cancel</button></Link>
+                <header className={styles.heading}>
+                    <h1><i className={`${styles.icon} fas fa-plus`}></i>Add a post</h1>
+                </header>
+                <div className={styles["inner-container"]}>
+                    <div className={styles["image-container"]}>
+                        {post ? post.url.includes("video") ?
+                            <video className={styles.preview} src={post.url} alt="preview" autoPlay loop /> :
+                            <img className={styles.preview} src={post.url} alt="preview" /> : null}
+                        {!post ? <img className={styles.preview} src="https://res.cloudinary.com/smile-social-network/image/upload/v1608133374/no-product-image_cb5nci.png" alt="preview" /> : null}
+                        {post ?
+                            <button onClick={removeImage} className={`${styles.btn} ${styles.remove}`}><i className={`${styles.icon} fas fa-times`}></i>Remove image/video</button> :
+                            <button onClick={openWidget} className={styles.btn}><i className={`${styles.icon} fas fa-cloud-upload-alt`}></i>Upload image/video</button>}
                     </div>
-                </form>
+                    <form className={styles.form} onSubmit={(e) => e.preventDefault()}>
+                        <div>
+                            <Input onChange={(e) => setLocation(e.target.value)} type="text" placeholder="Location" />
+                            <Textarea onChange={(e) => setCaption(e.target.value)} placeholder="Write a caption..." />
+                        </div>
+
+                        <div className={styles.buttons}>
+                            <button onClick={addPost} disabled={!post} className={styles.btn}><i className={`${styles.icon} fas fa-plus`}></i>Add post</button>
+                            <Link to="/"><button className={`${styles.btn} ${styles.remove}`}><i className={`${styles.icon} fas fa-times`}></i>Cancel</button></Link>
+                        </div>
+                    </form>
+                </div>
             </div>
         </Fragment>
     )
