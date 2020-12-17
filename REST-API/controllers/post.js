@@ -149,7 +149,7 @@ async function deletePost(req, res) {
     try {
         const decoded = decodeCookie(req.cookies["auth-token"]);
         const post = await Post.findByIdAndDelete(id);
-        await cloudinary.v2.uploader.destroy(post.public_id);
+        await cloudinary.v2.uploader.destroy(post.public_id, { resource_type: post.imageUrl.includes("video") ? "video" : "image" });
         await User.findByIdAndUpdate(decoded.userID, { $pull: { posts: id } });
         return res.status(204).send();
     } catch (error) {
