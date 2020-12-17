@@ -1,4 +1,4 @@
-const editUser = (user, context, history) => {
+const editUser = (image, context, history) => {
     fetch(`${process.env.REACT_APP_API_URL}/api/edit`, {
         method: "put",
         headers: {
@@ -6,7 +6,8 @@ const editUser = (user, context, history) => {
         },
         credentials: "include",
         body: JSON.stringify({
-            user
+            ...context.user,
+            ...image
         })
     })
         .then(() => {

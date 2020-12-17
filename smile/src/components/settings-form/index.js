@@ -40,12 +40,19 @@ const SettingsForm = (props) => {
 
     return (
         <form className={styles.form}>
-            <Input value={props.name} onChange={(e) => setName(e.target.value)} placeholder="Name" />
-            <Textarea onChange={(e) => setBio(e.target.value)} value={props.bio} placeholder="Bio" />
+            <div className={styles["input-container"]}>
+                <label>Name</label>
+                <Input value={props.name} onChange={(e) => setName(e.target.value)} placeholder="Name" type="text" />
+            </div>
+            <div className={styles["input-container"]}>
+                <label>Bio</label>
+                <Textarea onChange={(e) => setBio(e.target.value)} value={props.bio} placeholder="Bio" />
+            </div>
 
-            <div className={styles["checkbox-container"]}>
+            <div className={styles["switch-box"]}>
                 <label htmlFor="private-profile-checkbox">Private profile</label>
                 <input
+                    className={styles.switch}
                     onChange={(e) => setIsPrivate(e.target.checked)}
                     defaultChecked={props.isPrivate}
                     id="private-profile-checkbox"

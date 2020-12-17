@@ -1,21 +1,20 @@
 .form-container {
-    border: 1.2px solid rgb(205, 205, 205);
-    width: 30%;
-    margin: 13rem auto;
-    padding: 2rem;
-    font-size: 16px;
+    border: 1px solid rgb(205, 205, 205);
+    width: 50%;
+    margin: 7rem auto;
+    padding: 3rem;
     background-color: #fff;
-    border-radius: 4px;
+    border-radius: 5px;
 }
 
-.buttons {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.form-container span {
+    font-size: 20px;
+    font-weight: 100;
 }
 
-.buttons>button:first-child {
-    color: #0095f6;
+.form-container img {
+    height: 45px;
+    width: 45px;
 }
 
 .btn {
@@ -28,6 +27,11 @@
     font-size: 14px;
     font-weight: 600;
     color: #ed4956;
+    font-size: 16px;
+}
+
+.buttons>button:first-child {
+    color: #0095f6;
 }
 
 .avatar-actions {
