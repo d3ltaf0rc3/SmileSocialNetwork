@@ -20,7 +20,7 @@ const ReCaptcha = (props) => {
             .catch(err => console.error(err));
     };
 
-    return <ReCAPTCHA sitekey="6LfBPrsZAAAAALhleYy4u0a0Te4D6G3WewLQ3mXr" onChange={onChange} />
+    return <ReCAPTCHA sitekey={process.env.REACT_APP_SITE_KEY} onChange={onChange} />
 };
 
 export default ReCaptcha;

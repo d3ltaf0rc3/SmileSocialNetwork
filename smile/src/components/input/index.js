@@ -6,6 +6,7 @@ const Input = (props) => {
         <div className={styles["input-container"]}>
             <input
                 className={styles["custom-input"]}
+                name={props.name}
                 autoComplete="off"
                 defaultValue={props.value}
                 onChange={props.onChange}

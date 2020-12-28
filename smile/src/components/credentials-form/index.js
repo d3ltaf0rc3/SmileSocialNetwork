@@ -42,10 +42,10 @@ const CredentialsForm = (props) => {
                     {error || props.error? <ErrorComponent error={error || props.error} /> : null}
 
                     <form className={styles.form} onSubmit={submitHandler}>
-                        <Input type="text" value={username} placeholder="Username" onChange={(event) => setUsername(event.target.value)} />
-                        <Input type="password" value={password} placeholder="Password" onChange={(event) => setPassword(event.target.value)} />
+                        <Input name="username" type="text" value={username} placeholder="Username" onChange={(event) => setUsername(event.target.value)} />
+                        <Input name="password" type="password" value={password} placeholder="Password" onChange={(event) => setPassword(event.target.value)} />
                         {props.formType === "register" ?
-                            <Input type="password" value={rePassword} placeholder="Repeat password" onChange={(event) => setRePassword(event.target.value)} /> : null}
+                            <Input name="repeatPassword" type="password" value={rePassword} placeholder="Repeat password" onChange={(event) => setRePassword(event.target.value)} /> : null}
                         <ReCaptcha setDisabled={() => setDisabled(false)} />
                         <button disabled={disabled} className={styles.btn}>{props.formType === "register" ?
                             "Register" : "Login"}</button>
