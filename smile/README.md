@@ -16,6 +16,7 @@
 ## Project set up and running
 * After cloning the repo, run **`npm install`**
 * Set **``REACT_APP_API_URL``** env variable
+* Set **``REACT_APP_SITE_KEY``** env variable
 * Run **`npm run start`**
 
 ### The app runs on **`localhost:3000`**
