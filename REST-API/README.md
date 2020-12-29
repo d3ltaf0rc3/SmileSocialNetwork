@@ -16,7 +16,5 @@
     | API_KEY              | Cloudinary API Key   |
     | API_SECRET           | Cloudinary API Secret|
 
-* Replace the DB URL located in [./config/database.js](./config/database.js)
-
 ## 2. Start the REST API
 * Run **node(mon) -r dotenv/config index.js**
