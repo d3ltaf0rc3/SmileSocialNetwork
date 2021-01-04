@@ -5,7 +5,7 @@ const chance = new Chance();
 
 describe("Login Page tests", () => {
     const wrongUsername = chance.string({ pool: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.", length: 7 });
-    const wrongPassword = chance.string({ pool: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_", length: 8 })
+    const wrongPassword = chance.string({ pool: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_", length: 8 });
 
     beforeEach(() => {
         cy.visit("http://localhost:3000/login");
