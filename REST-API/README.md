@@ -17,4 +17,4 @@
     | API_SECRET           | Cloudinary API Secret|
 
 ## 2. Start the REST API
-* Run **node(mon) -r dotenv/config index.js**
+* Run **npm run start:dev** or **node(mon) -r dotenv/config index.js**
