@@ -1,7 +1,6 @@
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const decodeCookie = require("../utils/decode-cookie");
 const sanitizeString = require("../utils/sanitizeString");
 const cookieOptions = require("../config/cookie-options");
 
@@ -16,8 +15,7 @@ async function register(req, res) {
                     const userObject = await user.save();
 
                     const token = jwt.sign({
-                        userID: userObject._id,
-                        username: userObject.username
+                        userID: userObject._id
                     }, process.env.JWT_KEY);
 
                     return res.cookie("auth-token", token, cookieOptions).send(user);
@@ -58,8 +56,7 @@ async function login(req, res) {
 
     if (status) {
         const token = jwt.sign({
-            userID: user._id,
-            username: user.username
+            userID: user._id
         }, process.env.JWT_KEY);
 
         return res.cookie("auth-token", token, cookieOptions).send(user);
@@ -119,15 +116,14 @@ async function changePassword(req, res) {
 
     if (password === repeatPassword) {
         try {
-            const decodedCookie = decodeCookie(req.cookies["auth-token"]);
-            const currentUser = await User.findById(decodedCookie.userID);
+            const currentUser = await User.findById(req.userId);
             const result = await bcrypt.compare(oldPassword, currentUser.password);
 
             if (result) {
                 const salt = bcrypt.genSaltSync(10);
                 const hash = bcrypt.hashSync(password, salt);
 
-                await User.findByIdAndUpdate(decodedCookie.userID, { password: hash });
+                await User.findByIdAndUpdate(req.userId, { password: hash });
                 return res.clearCookie("auth-token").send({
                     message: "Password successfully changed!"
                 });
@@ -149,13 +145,8 @@ async function changePassword(req, res) {
 }
 
 async function verifyLoggedIn(req, res) {
-    if (!req.cookies["auth-token"]) {
-        return res.status(204).send();
-    }
-
     try {
-        const decoded = decodeCookie(req.cookies["auth-token"]);
-        const user = await User.findOne({ username: decoded.username })
+        const user = await User.findById(req.userId)
             .populate("followers")
             .populate("following")
             .populate("requests");
@@ -195,13 +186,12 @@ async function followUser(req, res) {
     const userToFollow = req.params.username;
 
     try {
-        const decoded = decodeCookie(req.cookies["auth-token"]);
         const user = await User.findOne({ username: userToFollow });
         if (user.isPrivate) {
-            await User.findByIdAndUpdate(user._id, { $addToSet: { requests: decoded.userID } });
+            await User.findByIdAndUpdate(user._id, { $addToSet: { requests: req.userId } });
         } else {
-            await User.findByIdAndUpdate(user._id, { $addToSet: { followers: decoded.userID } });
-            await User.findByIdAndUpdate(decoded.userID, { $addToSet: { following: user._id } });
+            await User.findByIdAndUpdate(user._id, { $addToSet: { followers: req.userId } });
+            await User.findByIdAndUpdate(req.userId, { $addToSet: { following: user._id } });
         }
         return res.status(204).send();
     } catch (error) {
@@ -215,11 +205,10 @@ async function unfollowUser(req, res) {
     const userToUnfollow = req.params.username;
 
     try {
-        const decoded = decodeCookie(req.cookies["auth-token"]);
         const user = await User.findOne({ username: userToUnfollow });
 
-        await User.findByIdAndUpdate(user._id, { $pull: { followers: decoded.userID } });
-        await User.findByIdAndUpdate(decoded.userID, { $pull: { following: user._id } });
+        await User.findByIdAndUpdate(user._id, { $pull: { followers: req.userId } });
+        await User.findByIdAndUpdate(req.userId, { $pull: { following: user._id } });
 
         return res.status(204).end();
     } catch (error) {
@@ -233,9 +222,8 @@ async function cancelRequest(req, res) {
     const username = req.params.username;
 
     try {
-        const decoded = decodeCookie(req.cookies["auth-token"]);
         const user = await User.findOne({ username });
-        await User.findByIdAndUpdate(user._id, { $pull: { requests: decoded.userID } });
+        await User.findByIdAndUpdate(user._id, { $pull: { requests: req.userId } });
 
         return res.status(204).end();
     } catch (error) {
@@ -250,13 +238,12 @@ async function handleRequest(req, res) {
     const userToHandle = req.body.username;
 
     try {
-        const decoded = decodeCookie(req.cookies["auth-token"]);
         const user = await User.findOne({ username: userToHandle });
-        await User.findByIdAndUpdate(decoded.userID, { $pull: { requests: user._id } });
+        await User.findByIdAndUpdate(req.userId, { $pull: { requests: user._id } });
 
         if (action === "accept") {
-            await User.findByIdAndUpdate(user._id, { $addToSet: { following: decoded.userID } });
-            await User.findByIdAndUpdate(decoded.userID, { $addToSet: { followers: user._id } });
+            await User.findByIdAndUpdate(user._id, { $addToSet: { following: req.userId } });
+            await User.findByIdAndUpdate(req.userId, { $addToSet: { followers: user._id } });
         }
         return res.status(204).end();
     } catch (error) {
