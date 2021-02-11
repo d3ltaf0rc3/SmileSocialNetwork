@@ -19,7 +19,6 @@
 }
 
 .post-image {
-    height: 100%;
     width: 600px;
     object-fit: cover;
 }
