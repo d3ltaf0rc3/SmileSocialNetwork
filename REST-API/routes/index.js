@@ -10,7 +10,7 @@ router.put("/edit", auth, editUser);
 router.put("/change-password", auth, changePassword);
 router.post('/register', register);
 router.post('/login', login);
-router.post("/verify", auth, verifyLoggedIn);
+router.post("/verify", verifyLoggedIn);
 router.post("/follow/:username", auth, followUser);
 router.post("/unfollow/:username", auth, unfollowUser);
 router.post("/cancel-request/:username", auth, cancelRequest);

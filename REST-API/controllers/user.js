@@ -145,14 +145,19 @@ async function changePassword(req, res) {
 }
 
 async function verifyLoggedIn(req, res) {
+    if (!req.cookies["auth-token"]) {
+        return res.status(204).send();
+    }
+
     try {
-        const user = await User.findById(req.userId)
+        const decoded = jwt.verify(req.cookies["auth-token"], process.env.JWT_KEY);
+        const user = await User.findById(decoded.userID)
             .populate("followers")
             .populate("following")
             .populate("requests");
         return res.send(user);
     } catch (error) {
-        res.status(401).send({
+        res.status(500).send({
             error: error.message
         });
     }
