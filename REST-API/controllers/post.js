@@ -142,6 +142,7 @@ async function deletePost(req, res) {
 
     try {
         const post = await Post.findByIdAndDelete(id);
+        post.comments.forEach(async comment => await Comment.findByIdAndDelete(comment._id));
         await cloudinary.v2.uploader.destroy(post.public_id, { resource_type: post.imageUrl.includes("video") ? "video" : "image" });
         await User.findByIdAndUpdate(req.userId, { $pull: { posts: id } });
         return res.status(204).send();
