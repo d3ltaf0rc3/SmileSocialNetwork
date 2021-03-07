@@ -10,15 +10,15 @@
     "start:dev": "nodemon -r dotenv/config index.js"
   },
   "dependencies": {
-    "bcrypt": "^5.0.0",
-    "cloudinary": "^1.23.0",
+    "bcrypt": "^5.0.1",
+    "cloudinary": "^1.25.0",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "es6-promise": "^4.2.8",
     "express": "^4.17.1",
     "isomorphic-fetch": "^3.0.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.11.10"
+    "mongoose": "^5.11.18"
   },
   "devDependencies": {
     "dotenv": "^8.2.0",
