@@ -11,14 +11,14 @@
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
-    "cloudinary": "^1.25.0",
+    "cloudinary": "^1.25.1",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "es6-promise": "^4.2.8",
     "express": "^4.17.1",
     "isomorphic-fetch": "^3.0.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.11.18"
+    "mongoose": "^5.12.2"
   },
   "devDependencies": {
     "dotenv": "^8.2.0",
