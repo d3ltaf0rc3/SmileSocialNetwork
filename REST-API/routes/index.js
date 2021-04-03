@@ -6,11 +6,11 @@ const router = express.Router();
 
 router.get('/logout', auth, logout);
 router.get("/user/:username", auth, getUser);
+router.get("/verify", verifyLoggedIn);
 router.put("/edit", auth, editUser);
 router.put("/change-password", auth, changePassword);
 router.post('/register', register);
 router.post('/login', login);
-router.post("/verify", verifyLoggedIn);
 router.post("/follow/:username", auth, followUser);
 router.post("/unfollow/:username", auth, unfollowUser);
 router.post("/cancel-request/:username", auth, cancelRequest);

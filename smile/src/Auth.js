@@ -23,7 +23,7 @@ const Auth = (props) => {
 
     useEffect(() => {
         fetch(`${process.env.REACT_APP_API_URL}/api/verify`, {
-            method: "post",
+            method: "get",
             credentials: "include"
         })
             .then(res => {
