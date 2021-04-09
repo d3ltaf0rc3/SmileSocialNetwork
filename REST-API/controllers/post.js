@@ -83,24 +83,16 @@ async function getFeed(req, res) {
     }
 }
 
-async function likePost(req, res) {
+async function handleAction(req, res) {
     const postId = req.params.postId;
+    const action = req.params.action;
 
     try {
-        await Post.findByIdAndUpdate(postId, { $addToSet: { likes: req.userId } });
-        return res.status(204).send();
-    } catch (error) {
-        return res.status(500).send({
-            error: error.message
-        });
-    }
-}
-
-async function unlikePost(req, res) {
-    const postId = req.params.postId;
-
-    try {
-        await Post.findByIdAndUpdate(postId, { $pull: { likes: req.userId } });
+        if (action === "like") {
+            await Post.findByIdAndUpdate(postId, { $addToSet: { likes: req.userId } });
+        } else if (action === "unlike") {
+            await Post.findByIdAndUpdate(postId, { $pull: { likes: req.userId } });
+        }
         return res.status(204).send();
     } catch (error) {
         return res.status(500).send({
@@ -169,8 +161,7 @@ module.exports = {
     createAPost,
     getPost,
     getFeed,
-    likePost,
-    unlikePost,
+    handleAction,
     addComment,
     deletePost,
     editPost,

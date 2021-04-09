@@ -15,7 +15,7 @@ const Post = (props) => {
     const [didUpdate, setUpdate] = useState();
 
     useEffect(() => {
-        fetch(`${process.env.REACT_APP_API_URL}/api/posts/get-post/${props.id}`, {
+        fetch(`${process.env.REACT_APP_API_URL}/api/posts/get/${props.id}`, {
             method: "get",
             credentials: "include"
         })

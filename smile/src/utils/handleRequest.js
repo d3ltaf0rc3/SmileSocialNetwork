@@ -1,5 +1,5 @@
 const handleRequest = (action, username, context) => {
-    fetch(`${process.env.REACT_APP_API_URL}/api/handle-request`, {
+    fetch(`${process.env.REACT_APP_API_URL}/api/user/handle-request`, {
             method: "post",
             headers: {
                 "Content-Type": "application/json"

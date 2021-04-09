@@ -24,7 +24,7 @@ const Form = (props) => {
         } else if (!/^[\w!@#$%&?]+$/.test(password)) {
             setError("Password can only contain english letters, numbers, underscores, !, @, #, $, %, &, ? and *!");
         } else {
-            fetch(`${process.env.REACT_APP_API_URL}/api/change-password`, {
+            fetch(`${process.env.REACT_APP_API_URL}/api/user/change-password`, {
                 method: "put",
                 headers: {
                     "Content-Type": "application/json"

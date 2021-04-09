@@ -1,5 +1,5 @@
 const editUser = (image, context, history) => {
-    fetch(`${process.env.REACT_APP_API_URL}/api/edit`, {
+    fetch(`${process.env.REACT_APP_API_URL}/api/user/edit`, {
         method: "put",
         headers: {
             "Content-Type": "application/json"

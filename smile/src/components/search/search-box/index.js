@@ -7,7 +7,7 @@ const Search = (props) => {
 
     useEffect(() => {
         if (props.query.trim() !== "") {
-            fetch(`${process.env.REACT_APP_API_URL}/api/search`, {
+            fetch(`${process.env.REACT_APP_API_URL}/api/user/search`, {
                 method: "post",
                 headers: {
                     "Content-Type": "application/json"

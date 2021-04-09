@@ -22,7 +22,7 @@ const Auth = (props) => {
     };
 
     useEffect(() => {
-        fetch(`${process.env.REACT_APP_API_URL}/api/verify`, {
+        fetch(`${process.env.REACT_APP_API_URL}/api/user/verify/cookie`, {
             method: "get",
             credentials: "include"
         })

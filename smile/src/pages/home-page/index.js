@@ -15,7 +15,7 @@ const HomePage = () => {
     useEffect(() => {
         if (context.user) {
             fetch(`${process.env.REACT_APP_API_URL}/api/posts/get/feed`, {
-                method: "post",
+                method: "get",
                 credentials: "include"
             })
                 .then(res => res.json())

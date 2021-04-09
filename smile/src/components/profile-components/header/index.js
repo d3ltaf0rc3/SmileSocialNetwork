@@ -20,7 +20,12 @@ const ProfileHeader = () => {
     };
 
     const cancelRequest = () => {
-        profileActions("cancel-request", profileContext.username, profileContext.triggerUpdate);
+        fetch(`${process.env.REACT_APP_API_URL}/api/user/cancel-request/${profileContext.username}`, {
+            method: "put",
+            credentials: "include"
+        })
+            .then(() => profileContext.triggerUpdate())
+            .catch(err => console.log(err));
     };
 
     return (

@@ -187,35 +187,26 @@ async function searchUsers(req, res) {
     }
 }
 
-async function followUser(req, res) {
-    const userToFollow = req.params.username;
+async function handleAction(req, res) {
+    const username = req.params.username;
+    const action = req.params.action;
 
     try {
-        const user = await User.findOne({ username: userToFollow });
-        if (user.isPrivate) {
-            await User.findByIdAndUpdate(user._id, { $addToSet: { requests: req.userId } });
-        } else {
-            await User.findByIdAndUpdate(user._id, { $addToSet: { followers: req.userId } });
-            await User.findByIdAndUpdate(req.userId, { $addToSet: { following: user._id } });
+        const user = await User.findOne({ username });
+
+        if (action === "unfollow") {
+            await User.findByIdAndUpdate(user._id, { $pull: { followers: req.userId } });
+            await User.findByIdAndUpdate(req.userId, { $pull: { following: user._id } });
+        } else if (action === "follow") {
+            if (user.isPrivate) {
+                await User.findByIdAndUpdate(user._id, { $addToSet: { requests: req.userId } });
+            } else {
+                await User.findByIdAndUpdate(user._id, { $addToSet: { followers: req.userId } });
+                await User.findByIdAndUpdate(req.userId, { $addToSet: { following: user._id } });
+            }
         }
+        
         return res.status(204).send();
-    } catch (error) {
-        return res.status(500).send({
-            error: error.message
-        });
-    }
-}
-
-async function unfollowUser(req, res) {
-    const userToUnfollow = req.params.username;
-
-    try {
-        const user = await User.findOne({ username: userToUnfollow });
-
-        await User.findByIdAndUpdate(user._id, { $pull: { followers: req.userId } });
-        await User.findByIdAndUpdate(req.userId, { $pull: { following: user._id } });
-
-        return res.status(204).end();
     } catch (error) {
         return res.status(500).send({
             error: error.message
@@ -267,8 +258,7 @@ module.exports = {
     getUser,
     verifyLoggedIn,
     searchUsers,
-    followUser,
-    unfollowUser,
+    handleAction,
     cancelRequest,
     handleRequest
 };
