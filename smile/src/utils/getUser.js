@@ -3,22 +3,19 @@ const getUser = (history, username, setProfile) => {
         method: "get",
         credentials: "include"
     })
-        .then(res => res.json())
-        .then(user => {
-            if (user.error) {
-                return history.push("/error");
+        .then(res => {
+            if (res.ok) {
+                return res.json();
+            } else {
+                return res.text();
             }
-            setProfile({
-                username: user.username,
-                name: user.name,
-                description: user.description,
-                followers: user.followers,
-                following: user.following,
-                posts: user.posts,
-                profilePicture: user.profilePicture,
-                isPrivate: user.isPrivate,
-                requests: user.requests
-            });
+        })
+        .then(res => {
+            if (typeof res === "object") {
+                setProfile(res);
+            } else {
+                history.push("/error");
+            }
         })
         .catch(err => {
             console.log(err);

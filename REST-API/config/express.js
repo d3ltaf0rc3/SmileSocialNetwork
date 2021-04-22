@@ -5,9 +5,7 @@ const secret = process.env.SECRET;
 
 module.exports = (app) => {
     app.use(cors({ credentials: true, origin: process.env.APP_URL }));
-    app.use(express.urlencoded({
-        extended: true
-    }));
+    app.use(express.urlencoded({ extended: true }));
     app.use(express.json());
     app.use(cookieParser(secret));
 };

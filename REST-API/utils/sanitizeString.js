@@ -1,6 +1,8 @@
 function sanitizeString(str) {
-    str = str.replace(/[^\w.]/gim, "");
-    return str.trim();
+    let string = str;
+    string = string.replace(/[^\w.]/gim, "");
+    string = string.replace(/\./gim, "\\.");
+    return string.trim();
 }
 
 module.exports = sanitizeString;

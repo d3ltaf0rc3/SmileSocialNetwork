@@ -36,16 +36,20 @@ const Form = (props) => {
                     repeatPassword: rePassword
                 })
             })
-                .then(res => res.json())
-                .then(resp => {
-                    if (resp.error) {
-                        setError(resp.error);
-                    } else {
+                .then(res => {
+                    if (res.ok) {
                         context.logOut();
                         props.history.push("/login");
+                    } else {
+                        return res.text();
                     }
                 })
-                .catch(err => console.error(err));
+                .then((err) => {
+                    if (err) {
+                        setError(err);
+                    }
+                })
+                .catch(err => setError(err));
         }
     };
 

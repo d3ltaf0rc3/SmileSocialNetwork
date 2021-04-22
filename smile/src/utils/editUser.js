@@ -6,7 +6,6 @@ const editUser = (image, context, history) => {
         },
         credentials: "include",
         body: JSON.stringify({
-            ...context.user,
             ...image
         })
     })

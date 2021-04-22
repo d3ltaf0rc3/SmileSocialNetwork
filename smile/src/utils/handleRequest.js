@@ -1,4 +1,4 @@
-const handleRequest = (action, username, context) => {
+const handleRequest = (action, id, context) => {
     fetch(`${process.env.REACT_APP_API_URL}/api/user/handle-request`, {
             method: "post",
             headers: {
@@ -7,7 +7,7 @@ const handleRequest = (action, username, context) => {
             credentials: "include",
             body: JSON.stringify({
                 action,
-                username
+                id
             })
         })
             .then(() => context.triggerUpdate())

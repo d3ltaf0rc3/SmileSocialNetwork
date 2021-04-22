@@ -24,7 +24,6 @@ const SettingsForm = (props) => {
                 },
                 credentials: "include",
                 body: JSON.stringify({
-                    ...context.user,
                     name,
                     description: bio,
                     isPrivate

@@ -8,11 +8,11 @@ const Request = (props) => {
     const context = useContext(UserContext);
 
     const acceptRequest = () => {
-        handleRequest("accept", props.username, context);
+        handleRequest("accept", props.id, context);
     };
 
     const declineRequest = () => {
-        handleRequest("decline", props.username, context);
+        handleRequest("decline", props.id, context);
     };
 
     return (

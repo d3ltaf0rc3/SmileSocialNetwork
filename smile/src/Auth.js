@@ -27,15 +27,15 @@ const Auth = (props) => {
             credentials: "include"
         })
             .then(res => {
-                if (res.status === 200) {
+                if (res.ok) {
                     return res.json();
                 } else {
                     logOut();
                 }
             })
-            .then(res => {
-                if (res) {
-                    logIn(res);
+            .then(user => {
+                if (user) {
+                    logIn(user);
                 }
             })
             .catch(err => console.error(err));

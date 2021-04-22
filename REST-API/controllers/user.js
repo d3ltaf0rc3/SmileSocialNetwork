@@ -3,43 +3,37 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const sanitizeString = require("../utils/sanitizeString");
 const cookieOptions = require("../config/cookie-options");
+const { isUsernameValid, arePasswordsValid } = require("../validators/user");
+const deleteSensitiveData = require("../utils/deleteSensitiveData");
 
 async function register(req, res) {
     const { username, password, repeatPassword } = req.body;
 
-    if (password === repeatPassword) {
-        bcrypt.genSalt(10, (err, salt) => {
-            bcrypt.hash(password, salt, async (err, hash) => {
-                try {
-                    const user = new User({ username, password: hash });
-                    const userObject = await user.save();
+    try {
+        isUsernameValid(username);
+        arePasswordsValid(password, repeatPassword);
 
-                    const token = jwt.sign({
-                        userID: userObject._id
-                    }, process.env.JWT_KEY);
+        const salt = bcrypt.genSaltSync(10);
+        const hash = bcrypt.hashSync(password, salt);
 
-                    return res.cookie("auth-token", token, cookieOptions).send(user);
-                } catch (error) {
-                    if (error.code === 11000) {
-                        return res.status(409).send({
-                            error: "Username already taken!"
-                        });
-                    }
-                    return res.status(500).send({
-                        error: error.message
-                    });
-                }
-            });
-        });
-    } else {
-        return res.status(401).send({
-            error: "Both passwords should match!"
-        });
+        const user = new User({ username, password: hash });
+        await user.save();
+
+        const token = jwt.sign(user._id.toString(), process.env.JWT_KEY);
+
+        const userToSend = deleteSensitiveData(user);
+        return res.cookie("auth-token", token, cookieOptions).send(userToSend);
+    } catch (error) {
+        if (error.code === 11000) {
+            return res.status(409).send("Username already taken!");
+        }
+        return res.status(500).send(error.message);
     }
 }
 
 async function login(req, res) {
     const { username, password } = req.body;
+
     const user = await User.findOne({ username })
         .populate("followers")
         .populate("following")
@@ -47,40 +41,33 @@ async function login(req, res) {
         .populate("requests");
 
     if (user === null) {
-        return res.status(401).send({
-            error: "Wrong username or password!"
-        });
+        return res.status(401).send("Wrong username or password!");
     }
 
     const status = await bcrypt.compare(password, user.password);
 
     if (status) {
-        const token = jwt.sign({
-            userID: user._id
-        }, process.env.JWT_KEY);
+        const token = jwt.sign(user.id, process.env.JWT_KEY);
 
-        return res.cookie("auth-token", token, cookieOptions).send(user);
+        const userToSend = deleteSensitiveData(user);
+        return res.cookie("auth-token", token, cookieOptions).send(userToSend);
     } else {
-        return res.status(401).send({
-            error: "Wrong username or password!"
-        });
+        return res.status(401).send("Wrong username or password!");
     }
 }
 
 async function logout(req, res) {
-    return res.clearCookie("auth-token", cookieOptions).send({
-        message: "Logout is successful!"
-    });
+    return res.clearCookie("auth-token", cookieOptions).send("Logout is successful!");
 }
 
 async function editUser(req, res) {
     try {
-        const user = await User.findByIdAndUpdate({ _id: req.body._id }, { ...req.body }, { new: true });
-        return res.send(user);
+        const editedUser = await User.findByIdAndUpdate(req.userId, { ...req.body }, { new: true });
+
+        const userToSend = deleteSensitiveData(editedUser);
+        return res.send(userToSend);
     } catch (error) {
-        return res.status(500).send({
-            error: error.message
-        });
+        return res.status(500).send(error.message);
     }
 }
 
@@ -98,68 +85,55 @@ async function getUser(req, res) {
             .populate("requests");
 
         if (user === null) {
-            return res.status(404).send({
-                error: "User not found!"
-            });
+            return res.status(404).send("User not found!");
         }
 
-        return res.send(user);
+        const userToSend = deleteSensitiveData(user);
+        return res.send(userToSend);
     } catch (error) {
-        return res.status(500).send({
-            error: error.message
-        });
+        return res.status(500).send(error.message);
     }
 }
 
 async function changePassword(req, res) {
     const { oldPassword, password, repeatPassword } = req.body;
 
-    if (password === repeatPassword) {
-        try {
-            const currentUser = await User.findById(req.userId);
-            const result = await bcrypt.compare(oldPassword, currentUser.password);
+    try {
+        arePasswordsValid(password, repeatPassword);
 
-            if (result) {
-                const salt = bcrypt.genSaltSync(10);
-                const hash = bcrypt.hashSync(password, salt);
+        const user = await User.findById(req.userId);
+        const result = await bcrypt.compare(oldPassword, user.password);
 
-                await User.findByIdAndUpdate(req.userId, { password: hash });
-                return res.clearCookie("auth-token").send({
-                    message: "Password successfully changed!"
-                });
-            } else {
-                return res.status(401).send({
-                    error: "Wrong current password!"
-                });
-            }
-        } catch (error) {
-            return res.status(500).send({
-                error: error.message
-            });
+        if (result) {
+            const salt = bcrypt.genSaltSync(10);
+            const hash = bcrypt.hashSync(password, salt);
+
+            await User.findByIdAndUpdate(req.userId, { password: hash });
+            return res.clearCookie("auth-token").send("Password successfully changed!");
+        } else {
+            return res.status(401).send("Wrong current password!");
         }
-    } else {
-        return res.status(401).send({
-            error: "Password and repeat password don't match!"
-        });
+    } catch (error) {
+        return res.status(500).send(error.message);
     }
 }
 
 async function verifyLoggedIn(req, res) {
     if (!req.cookies["auth-token"]) {
-        return res.status(204).send();
+        return res.status(401).send("Missing auth cookie");
     }
 
     try {
-        const decoded = jwt.verify(req.cookies["auth-token"], process.env.JWT_KEY);
-        const user = await User.findById(decoded.userID)
+        const id = jwt.verify(req.cookies["auth-token"], process.env.JWT_KEY);
+        const user = await User.findById(id)
             .populate("followers")
             .populate("following")
             .populate("requests");
-        return res.send(user);
+
+        const userToSend = deleteSensitiveData(user);
+        return res.send(userToSend);
     } catch (error) {
-        res.status(500).send({
-            error: error.message
-        });
+        res.status(500).clearCookie("auth-token", cookieOptions).send(error.message);
     }
 }
 
@@ -167,85 +141,71 @@ async function searchUsers(req, res) {
     const query = sanitizeString(req.body.query);
 
     if (query === "") {
-        return res.status(404).send({
-            message: "No users matching your criteria were found"
-        });
+        return res.status(404).send("No users matching your criteria were found");
     }
 
     try {
-        const users = await User.find({ "username": { "$regex": `${query}`, "$options": "i" } });
+        const users = await User.find({ "username": { "$regex": `${query}`, "$options": "i" } }).select("username profilePicture");
+
         if (users === null) {
-            return res.status(404).send({
-                message: "No users matching your criteria were found"
-            });
+            return res.status(404).send("No users matching your criteria were found");
         }
         return res.send(users);
     } catch (error) {
-        return res.status(500).send({
-            error: error.message
-        });
+        return res.status(500).send(error.message);
     }
 }
 
 async function handleAction(req, res) {
-    const username = req.params.username;
+    const id = req.params.id;
     const action = req.params.action;
 
     try {
-        const user = await User.findOne({ username });
+        const user = await User.findById(id);
 
         if (action === "unfollow") {
-            await User.findByIdAndUpdate(user._id, { $pull: { followers: req.userId } });
-            await User.findByIdAndUpdate(req.userId, { $pull: { following: user._id } });
+            await User.findByIdAndUpdate(id, { $pull: { followers: req.userId } });
+            await User.findByIdAndUpdate(req.userId, { $pull: { following: id } });
         } else if (action === "follow") {
             if (user.isPrivate) {
-                await User.findByIdAndUpdate(user._id, { $addToSet: { requests: req.userId } });
+                await User.findByIdAndUpdate(id, { $addToSet: { requests: req.userId } });
             } else {
-                await User.findByIdAndUpdate(user._id, { $addToSet: { followers: req.userId } });
-                await User.findByIdAndUpdate(req.userId, { $addToSet: { following: user._id } });
+                await User.findByIdAndUpdate(id, { $addToSet: { followers: req.userId } });
+                await User.findByIdAndUpdate(req.userId, { $addToSet: { following: id } });
             }
         }
-        
+
         return res.status(204).send();
     } catch (error) {
-        return res.status(500).send({
-            error: error.message
-        });
+        return res.status(500).send(error.message);
     }
 }
 
 async function cancelRequest(req, res) {
-    const username = req.params.username;
+    const id = req.params.id;
 
     try {
-        const user = await User.findOne({ username });
-        await User.findByIdAndUpdate(user._id, { $pull: { requests: req.userId } });
-
+        await User.findByIdAndUpdate(id, { $pull: { requests: req.userId } });
         return res.status(204).end();
     } catch (error) {
-        return res.status(500).send({
-            error: error.message
-        });
+        return res.status(500).send(error.message);
     }
 }
 
 async function handleRequest(req, res) {
     const action = req.body.action;
-    const userToHandle = req.body.username;
+    const userToHandle = req.body.id;
 
     try {
-        const user = await User.findOne({ username: userToHandle });
-        await User.findByIdAndUpdate(req.userId, { $pull: { requests: user._id } });
+        await User.findByIdAndUpdate(req.userId, { $pull: { requests: userToHandle } });
 
         if (action === "accept") {
-            await User.findByIdAndUpdate(user._id, { $addToSet: { following: req.userId } });
-            await User.findByIdAndUpdate(req.userId, { $addToSet: { followers: user._id } });
+            await User.findByIdAndUpdate(userToHandle, { $addToSet: { following: req.userId } });
+            await User.findByIdAndUpdate(req.userId, { $addToSet: { followers: userToHandle } });
         }
         return res.status(204).end();
     } catch (error) {
-        return res.status(500).send({
-            error: error.message
-        });
+        return res.status(500).send(error.message);
     }
 }
 

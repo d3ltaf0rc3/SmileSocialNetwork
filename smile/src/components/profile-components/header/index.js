@@ -12,15 +12,15 @@ const ProfileHeader = () => {
     const profileContext = useContext(ProfileContext);
 
     const followUser = () => {
-        profileActions("follow", profileContext.username, profileContext.triggerUpdate);
+        profileActions("follow", profileContext._id, profileContext.triggerUpdate);
     };
 
     const unfollowUser = () => {
-        profileActions("unfollow", profileContext.username, profileContext.triggerUpdate);
+        profileActions("unfollow", profileContext._id, profileContext.triggerUpdate);
     };
 
     const cancelRequest = () => {
-        fetch(`${process.env.REACT_APP_API_URL}/api/user/cancel-request/${profileContext.username}`, {
+        fetch(`${process.env.REACT_APP_API_URL}/api/user/cancel-request/${profileContext._id}`, {
             method: "put",
             credentials: "include"
         })

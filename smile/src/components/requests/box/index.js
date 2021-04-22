@@ -17,6 +17,7 @@ const RequestsBox = (props) => {
                 {context.user.requests.length === 0 ?
                     <div className={styles.error}>When people ask to follow you, you'll see their requests here.</div> :
                     context.user.requests.map(req => <Request
+                        id={req._id}
                         username={req.username}
                         imageUrl={req.profilePicture}
                         key={req._id} />)}

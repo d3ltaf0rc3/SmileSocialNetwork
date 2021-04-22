@@ -1,5 +1,5 @@
-const profileActions = (type, username, rerender) => {
-    fetch(`${process.env.REACT_APP_API_URL}/api/user/action/${type}/${username}`, {
+const profileActions = (type, id, rerender) => {
+    fetch(`${process.env.REACT_APP_API_URL}/api/user/action/${type}/${id}`, {
         method: "post",
         credentials: "include"
     })

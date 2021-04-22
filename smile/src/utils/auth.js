@@ -7,12 +7,18 @@ const auth = (context, type, body, setError) => {
         credentials: "include",
         body: JSON.stringify(body)
     })
-        .then(res => res.json())
-        .then(user => {
-            if (!user.error) {
-                context.logIn(user);
+        .then(res => {
+            if (res.ok) {
+                return res.json();
             } else {
-                setError(user.error);
+                return res.text();
+            }
+        })
+        .then(res => {
+            if (typeof res === "object") {
+                context.logIn(res);
+            } else {
+                setError(res);
             }
         })
         .catch(err => console.log(err));

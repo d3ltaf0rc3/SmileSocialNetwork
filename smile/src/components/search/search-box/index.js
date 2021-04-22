@@ -17,7 +17,13 @@ const Search = (props) => {
                     query: props.query.trim()
                 })
             })
-                .then(res => res.json())
+                .then(res => {
+                    if (res.ok) {
+                        return res.json();
+                    } else {
+                        return res.text();
+                    }
+                })
                 .then(users => setUsers(users))
                 .catch(err => console.error(err));
         } else {
