@@ -19,8 +19,19 @@ const Post = (props) => {
             method: "get",
             credentials: "include"
         })
-            .then(res => res.json())
-            .then(post => setPost(post))
+            .then(res => {
+                if (res.ok) {
+                    return res.json();
+                }
+                return res.text();
+            })
+            .then(res => {
+                if (typeof res === 'object') {
+                    setPost(res);
+                } else {
+                    console.error(res);
+                }
+            })
             .catch(err => console.error(err));
     }, [props.id, didUpdate]);
 

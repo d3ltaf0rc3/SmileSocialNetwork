@@ -49,9 +49,13 @@ const AddPostPage = (props) => {
     const removeImage = () => {
         setPost(null);
 
-        fetch(`${process.env.REACT_APP_API_URL}/api/posts/delete/cloudinary/${post.public_id}`, {
+        fetch(`${process.env.REACT_APP_API_URL}/api/posts/delete/cloudinary`, {
             method: "delete",
-            credentials: "include"
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(post)
         });
     };
 

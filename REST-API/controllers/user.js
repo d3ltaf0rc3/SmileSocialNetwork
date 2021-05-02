@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const sanitizeString = require("../utils/sanitizeString");
 const cookieOptions = require("../config/cookie-options");
 const { isUsernameValid, arePasswordsValid } = require("../validators/user");
-const deleteSensitiveData = require("../utils/deleteSensitiveData");
+const { deleteUserSensitiveData } = require("../utils/deleteSensitiveData");
 
 async function register(req, res) {
     const { username, password, repeatPassword } = req.body;
@@ -21,7 +21,7 @@ async function register(req, res) {
 
         const token = jwt.sign(user._id.toString(), process.env.JWT_KEY);
 
-        const userToSend = deleteSensitiveData(user);
+        const userToSend = deleteUserSensitiveData(user);
         return res.cookie("auth-token", token, cookieOptions).send(userToSend);
     } catch (error) {
         if (error.code === 11000) {
@@ -49,7 +49,7 @@ async function login(req, res) {
     if (status) {
         const token = jwt.sign(user.id, process.env.JWT_KEY);
 
-        const userToSend = deleteSensitiveData(user);
+        const userToSend = deleteUserSensitiveData(user);
         return res.cookie("auth-token", token, cookieOptions).send(userToSend);
     } else {
         return res.status(401).send("Wrong username or password!");
@@ -64,7 +64,7 @@ async function editUser(req, res) {
     try {
         const editedUser = await User.findByIdAndUpdate(req.userId, { ...req.body }, { new: true });
 
-        const userToSend = deleteSensitiveData(editedUser);
+        const userToSend = deleteUserSensitiveData(editedUser);
         return res.send(userToSend);
     } catch (error) {
         return res.status(500).send(error.message);
@@ -88,7 +88,7 @@ async function getUser(req, res) {
             return res.status(404).send("User not found!");
         }
 
-        const userToSend = deleteSensitiveData(user);
+        const userToSend = deleteUserSensitiveData(user);
         return res.send(userToSend);
     } catch (error) {
         return res.status(500).send(error.message);
@@ -130,7 +130,7 @@ async function verifyLoggedIn(req, res) {
             .populate("following")
             .populate("requests");
 
-        const userToSend = deleteSensitiveData(user);
+        const userToSend = deleteUserSensitiveData(user);
         return res.send(userToSend);
     } catch (error) {
         res.status(500).clearCookie("auth-token", cookieOptions).send(error.message);

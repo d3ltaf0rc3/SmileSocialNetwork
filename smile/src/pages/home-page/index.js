@@ -19,8 +19,12 @@ const HomePage = () => {
                 credentials: "include"
             })
                 .then(res => res.json())
-                .then(posts => {
-                    setFeed(posts);
+                .then(res => {
+                    if (typeof res === 'object') {
+                        setFeed(res);
+                    } else {
+                        console.error(res);
+                    }
                 })
                 .catch(err => {
                     console.error(err);

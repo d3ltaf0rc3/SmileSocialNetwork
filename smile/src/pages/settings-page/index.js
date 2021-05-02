@@ -20,9 +20,16 @@ const SettingsPage = (props) => {
         }, (error, result) => {
             if (result.event === "success") {
                 if (context.user.profilePicture !== defaultUrl) {
-                    fetch(`${process.env.REACT_APP_API_URL}/api/posts/delete/cloudinary/${context.user.public_id}`, {
+                    fetch(`${process.env.REACT_APP_API_URL}/api/posts/delete/cloudinary`, {
                         method: "delete",
-                        credentials: "include"
+                        credentials: "include",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            public_id: context.user.public_id,
+                            url: context.user.profilePicture
+                        })
                     });
                 }
                 editUser({ profilePicture: result.info.secure_url, public_id: result.info.public_id }, context, props.history);
@@ -35,9 +42,16 @@ const SettingsPage = (props) => {
 
     const removeProfilePic = () => {
         if (context.user.profilePicture !== defaultUrl) {
-            fetch(`${process.env.REACT_APP_API_URL}/api/posts/delete/cloudinary/${context.user.public_id}`, {
+            fetch(`${process.env.REACT_APP_API_URL}/api/posts/delete/cloudinary`, {
                 method: "delete",
-                credentials: "include"
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    public_id: context.user.public_id,
+                    url: context.user.profilePicture
+                })
             });
             editUser({ profilePicture: defaultUrl, public_id: null }, context, props.history);
         }

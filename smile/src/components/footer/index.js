@@ -8,7 +8,7 @@ const Footer = () => {
 
     return (
         <footer className={styles.footer}>
-            <h1 className={styles.copyright}>&copy; 2020 Smile</h1>
+            <h1 className={styles.copyright}>&copy; 2021 Smile</h1>
             {loggedIn ? <Logout /> : null}
         </footer>
     );
