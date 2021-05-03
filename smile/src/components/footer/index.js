@@ -1,15 +1,23 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import styles from './index.module.css';
-import Logout from '../logout';
 import UserContext from '../../contexts/AuthContext';
 
 const Footer = () => {
-    const { loggedIn } = useContext(UserContext);
+    const { loggedIn, logOut } = useContext(UserContext);
+
+    const clickHandler = () => {
+        fetch(`${process.env.REACT_APP_API_URL}/api/user/logout`, {
+            method: "get",
+            credentials: "include"
+        })
+            .then(() => logOut())
+            .catch(err => console.error(err));
+    };
 
     return (
         <footer className={styles.footer}>
             <h1 className={styles.copyright}>&copy; 2021 Smile</h1>
-            {loggedIn ? <Logout /> : null}
+            {loggedIn ? <button type="button" onClick={clickHandler} className={styles.btn}>Logout</button> : null}
         </footer>
     );
 };

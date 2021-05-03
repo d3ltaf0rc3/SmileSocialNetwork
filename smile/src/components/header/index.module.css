@@ -1,28 +1,33 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 .header {
-    background-color: #fff;
-    border-bottom: 1.2px solid rgb(235, 235, 235);
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 10;
+  background-color: #fff;
+  border-bottom: 1.2px solid rgb(235, 235, 235);
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 4;
+}
+
+.logo-container,
+.nav-icons {
+  width: 180px;
+}
+
+.nav,
+.nav-icons {
+  display: flex;
+  align-items: center;
 }
 
 .nav {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    width: 80%;
-    margin: auto;
+  justify-content: space-around;
+  width: 80%;
+  margin: auto;
 }
 
 .nav-icons {
-    list-style: none;
-    display: flex;
+  justify-content: space-between;
 }
 
 .icon {
-    height: 3vh;
-    margin-right: 2rem;
+  width: 28px;
 }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import AuthContext from './contexts/AuthContext';
 import Spinner from './components/loading-spinner';
 

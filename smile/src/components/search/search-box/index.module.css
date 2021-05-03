@@ -25,7 +25,7 @@
     border: 1px solid rgb(219, 219, 219);
     border-top: 1px solid #fff;
     border-radius: 3px;
-    z-index: 9;
+    z-index: 3;
 }
 
 .error {

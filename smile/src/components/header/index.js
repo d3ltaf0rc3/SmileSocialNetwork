@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import Logo from '../logo';
 import { Link } from 'react-router-dom';
 import styles from './index.module.css';
@@ -10,18 +10,24 @@ import Requests from '../requests';
 import AuthContext from '../../contexts/AuthContext';
 
 const Header = () => {
-    const context = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
 
     return (
         <header className={styles.header}>
             <nav className={styles.nav}>
-                <Logo />
+                <div className={styles["logo-container"]}>
+                    <Logo />
+                </div>
                 <Search />
                 <ul className={styles["nav-icons"]}>
                     <li><Link to="/"><img className={styles.icon} src={homeIcon} alt="home" /></Link></li>
                     <li><Requests /></li>
                     <li><Link to="/post/add"><img className={styles.icon} src={addIcon} alt="add post" /></Link></li>
-                    <li>{context.user === null ? <img className={styles.icon} src={userIcon} alt="profile" />: <Link to={`/user/${context.user.username}`}><img className={styles.icon} src={userIcon} alt="profile" /></Link>}</li>
+                    <li>
+                        <Link to={`/user/${user?.username}`}>
+                            <img className={styles.icon} src={userIcon} alt="profile" />
+                        </Link>
+                    </li>
                 </ul>
             </nav>
         </header >

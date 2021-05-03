@@ -1,7 +1,7 @@
 .arrow {
     height: 14px;
     width: 14px;
-    z-index: 10;
+    z-index: 4;
     transform: rotate(45deg);
     position: absolute;
     content: " ";
@@ -21,7 +21,7 @@
     border: 1px solid rgb(219, 219, 219);
     border-top: 1px solid rgb(219, 219, 219);
     border-radius: 20px;
-    z-index: 9;
+    z-index: 3;
 }
 
 .option {
