@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import HomePage from './pages/home-page';
 import LoginPage from './pages/login-page';
@@ -11,18 +11,18 @@ import ChangePasswordPage from './pages/change-password-page';
 import AuthContext from './contexts/AuthContext';
 
 const Navigation = () => {
-  const context = useContext(AuthContext);
+  const { loggedIn } = useContext(AuthContext);
 
   return (
     <BrowserRouter>
       <Switch>
-        <Route path="/" exact render={() => context.loggedIn === true ? <HomePage /> : <Redirect to="/login" />} />
-        <Route path="/login" render={() => context.loggedIn === false ? <LoginPage /> : <Redirect to="/" />} />
-        <Route path="/register" render={() => context.loggedIn === false ? <RegisterPage /> : <Redirect to="/" />} />
-        <Route path="/user/:username" render={() => context.loggedIn === true ? <ProfilePage /> : <Redirect to="/login" />} />
-        <Route path="/account/settings" render={() => context.loggedIn === true ? <SettingsPage /> : <Redirect to="/login" />} />
-        <Route path="/post/add" render={() => context.loggedIn === true ? <AddPostPage /> : <Redirect to="/login" />} />
-        <Route path="/change-password" render={() => context.loggedIn === true ? <ChangePasswordPage /> : <Redirect to="/login" />} />
+        <Route path="/" exact render={() => loggedIn ? <HomePage /> : <Redirect to="/login" />} />
+        <Route path="/login" exact render={() => !loggedIn ? <LoginPage /> : <Redirect to="/" />} />
+        <Route path="/register" exact render={() => !loggedIn ? <RegisterPage /> : <Redirect to="/" />} />
+        <Route path="/user/:username" exact render={() => loggedIn ? <ProfilePage /> : <Redirect to="/login" />} />
+        <Route path="/account/settings" exact render={() => loggedIn ? <SettingsPage /> : <Redirect to="/login" />} />
+        <Route path="/post/add" exact render={() => loggedIn ? <AddPostPage /> : <Redirect to="/login" />} />
+        <Route path="/change-password" exact render={() => loggedIn ? <ChangePasswordPage /> : <Redirect to="/login" />} />
         <Route component={ErrorPage} />
       </Switch>
     </BrowserRouter>
