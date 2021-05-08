@@ -1,12 +1,4 @@
-.form {
-    margin: 4rem 3rem 0;
-}
-
-.form input[type="text"] {
-    height: 50px;
-}
-
-.form textarea {
+.input-container textarea {
     height: 150px;
     resize: none;
 }
@@ -15,7 +7,8 @@
     margin: 20px 0;
 }
 
-.input-container label {
+.input-container label,
+.switch-box label {
     font-size: 18px;
 }
 
@@ -35,7 +28,6 @@
 }
 
 .switch-box label {
-    font-size: 18px;
     margin-right: 15px;
 }
 

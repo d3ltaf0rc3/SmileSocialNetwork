@@ -1,41 +1,44 @@
 .form-container {
-    border: 1px solid rgb(205, 205, 205);
-    width: 50%;
-    margin: 7rem auto;
-    padding: 3rem;
-    background-color: #fff;
-    border-radius: 5px;
+  border: 1px solid rgb(205, 205, 205);
+  width: 50%;
+  margin: auto;
+  padding: 3rem 6rem;
+  background-color: #fff;
+  border-radius: 5px;
 }
 
 .form-container span {
-    font-size: 20px;
-    font-weight: 100;
+  font-size: 20px;
+  font-weight: 100;
 }
 
 .form-container img {
-    height: 45px;
-    width: 45px;
+  height: 45px;
+  width: 45px;
+}
+
+.buttons {
+  margin-top: 1rem;
 }
 
 .btn {
-    background-color: #fff;
-    outline: none;
-    border: none;
-    cursor: pointer;
-    margin-top: 1rem;
-    margin-right: 1rem;
-    font-size: 14px;
-    font-weight: 600;
-    color: #ed4956;
-    font-size: 16px;
+  background-color: #fff;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  color: #ed4956;
+  font-size: 16px;
 }
 
-.buttons>button:first-child {
-    color: #0095f6;
+.buttons > button:first-child {
+  color: #0095f6;
+  margin-right: 1rem;
 }
 
 .avatar-actions {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
