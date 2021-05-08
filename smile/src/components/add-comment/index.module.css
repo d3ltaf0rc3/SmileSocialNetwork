@@ -1,5 +1,4 @@
 .add-comment {
-    margin-top: 15px;
     border-top: 1px solid #e6e6e6;
     padding-top: 10px;
     display: flex;
@@ -8,18 +7,14 @@
 }
 
 .add-comment textarea {
-    width: 90%;
+    width: 80%;
     border: 0;
     font-size: 14px;
     resize: none;
     height: 20px;
 }
 
-.add-comment textarea:focus, .add-comment textarea:active {
-    outline: none;
-}
-
 .add-comment img {
     cursor: pointer;
-    height: 25px;
+    width: 5%;
 }
