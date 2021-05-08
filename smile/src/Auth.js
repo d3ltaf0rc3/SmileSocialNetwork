@@ -42,7 +42,11 @@ const Auth = (props) => {
     }, [update]);
 
     if (loggedIn === null) {
-        return <div style={{ width: "100%", display: "grid", placeItems: "center" }}><Spinner /></div>
+        return (
+            <div style={{ width: "100vw", height: "calc(100vh - 300px)", display: "grid", placeItems: "center" }}>
+                <Spinner />
+            </div>
+        );
     }
 
     return (
