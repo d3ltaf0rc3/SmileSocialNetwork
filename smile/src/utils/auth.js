@@ -1,6 +1,6 @@
 const auth = (context, type, body, setError) => {
     fetch(`${process.env.REACT_APP_API_URL}/api/user/${type}`, {
-        method: "POST",
+        method: "post",
         headers: {
             "Content-Type": "application/json"
         },
@@ -21,7 +21,7 @@ const auth = (context, type, body, setError) => {
                 setError(res);
             }
         })
-        .catch(err => console.log(err));
+        .catch(err => console.error(err));
 };
 
 export default auth;

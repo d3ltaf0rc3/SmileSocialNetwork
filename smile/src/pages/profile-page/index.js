@@ -11,7 +11,6 @@ import ProfileContext from '../../contexts/ProfileContext';
 import UserContext from '../../contexts/AuthContext';
 import camera from '../../images/camera.svg';
 import Spinner from '../../components/loading-spinner';
-import getUser from '../../utils/getUser';
 
 const ProfilePage = (props) => {
     const context = useContext(UserContext);
@@ -19,7 +18,28 @@ const ProfilePage = (props) => {
     const [didUpdate, setUpdate] = useState();
 
     useEffect(() => {
-        getUser(props.history, props.match.params.username, setProfile);
+        fetch(`${process.env.REACT_APP_API_URL}/api/user/get/${props.match.params.username}`, {
+            method: "get",
+            credentials: "include"
+        })
+            .then(res => {
+                if (res.ok) {
+                    return res.json();
+                } else {
+                    return res.text();
+                }
+            })
+            .then(res => {
+                if (typeof res === "object") {
+                    setProfile(res);
+                } else {
+                    props.history.push("/error");
+                }
+            })
+            .catch(err => {
+                console.log(err);
+                props.history.push("/error");
+            });
     }, [props.history, props.match.params.username, didUpdate]);
 
     if (profile === null || context.user === null) {

@@ -1,13 +1,11 @@
-const editUser = (image, context, history) => {
+const editUser = (body, context, history) => {
     fetch(`${process.env.REACT_APP_API_URL}/api/user/edit`, {
         method: "put",
         headers: {
             "Content-Type": "application/json"
         },
         credentials: "include",
-        body: JSON.stringify({
-            ...image
-        })
+        body: JSON.stringify(body)
     })
         .then(() => {
             context.triggerUpdate();

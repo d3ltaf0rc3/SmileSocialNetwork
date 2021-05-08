@@ -1,4 +1,4 @@
-const handleRequest = (action, id, context) => {
+const handleRequest = (action, id, rerender) => {
     fetch(`${process.env.REACT_APP_API_URL}/api/user/handle-request`, {
             method: "post",
             headers: {
@@ -10,7 +10,7 @@ const handleRequest = (action, id, context) => {
                 id
             })
         })
-            .then(() => context.triggerUpdate())
+            .then(() => rerender())
             .catch(err => console.log(err));
 };
 
