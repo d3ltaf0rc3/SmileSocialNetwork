@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useState } from 'react';
+import { Fragment, useContext, useState } from 'react';
 import Footer from '../../components/footer';
 import CredentialsForm from '../../components/credentials-form';
 import Head from "../../components/head";

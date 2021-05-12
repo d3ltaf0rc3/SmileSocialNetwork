@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './index.module.css';
 import { Link } from 'react-router-dom';
 import Input from '../input';
@@ -10,12 +10,22 @@ const CredentialsForm = (props) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [rePassword, setRePassword] = useState("");
+    const [checked, setChecked] = useState(false);
     const [disabled, setDisabled] = useState(true);
     const [error, setError] = useState("");
 
-    const submitHandler = async (e) => {
+    useEffect(() => {
+        if (checked) {
+            setDisabled(false);
+        } else {
+            setDisabled(true);
+        }
+    }, [checked]);
+
+    const submitHandler = (e) => {
         e.preventDefault();
         setError("");
+
         if (username.length < 2 || username.length > 18) {
             setError("Username must be between 2 and 18 characters long!");
         } else if (!/^[\w.]+$/.test(username)) {
@@ -27,7 +37,7 @@ const CredentialsForm = (props) => {
         } else if (props.formType === "register" && password !== rePassword) {
             setError("Both passwords must match!");
         } else {
-            await props.onSubmit(username, password, rePassword);
+            props.onSubmit(username, password, rePassword);
         }
     };
 
@@ -38,24 +48,22 @@ const CredentialsForm = (props) => {
                     <div className={styles["logo-container"]}>
                         <Logo />
                     </div>
-
-                    {error || props.error? <ErrorComponent error={error || props.error} /> : null}
-
+                    {error || props.error ? <ErrorComponent error={error || props.error} /> : null}
                     <form className={styles.form} onSubmit={submitHandler}>
-                        <Input name="username" type="text" value={username} placeholder="Username" onChange={(event) => setUsername(event.target.value)} />
-                        <Input name="password" type="password" value={password} placeholder="Password" onChange={(event) => setPassword(event.target.value)} />
-                        {props.formType === "register" ?
-                            <Input name="repeatPassword" type="password" value={rePassword} placeholder="Repeat password" onChange={(event) => setRePassword(event.target.value)} /> : null}
-                        <ReCaptcha setDisabled={() => setDisabled(false)} />
-                        <button disabled={disabled} className={styles.btn}>{props.formType === "register" ?
-                            "Register" : "Login"}</button>
+                        <Input name="username" type="text" placeholder="Username" onChange={(e) => setUsername(e.target.value)} />
+                        <Input name="password" type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
+                        {props.formType === "register" ? (
+                            <Input name="repeatPassword" type="password" placeholder="Repeat password" onChange={(e) => setRePassword(e.target.value)} />
+                        ) : null}
+                        <ReCaptcha setChecked={setChecked} />
+                        <button disabled={disabled} className={styles.btn}>
+                            {props.formType.replace(props.formType[0], props.formType[0].toUpperCase())}
+                        </button>
                     </form>
                 </div>
-
                 <div className={styles.signup}>
-                    {props.formType === "register" ?
-                        <p>Already have an account? <Link to="/login">Login instead</Link></p> :
-                        <p>Don't have an account? <Link to="/register">Sign up</Link></p>}
+                    {props.formType === "register" ? <p>Already have an account? <Link to="/login">Login instead</Link></p> : null}
+                    {props.formType === "login" ? <p>Don't have an account? <Link to="/register">Sign up</Link></p> : null}
                 </div>
             </div>
         </div>

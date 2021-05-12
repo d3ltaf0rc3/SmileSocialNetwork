@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useState } from 'react';
+import { Fragment, useContext, useState } from 'react';
 import Footer from '../../components/footer';
 import CredentialsForm from '../../components/credentials-form';
 import Head from '../../components/head';
@@ -9,8 +9,8 @@ const RegisterPage = () => {
     const context = useContext(AuthContext);
     const [error, setError] = useState();
 
-    const submitHandler = (username, password, rePassword) => {
-        register(context, "register", { username, password, repeatPassword: rePassword }, setError);
+    const submitHandler = (username, password, repeatPassword) => {
+        register(context, "register", { username, password, repeatPassword }, setError);
     };
 
     return (
