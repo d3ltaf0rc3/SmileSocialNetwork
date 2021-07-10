@@ -155,6 +155,22 @@ async function editPost(req, res) {
     }
 }
 
+async function getProfilePosts(req, res) {
+    const { id } = req.params;
+    try {
+        const user = await User.findById(id)
+            .populate({
+                path: "posts",
+                select: 'imageUrl',
+                options: { sort: { createdAt: -1 } }
+            });
+        
+        return res.send(user.posts);
+    } catch (error) {
+        return res.status(500).send(error.message);
+    }
+}
+
 module.exports = {
     createAPost,
     getPost,
@@ -163,5 +179,6 @@ module.exports = {
     addComment,
     deletePost,
     editPost,
-    deletePostFromCloudinary
+    deletePostFromCloudinary,
+    getProfilePosts
 };

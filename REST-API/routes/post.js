@@ -8,12 +8,14 @@ const {
     addComment,
     deletePost,
     editPost,
-    deletePostFromCloudinary
+    deletePostFromCloudinary,
+    getProfilePosts
 } = require("../controllers/post");
 const router = express.Router();
 
 router.get("/get/feed", auth, getFeed);
 router.get("/get/:id", auth, getPost);
+router.get("/getPosts/:id", auth, getProfilePosts);
 router.post('/add/post', auth, createAPost);
 router.put("/action/:action/:postId", auth, handleAction);
 router.put("/add/comment/:postId", auth, addComment);

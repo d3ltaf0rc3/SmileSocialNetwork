@@ -1,6 +1,5 @@
-import React, { useEffect, useState, useContext, Fragment } from 'react';
-import { withRouter } from 'react-router-dom';
-import styles from './index.module.css';
+import { useEffect, useState, useContext, Fragment } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
 import Head from '../../components/head';
 import Header from '../../components/header';
 import Footer from '../../components/footer';
@@ -9,45 +8,46 @@ import PhotosGrid from '../../components/profile-components/photos-grid';
 import Private from '../../components/profile-components/private-profile';
 import ProfileContext from '../../contexts/ProfileContext';
 import UserContext from '../../contexts/AuthContext';
-import camera from '../../images/camera.svg';
 import Spinner from '../../components/loading-spinner';
+import NoPosts from '../../components/profile-components/no-posts';
+import styles from './index.module.css';
 
-const ProfilePage = (props) => {
-    const context = useContext(UserContext);
+const ProfilePage = () => {
+    const history = useHistory();
+    const { username } = useParams();
+    const { user } = useContext(UserContext);
     const [profile, setProfile] = useState(null);
     const [didUpdate, setUpdate] = useState();
 
     useEffect(() => {
-        fetch(`${process.env.REACT_APP_API_URL}/api/user/get/${props.match.params.username}`, {
+        fetch(`${process.env.REACT_APP_API_URL}/api/user/get/${username}`, {
             method: "get",
             credentials: "include"
         })
             .then(res => {
                 if (res.ok) {
                     return res.json();
-                } else {
-                    return res.text();
                 }
+                return res.text();
             })
             .then(res => {
                 if (typeof res === "object") {
                     setProfile(res);
                 } else {
-                    props.history.push("/error");
+                    history.push("/error");
                 }
             })
             .catch(err => {
                 console.log(err);
-                props.history.push("/error");
+                history.push("/error");
             });
-    }, [props.history, props.match.params.username, didUpdate]);
+    }, [history, username, didUpdate]);
 
-    if (profile === null || context.user === null) {
+    if (profile === null || user === null) {
         return (
             <Fragment>
                 <Head title="Smile" />
-                <Header />
-                <div className={styles.container}>
+                <div style={{ width: '100vw', height: '100vh', display: 'grid', placeItems: 'center' }}>
                     <Spinner />
                 </div>
                 <Footer />
@@ -55,29 +55,24 @@ const ProfilePage = (props) => {
         )
     }
 
+    const hasProfileAccess = user.username === profile.username || profile.followers.some(usr => usr.username === user.username) || !profile.isPrivate;
+    const hasPosts = profile.posts.length === 0 ? <NoPosts /> : <PhotosGrid />;
+
     return (
         <ProfileContext.Provider value={{
             ...profile,
-            doesUserFollow: profile.followers.some(user => user.username === context.user.username),
+            doesUserFollow: profile.followers.some(usr => usr.username === user.username),
             triggerUpdate: () => setUpdate(!didUpdate)
         }}>
             <Head title={`${profile.name || profile.username} (@${profile.username}) | Smile`} />
             <Header />
             <div className={styles.container}>
                 <ProfileHeader />
-                {context.user.username === profile.username ||
-                    profile.followers.some(user => user.username === context.user.username) ||
-                    profile.isPrivate === false ?
-                    profile.posts.length === 0 ?
-                        <div className={styles["empty-profile"]}>
-                            <img src={camera} alt="camera" />
-                            <span>No posts yet</span>
-                        </div> :
-                        <PhotosGrid /> : <Private />}
+                {hasProfileAccess ? hasPosts : <Private />}
             </div>
             <Footer />
         </ProfileContext.Provider>
     )
 };
 
-export default withRouter(ProfilePage);
+export default ProfilePage;

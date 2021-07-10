@@ -72,14 +72,10 @@ async function editUser(req, res) {
 }
 
 async function getUser(req, res) {
-    const username = req.params.username;
+    const { username } = req.params;
 
     try {
         const user = await User.findOne({ username })
-            .populate({
-                path: "posts",
-                options: { sort: { createdAt: -1 } }
-            })
             .populate("followers")
             .populate("following")
             .populate("requests");

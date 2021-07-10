@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import styles from './index.module.css';
 import Stats from '../stats';
 import Avatar from '../../user-avatar';
@@ -31,7 +31,6 @@ const ProfileHeader = () => {
     return (
         <div className={styles.header}>
             <Avatar size="150" imageUrl={profileContext.profilePicture} />
-
             <div className={styles["stats-container"]}>
                 <div className={styles.title}>
                     <h3 className={styles.username}>{profileContext.username}</h3>
@@ -40,7 +39,6 @@ const ProfileHeader = () => {
                         profileContext.doesUserFollow ? <button onClick={unfollowUser} className={styles.button}>Unfollow</button> :
                             profileContext.requests.some(user => user.username === context.user.username) ? <button onClick={cancelRequest} className={styles.button}>Requested</button> : <button onClick={followUser} className={styles.button}>Follow</button>}
                 </div>
-
                 <Stats
                     posts={profileContext.posts.length}
                     followers={profileContext.followers.length}

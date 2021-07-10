@@ -1,23 +1,4 @@
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.empty-profile {
     width: 50%;
-    background-color: #fff;
-    border-radius: 3px;
-    border: 1px solid rgb(219, 219, 219);
-    border-top: none;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 30px;
-    font-size: 18px;
-}
-
-.empty-profile img {
-    height: 8vh;
-    margin-bottom: 15px;
+    margin: auto;
 }
