@@ -1,7 +1,10 @@
 # REST-API
+This is the REST API for Smile Social Network.
 
 ## 1. Project set up
-* Run **npm install** (make sure you install the dev dependencies as well)
+* Clone the repository
+* Navigate to the **``REST-API``** folder
+* Run **npm install**
 * Create a **_.env_** file which contains the following variables:
 
     | Variable             | Value                |
@@ -17,4 +20,4 @@
     | API_SECRET           | Cloudinary API Secret|
 
 ## 2. Start the REST API
-* Run **npm run start:dev** or **node(mon) -r dotenv/config index.js**
+* Run **npm run dev** or **node(mon) -r dotenv/config index.js**
