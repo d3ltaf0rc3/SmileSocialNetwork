@@ -14,7 +14,7 @@ const PostSchema = new mongoose.Schema({
         type: String,
         default: null
     },
-    imageUrl: {
+    resource: {
         type: String,
         required: true
     },
