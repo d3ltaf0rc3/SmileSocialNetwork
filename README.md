@@ -7,7 +7,7 @@ Smile is an Instagram-like social network. You have the same basic features, lik
 You can try the app **[here](https://smile-social-network.netlify.app)**
 
 ## 1. How is it built
-* [The back-end](./REST-API) portion uses **Express**, **mongoose**, **bcrypt** for password hashing, **jsonwebtoken (JWT)** for encoding user data stored in cookies and **MongoDB** for storage.
+* [The back-end](./REST-API) portion uses **Express**, **mongoose**, **argon2** for password hashing, **jsonwebtoken (JWT)** for encoding user data stored in cookies and **MongoDB** for storage.
 * [The front-end](./smile) portion uses **React**.
 
 ## 2. Functionality
