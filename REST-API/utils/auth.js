@@ -1,4 +1,5 @@
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
+const response = require("./responseGenerator");
 
 module.exports = (req, res, next) => {
     try {
@@ -6,6 +7,6 @@ module.exports = (req, res, next) => {
         req.userId = id;
         next();
     } catch (error) {
-        return res.status(401).send("User not authenticated!");
+        return res.status(401).send(response("fail", "User not authenticated!"));
     }
 };
