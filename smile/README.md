@@ -16,8 +16,13 @@
 ## Project set up and running
 * After cloning the repo, run **`npm install`**
 * Create a **.env** file
-* Set **``REACT_APP_API_URL``** env variable
-* Set **``REACT_APP_SITE_KEY``** env variable
+* Set the following variables:
+
+    | Variable             | Value                     |
+    |----------------------|---------------------------|
+    | REACT_APP_API_URL    | REST API URL              |
+    | REACT_APP_SITE_KEY   | Google reCaptcha Site Key |
+
 * Run **`npm run start`**
 
 ### The app runs on **`localhost:3000`**
