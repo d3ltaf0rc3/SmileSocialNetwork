@@ -73,8 +73,8 @@ describe("Login Page tests", () => {
     it("should login user", () => {
         cy.url().should("contain", "login");
 
-        cy.get("input[name=username]").type("smile");
-        cy.get("input[name=password]").type("creator@smile1");
+        cy.get("input[name=username]").type(Cypress.env("username"));
+        cy.get("input[name=password]").type(Cypress.env("password"));
         cy.solveGoogleReCAPTCHA();
         cy.get("button").click();
 
