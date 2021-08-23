@@ -7,21 +7,15 @@ const auth = (context, type, body, setError) => {
         credentials: "include",
         body: JSON.stringify(body)
     })
+        .then(res => res.json())
         .then(res => {
-            if (res.ok) {
-                return res.json();
+            if (res.success) {
+                context.logIn(res.data);
             } else {
-                return res.text();
+                setError(res.data);
             }
         })
-        .then(res => {
-            if (typeof res === "object") {
-                context.logIn(res);
-            } else {
-                setError(res);
-            }
-        })
-        .catch(err => console.error(err));
+        .catch(err => setError(err.message));
 };
 
 export default auth;

@@ -26,16 +26,12 @@ const Auth = (props) => {
             method: "get",
             credentials: "include"
         })
+            .then(res => res.json())
             .then(res => {
-                if (res.ok) {
-                    return res.json();
+                if (res.success) {
+                    logIn(res.data);
                 } else {
                     logOut();
-                }
-            })
-            .then(user => {
-                if (user) {
-                    logIn(user);
                 }
             })
             .catch(err => console.error(err));

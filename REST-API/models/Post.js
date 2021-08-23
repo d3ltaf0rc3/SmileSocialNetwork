@@ -18,6 +18,10 @@ const PostSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    resource_type: {
+        type: String,
+        required: true,
+    },
     description: {
         type: String,
         default: null
