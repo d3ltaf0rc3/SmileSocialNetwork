@@ -4,7 +4,7 @@
   "description": "This is the REST API for Smile:) social network",
   "main": "index.js",
   "author": "Martin Marinov",
-  "license": "ISC",
+  "license": "MIT",
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon -r dotenv/config index.js"
