@@ -9,12 +9,12 @@ This is the REST API for Smile Social Network.
 
     | Variable             | Value                |
     |----------------------|----------------------|
-    | DB_URL               | Database URL         |
+    | DB_URL               | MongoDB Database URL |
     | SECRET               | CookieParser secret  |
     | JWT_KEY              | JWT secret key       |
     | RECAPTCHA_SERVER_KEY | reCAPTCHA SERVER KEY |
     | PORT                 | Port for REST API    |
-    | APP_URL              | React App URL        |
+    | APP_URL              | URL of the Front-end |
     | CLOUD_NAME           | Cloudinary Cloud Name|
     | API_KEY              | Cloudinary API Key   |
     | API_SECRET           | Cloudinary API Secret|
