@@ -9,7 +9,9 @@ const {
     login,
     logout,
     verifyLoggedIn,
-    searchUsers
+    searchUsers,
+    getUserPosts,
+    getRequests,
 } = require("../controllers/user");
 const verifyReCaptcha = require("../utils/verifyReCaptcha");
 const auth = require("../utils/auth");
@@ -19,15 +21,17 @@ const editUserValidator = require("../validators/editUser");
 const changePasswordValidator = require("../validators/changePassword");
 const router = express.Router();
 
+router.get("/get/requests", auth, getRequests);
 router.get("/get/:username", auth, getUser);
-router.get('/logout', auth, logout);
+router.get("/get/posts/:username", auth, getUserPosts);
+router.get("/logout", auth, logout);
 router.get("/verify/cookie", verifyLoggedIn);
 router.put("/edit", auth, editUserValidator, editUser);
 router.put("/change-password", auth, changePasswordValidator, passwordValidator, changePassword);
 router.put("/action/:action/:id", auth, handleAction);
 router.put("/handle-request", auth, handleRequest);
-router.post('/register', usernameValidator, passwordValidator, register);
-router.post('/login', login);
+router.post("/register", usernameValidator, passwordValidator, register);
+router.post("/login", login);
 router.post("/verify/reCaptcha", verifyReCaptcha);
 router.post("/search", auth, searchUsers);
 
