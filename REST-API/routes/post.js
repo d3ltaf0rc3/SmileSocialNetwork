@@ -1,14 +1,14 @@
 const express = require("express");
 const auth = require("../utils/auth");
 const {
-    createAPost,
-    getPost,
-    getFeed,
-    handleAction,
-    addComment,
-    deletePost,
-    editPost,
-    deleteResourceFromCloudinary,
+  createAPost,
+  getPost,
+  getFeed,
+  handleAction,
+  addComment,
+  deletePost,
+  editPost,
+  deleteResourceFromCloudinary,
 } = require("../controllers/post");
 const createPostValidation = require("../validators/createPost");
 const commentValidation = require("../validators/comment");

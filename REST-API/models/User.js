@@ -1,60 +1,60 @@
 const mongoose = require("mongoose");
 
 const UserSchema = new mongoose.Schema({
-    username: {
-        type: String,
-        required: true,
-        unique: true,
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  name: {
+    type: String,
+    default: null,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  profilePicture: {
+    type: String,
+    default:
+      "https://res.cloudinary.com/smile-social-network/image/upload/v1600976280/download_udtdbe.png",
+  },
+  public_id: {
+    type: String,
+    default: null,
+  },
+  description: {
+    type: String,
+    default: null,
+  },
+  isPrivate: {
+    type: Boolean,
+    default: false,
+  },
+  followers: [
+    {
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: "User",
     },
-    name: {
-        type: String,
-        default: null,
+  ],
+  following: [
+    {
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: "User",
     },
-    password: {
-        type: String,
-        required: true,
+  ],
+  posts: [
+    {
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: "Post",
     },
-    profilePicture: {
-        type: String,
-        default:
-            "https://res.cloudinary.com/smile-social-network/image/upload/v1600976280/download_udtdbe.png",
+  ],
+  requests: [
+    {
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: "User",
     },
-    public_id: {
-        type: String,
-        default: null,
-    },
-    description: {
-        type: String,
-        default: null,
-    },
-    isPrivate: {
-        type: Boolean,
-        default: false,
-    },
-    followers: [
-        {
-            type: mongoose.SchemaTypes.ObjectId,
-            ref: "User",
-        },
-    ],
-    following: [
-        {
-            type: mongoose.SchemaTypes.ObjectId,
-            ref: "User",
-        },
-    ],
-    posts: [
-        {
-            type: mongoose.SchemaTypes.ObjectId,
-            ref: "Post",
-        },
-    ],
-    requests: [
-        {
-            type: mongoose.SchemaTypes.ObjectId,
-            ref: "User",
-        },
-    ],
+  ],
 });
 
 module.exports = mongoose.model("User", UserSchema);

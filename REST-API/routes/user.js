@@ -1,17 +1,17 @@
 const express = require("express");
 const {
-    editUser,
-    changePassword,
-    getUser,
-    handleAction,
-    handleRequest,
-    register,
-    login,
-    logout,
-    verifyLoggedIn,
-    searchUsers,
-    getUserPosts,
-    getRequests,
+  editUser,
+  changePassword,
+  getUser,
+  handleAction,
+  handleRequest,
+  register,
+  login,
+  logout,
+  verifyLoggedIn,
+  searchUsers,
+  getUserPosts,
+  getRequests,
 } = require("../controllers/user");
 const verifyReCaptcha = require("../utils/verifyReCaptcha");
 const auth = require("../utils/auth");
