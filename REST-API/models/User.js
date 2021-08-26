@@ -4,48 +4,57 @@ const UserSchema = new mongoose.Schema({
     username: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
     },
     name: {
         type: String,
-        default: null
+        default: null,
     },
     password: {
         type: String,
-        required: true
+        required: true,
     },
     profilePicture: {
         type: String,
-        default: "https://res.cloudinary.com/smile-social-network/image/upload/v1600976280/download_udtdbe.png"
+        default:
+            "https://res.cloudinary.com/smile-social-network/image/upload/v1600976280/download_udtdbe.png",
     },
     public_id: {
         type: String,
-        default: null
+        default: null,
     },
     description: {
         type: String,
-        default: null
+        default: null,
     },
     isPrivate: {
         type: Boolean,
-        default: false
+        default: false,
     },
-    followers: [{
-        type: mongoose.SchemaTypes.ObjectId,
-        ref: "User"
-    }],
-    following: [{
-        type: mongoose.SchemaTypes.ObjectId,
-        ref: "User"
-    }],
-    posts: [{
-        type: mongoose.SchemaTypes.ObjectId,
-        ref: "Post"
-    }],
-    requests: [{
-        type: mongoose.SchemaTypes.ObjectId,
-        ref: "User"
-    }]
+    followers: [
+        {
+            type: mongoose.SchemaTypes.ObjectId,
+            ref: "User",
+        },
+    ],
+    following: [
+        {
+            type: mongoose.SchemaTypes.ObjectId,
+            ref: "User",
+        },
+    ],
+    posts: [
+        {
+            type: mongoose.SchemaTypes.ObjectId,
+            ref: "Post",
+        },
+    ],
+    requests: [
+        {
+            type: mongoose.SchemaTypes.ObjectId,
+            ref: "User",
+        },
+    ],
 });
 
 module.exports = mongoose.model("User", UserSchema);

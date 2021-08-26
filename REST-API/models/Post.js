@@ -4,19 +4,19 @@ const PostSchema = new mongoose.Schema({
     postedBy: {
         type: mongoose.SchemaTypes.ObjectId,
         ref: "User",
-        required: true
+        required: true,
     },
     createdAt: {
         type: Date,
-        required: true
+        required: true,
     },
     location: {
         type: String,
-        default: null
+        default: null,
     },
     resource: {
         type: String,
-        required: true
+        required: true,
     },
     resource_type: {
         type: String,
@@ -24,20 +24,24 @@ const PostSchema = new mongoose.Schema({
     },
     description: {
         type: String,
-        default: null
+        default: null,
     },
     public_id: {
         type: String,
-        required: true
+        required: true,
     },
-    likes: [{
-        type: mongoose.SchemaTypes.ObjectId,
-        ref: "User"
-    }],
-    comments: [{
-        type: mongoose.SchemaTypes.ObjectId,
-        ref: "Comment"
-    }]
+    likes: [
+        {
+            type: mongoose.SchemaTypes.ObjectId,
+            ref: "User",
+        },
+    ],
+    comments: [
+        {
+            type: mongoose.SchemaTypes.ObjectId,
+            ref: "Comment",
+        },
+    ],
 });
 
 module.exports = mongoose.model("Post", PostSchema);
