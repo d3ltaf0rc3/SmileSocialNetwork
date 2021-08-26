@@ -8,7 +8,7 @@ module.exports = [
     .withMessage("Name cannot be more than 18 characters!")
     .matches(/^[\w\s.]+$/)
     .withMessage("Name can only container letters, digits, spaces, dots and underscores!"),
-  body("description", "Description is invalid!")
+  body("description", "Bio is invalid!")
     .optional({ nullable: true, checkFalsy: true })
     .trim()
     .isLength({ max: 150 })
@@ -16,16 +16,16 @@ module.exports = [
   body("isPrivate", "Private field is invalid!")
     .optional({ nullable: true, checkFalsy: true })
     .isBoolean()
-    .withMessage("Private field must be boolean!"),
+    .withMessage("Private field must be either true or false!"),
   body("profilePicture", "Profile picture URL is invalid!")
     .optional({ nullable: true, checkFalsy: true })
     .trim()
-    .isURL({
-      require_protocol: true,
-      require_valid_protocol: true,
-      protocols: ["http", "https"],
+    .custom((value) => {
+      if (value.startsWith(`https://res.cloudinary.com/${process.env.CLOUD_NAME}/image/upload`)) {
+        return true;
+      }
+      throw new Error("Resource URL doesn't match the required URL pattern!");
     })
-    .withMessage("Profile picture must be a URL!")
     .custom((value) => {
       if (
         value.endsWith(".avif") ||
@@ -38,7 +38,6 @@ module.exports = [
         return true;
       }
       throw new Error("Unsupported file format");
-    })
-    .withMessage("Unsupported file format"),
+    }),
   body("public_id", "Public ID is invalid!").optional({ nullable: true, checkFalsy: true }).trim(),
 ];

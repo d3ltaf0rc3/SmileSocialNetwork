@@ -5,16 +5,10 @@ module.exports = [
     .trim()
     .not()
     .isEmpty()
-    .isURL({
-      require_protocol: true,
-      require_valid_protocol: true,
-      protocols: ["http", "https"],
-    })
-    .withMessage("Resource must be a URL!")
     .custom((value) => {
       if (
-        value.startsWith("https://res.cloudinary.com/smile-social-network/video/upload") ||
-        value.startsWith("https://res.cloudinary.com/smile-social-network/image/upload")
+        value.startsWith(`https://res.cloudinary.com/${process.env.CLOUD_NAME}/video/upload`) ||
+        value.startsWith(`https://res.cloudinary.com/${process.env.CLOUD_NAME}/image/upload`)
       ) {
         return true;
       }
