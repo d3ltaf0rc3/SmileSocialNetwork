@@ -6,7 +6,7 @@ const deleteUserSensitiveData = (user) => {
     delete copy.posts;
 
     return copy;
-}
+};
 
 const deletePostSensitiveData = (post) => {
     const copy = { ...post.toObject() };
@@ -14,10 +14,9 @@ const deletePostSensitiveData = (post) => {
     delete copy.public_id;
 
     return copy;
-}
-
+};
 
 module.exports = {
     deletePostSensitiveData,
-    deleteUserSensitiveData
+    deleteUserSensitiveData,
 };

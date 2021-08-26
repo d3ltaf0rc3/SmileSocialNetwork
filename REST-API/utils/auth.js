@@ -3,7 +3,7 @@ const response = require("./responseGenerator");
 
 module.exports = (req, res, next) => {
     try {
-        const id = jwt.verify(req.cookies['auth-token'], process.env.JWT_KEY);
+        const id = jwt.verify(req.cookies["auth-token"], process.env.JWT_KEY);
         req.userId = id;
         next();
     } catch (error) {

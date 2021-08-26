@@ -9,14 +9,16 @@ async function verifyReCaptcha(req, res) {
         method: "post",
         headers: {
             Accept: "application/json",
-            "Content-Type": "application/x-www-form-urlencoded; charset=utf-8"
+            "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
         },
-        body: `secret=${RECAPTCHA_SERVER_KEY}&response=${humanKey}`
+        body: `secret=${RECAPTCHA_SERVER_KEY}&response=${humanKey}`,
     })
-        .then(res => res.json())
-        .then(json => json.success)
-        .catch(err => {
-            return res.status(503).send(response("fail", `Error in Google Siteverify API. ${err.message}`));
+        .then((res) => res.json())
+        .then((json) => json.success)
+        .catch((err) => {
+            return res
+                .status(503)
+                .send(response("fail", `Error in Google Siteverify API. ${err.message}`));
         });
 
     if (humanKey === null || !isHuman) {

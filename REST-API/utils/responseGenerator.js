@@ -3,12 +3,12 @@ const responseGenerator = (type, data) => {
         return {
             success: true,
             data,
-        }
+        };
     } else if (type === "fail") {
         return {
             success: false,
             data,
-        }
+        };
     }
 };
 
