@@ -1,6 +1,6 @@
-const cookieParser = require('cookie-parser');
+const cookieParser = require("cookie-parser");
 const express = require("express");
-const cors = require('cors');
+const cors = require("cors");
 const secret = process.env.SECRET;
 
 module.exports = (app) => {
