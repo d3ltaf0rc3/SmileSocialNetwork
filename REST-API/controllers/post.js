@@ -3,7 +3,6 @@ const User = require("../models/User");
 const Comment = require("../models/Comment");
 const cloudinary = require("cloudinary");
 const { validationResult } = require("express-validator");
-const { deletePostSensitiveData } = require("../utils/deleteSensitiveData");
 const response = require("../utils/responseGenerator");
 
 cloudinary.config({
@@ -33,8 +32,7 @@ async function createAPost(req, res) {
     await post.save();
     await User.findByIdAndUpdate(req.userId, { $addToSet: { posts: post._id } });
 
-    const postToSend = deletePostSensitiveData(post);
-    return res.status(201).send(response("success", postToSend));
+    return res.status(201).send(response("success", post));
   } catch (error) {
     return res.status(500).send(response("fail", error.message));
   }
@@ -58,8 +56,7 @@ async function getPost(req, res) {
       return res.status(404).send(response("fail", "Post not found!"));
     }
 
-    const postToSend = deletePostSensitiveData(post);
-    return res.send(response("success", postToSend));
+    return res.send(response("success", post));
   } catch (error) {
     return res.status(500).send(response("fail", error.message));
   }
@@ -89,8 +86,7 @@ async function getFeed(req, res) {
 
     user.following.forEach((user) => {
       user.posts.forEach((post) => {
-        const postToSend = deletePostSensitiveData(post);
-        posts.push(postToSend);
+        posts.push(post);
       });
     });
 
@@ -112,12 +108,21 @@ async function handleAction(req, res) {
     }
 
     if (action === "like") {
+      if (post.likes.includes(req.userId)) {
+        return res.status(405).send(response("fail", "Cannot like a post you have already liked!"));
+      }
       await Post.findByIdAndUpdate(postId, { $addToSet: { likes: req.userId } });
     } else if (action === "unlike") {
+      if (!post.likes.includes(req.userId)) {
+        return res
+          .status(405)
+          .send(response("fail", "Cannot unlike a post you haven't already liked!"));
+      }
       await Post.findByIdAndUpdate(postId, { $pull: { likes: req.userId } });
     } else {
       return res.status(400).send(response("fail", "Unsupported action!"));
     }
+
     return res.send(response("success", "Action completed successfully!"));
   } catch (error) {
     return res.status(500).send(response("fail", error.message));
@@ -144,9 +149,9 @@ async function addComment(req, res) {
       createdAt: Date.now(),
     });
     await comment.save();
-    await Post.findByIdAndUpdate(postId, { $addToSet: { comments: comment._id } });
+    await Post.findByIdAndUpdate(post._id, { $addToSet: { comments: comment._id } });
 
-    return res.send(response("success", comment));
+    return res.status(201).send(response("success", comment));
   } catch (error) {
     return res.status(500).send(response("fail", error.message));
   }
@@ -181,8 +186,8 @@ async function deletePost(req, res) {
     await Promise.all(
       post.comments.map(async (comment) => await Comment.findByIdAndDelete(comment._id))
     );
-    await Post.findByIdAndDelete(post._id);
     await cloudinary.v2.uploader.destroy(post.public_id, { resource_type: post.resource_type });
+    await Post.findByIdAndDelete(post._id);
 
     return res.send(response("success", "Post successfully deleted!"));
   } catch (error) {
@@ -205,8 +210,7 @@ async function editPost(req, res) {
       return res.status(404).send(response("fail", "Post not found!"));
     }
 
-    const postToSend = deletePostSensitiveData(post);
-    return res.send(response("success", postToSend));
+    return res.send(response("success", post));
   } catch (error) {
     return res.status(500).send(response("fail", error.message));
   }
