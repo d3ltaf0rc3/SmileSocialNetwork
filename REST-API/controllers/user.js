@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const argon2 = require("argon2");
 const sanitizeString = require("../utils/sanitizeString");
 const cookieOptions = require("../config/cookie-options");
-const { deleteUserSensitiveData } = require("../utils/deleteSensitiveData");
+const deleteSensitiveData = require("../utils/deleteSensitiveData");
 const { validationResult } = require("express-validator");
 const response = require("../utils/responseGenerator");
 const emptyStringToNull = require("../utils/emptyStringToNull");
@@ -24,8 +24,11 @@ async function register(req, res) {
 
     const token = jwt.sign(user._id.toString(), process.env.JWT_KEY);
 
-    const userToSend = deleteUserSensitiveData(user);
-    return res.cookie("auth-token", token, cookieOptions).send(response("success", userToSend));
+    const userToSend = deleteSensitiveData(user);
+    return res
+      .status(201)
+      .cookie("auth-token", token, cookieOptions)
+      .send(response("success", userToSend));
   } catch (error) {
     if (error.code === 11000 || error.code === 11001) {
       return res.status(409).send(response("fail", "Username already taken!"));
@@ -38,15 +41,7 @@ async function login(req, res) {
   const { username, password } = req.body;
 
   try {
-    const user = await User.findOne({ username })
-      .populate({
-        path: "followers",
-        select: "username profilePicture",
-      })
-      .populate({
-        path: "following",
-        select: "username profilePicture",
-      });
+    const user = await User.findOne({ username });
 
     if (user === null) {
       return res.status(401).send(response("fail", "Wrong username or password!"));
@@ -57,7 +52,7 @@ async function login(req, res) {
     if (status) {
       const token = jwt.sign(user.id, process.env.JWT_KEY);
 
-      const userToSend = deleteUserSensitiveData(user);
+      const userToSend = deleteSensitiveData(user);
       return res.cookie("auth-token", token, cookieOptions).send(response("success", userToSend));
     } else {
       return res.status(401).send(response("fail", "Wrong username or password!"));
@@ -75,6 +70,15 @@ async function editUser(req, res) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).send(response("fail", errors.array()[0].msg));
+  } else if (
+    req.body.password ||
+    req.body.username ||
+    req.body.posts ||
+    req.body.followers ||
+    req.body.following ||
+    req.body.requests
+  ) {
+    return res.status(403).send(response("fail", "You are trying to edit readonly parameters"));
   }
 
   const body = emptyStringToNull(req);
@@ -82,7 +86,7 @@ async function editUser(req, res) {
   try {
     const user = await User.findByIdAndUpdate(req.userId, { ...body }, { new: true });
 
-    const userToSend = deleteUserSensitiveData(user);
+    const userToSend = deleteSensitiveData(user);
     return res.send(response("success", userToSend));
   } catch (error) {
     return res.status(500).send(response("fail", error.message));
@@ -93,15 +97,7 @@ async function getUser(req, res) {
   const { username } = req.params;
 
   try {
-    const user = await User.findOne({ username })
-      .populate({
-        path: "followers",
-        select: "username profilePicture",
-      })
-      .populate({
-        path: "following",
-        select: "username profilePicture",
-      });
+    const user = await User.findOne({ username });
 
     if (user === null) {
       return res.status(404).send(response("fail", "User not found!"));
@@ -114,7 +110,7 @@ async function getUser(req, res) {
       hasRequested = user.requests.includes(req.userId);
     }
 
-    const userToSend = deleteUserSensitiveData(user);
+    const userToSend = deleteSensitiveData(user);
     return res.send(response("success", { ...userToSend, hasRequested }));
   } catch (error) {
     return res.status(500).send(response("fail", error.message));
@@ -140,9 +136,8 @@ async function changePassword(req, res) {
       return res
         .clearCookie("auth-token")
         .send(response("success", "Password successfully changed!"));
-    } else {
-      return res.status(401).send(response("fail", "Wrong current password!"));
     }
+    return res.status(401).send(response("fail", "Wrong current password!"));
   } catch (error) {
     return res.status(500).send(response("fail", error.message));
   }
@@ -165,7 +160,7 @@ async function verifyLoggedIn(req, res) {
         select: "username profilePicture",
       });
 
-    const userToSend = deleteUserSensitiveData(user);
+    const userToSend = deleteSensitiveData(user);
     return res.send(response("success", userToSend));
   } catch (error) {
     res.status(500).clearCookie("auth-token").send(response("fail", error.message));
@@ -180,7 +175,7 @@ async function searchUsers(req, res) {
   }
 
   try {
-    const users = await User.find({ username: { $regex: `${query}`, $options: "i" } })
+    const users = await User.find({ username: { $regex: query, $options: "i" } })
       .limit(10)
       .select("username profilePicture");
 
@@ -207,20 +202,19 @@ async function handleAction(req, res) {
 
     if (action === "unfollow") {
       if (
-        loggedUser.following.includes(userToHandle._id) &&
-        userToHandle.followers.includes(loggedUser._id)
+        !loggedUser.following.includes(userToHandle._id) &&
+        !userToHandle.followers.includes(loggedUser._id)
       ) {
-        await User.findByIdAndUpdate(userToHandle._id, {
-          $pull: { followers: req.userId },
-        });
-        await User.findByIdAndUpdate(loggedUser._id, {
-          $pull: { following: userToHandle._id },
-        });
-      } else {
         return res
           .status(405)
           .send(response("fail", "Cannot unfollow a user who you are not already following!"));
       }
+      await User.findByIdAndUpdate(userToHandle._id, {
+        $pull: { followers: req.userId },
+      });
+      await User.findByIdAndUpdate(loggedUser._id, {
+        $pull: { following: userToHandle._id },
+      });
     } else if (action === "follow") {
       if (
         loggedUser.following.includes(userToHandle._id) &&
@@ -277,7 +271,10 @@ async function handleRequest(req, res) {
 
     await User.findByIdAndUpdate(req.userId, { $pull: { requests: userToHandle._id } });
 
-    if (userToHandle.following.includes(req.userId) || loggedUser.followers.includes(req.userId)) {
+    if (
+      userToHandle.following.includes(req.userId) &&
+      loggedUser.followers.includes(userToHandle._id)
+    ) {
       return res
         .status(405)
         .send(response("fail", "Cannot handle a user who already is following you!"));
