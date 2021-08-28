@@ -150,15 +150,7 @@ async function verifyLoggedIn(req, res) {
 
   try {
     const id = jwt.verify(req.cookies["auth-token"], process.env.JWT_KEY);
-    const user = await User.findById(id)
-      .populate({
-        path: "followers",
-        select: "username profilePicture",
-      })
-      .populate({
-        path: "following",
-        select: "username profilePicture",
-      });
+    const user = await User.findById(id);
 
     const userToSend = deleteSensitiveData(user);
     return res.send(response("success", userToSend));
