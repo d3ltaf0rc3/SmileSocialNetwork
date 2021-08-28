@@ -1,0 +1,19 @@
+.container {
+  width: 40%;
+  margin: 10rem auto;
+  text-align: center;
+}
+
+.link {
+  color: #00376b;
+  text-decoration: underline;
+}
+
+.container h1 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.container p {
+  font-size: 1.4rem;
+}
