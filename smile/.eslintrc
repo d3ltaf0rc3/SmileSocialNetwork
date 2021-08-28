@@ -27,6 +27,7 @@
     "react/jsx-one-expression-per-line": "off",
     "object-curly-newline": "off",
     "no-plusplus": "off",
-    "jsx-a11y/media-has-caption": "off"
+    "jsx-a11y/media-has-caption": "off",
+    "no-underscore-dangle": "off"
   }
 }
