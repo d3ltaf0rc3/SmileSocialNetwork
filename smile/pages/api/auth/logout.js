@@ -1,11 +1,24 @@
+import { serialize } from 'cookie';
+
 export default async function handler(req, res) {
   try {
-    const resp = await fetch(`${process.env.API_URL}/api/user/logout`, {
-      method: 'get',
-      credentials: 'include',
+    // The logout on the REST API needs more implementations in order to work
+    //
+    // const resp = await fetch(`${process.env.API_URL}/api/user/logout`, {
+    //   method: 'get',
+    //   headers: {
+    //     Authorization: req.headers['auth-token'],
+    //   },
+    // });
+    // const data = await resp.json();
+    // return res.status(resp.status).send(data);
+    //
+    // Temporary logout logic
+    res.setHeader('Set-Cookie', serialize('auth-token', '', { maxAge: -1, path: '/' }));
+    return res.send({
+      success: true,
+      data: 'Logout successful!',
     });
-    const data = await resp.json();
-    return res.status(resp.status).send(data);
   } catch (error) {
     return res.status(500).send({
       success: false,
