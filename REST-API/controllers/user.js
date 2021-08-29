@@ -2,7 +2,6 @@ const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const argon2 = require("argon2");
 const sanitizeString = require("../utils/sanitizeString");
-const cookieOptions = require("../config/cookie-options");
 const deleteSensitiveData = require("../utils/deleteSensitiveData");
 const { validationResult } = require("express-validator");
 const response = require("../utils/responseGenerator");
@@ -25,10 +24,7 @@ async function register(req, res) {
     const token = jwt.sign(user._id.toString(), process.env.JWT_KEY);
 
     const userToSend = deleteSensitiveData(user);
-    return res
-      .status(201)
-      .cookie("auth-token", token, cookieOptions)
-      .send(response("success", userToSend));
+    return res.status(201).send(response("success", { user: userToSend, token }));
   } catch (error) {
     if (error.code === 11000 || error.code === 11001) {
       return res.status(409).send(response("fail", "Username already taken!"));
@@ -53,7 +49,7 @@ async function login(req, res) {
       const token = jwt.sign(user.id, process.env.JWT_KEY);
 
       const userToSend = deleteSensitiveData(user);
-      return res.cookie("auth-token", token, cookieOptions).send(response("success", userToSend));
+      return res.send(response("success", { user: userToSend, token }));
     } else {
       return res.status(401).send(response("fail", "Wrong username or password!"));
     }
@@ -63,7 +59,9 @@ async function login(req, res) {
 }
 
 async function logout(req, res) {
-  return res.clearCookie("auth-token").send(response("success", "Logout is successful!"));
+  // Implement Redis store for session management
+  return res.send(response("success", "success"));
+  // return res.clearCookie("auth-token").send(response("success", "Logout is successful!"));
 }
 
 async function editUser(req, res) {
@@ -104,14 +102,17 @@ async function getUser(req, res) {
     }
 
     let hasRequested;
+    let doesFollow;
     if (req.userId === user._id) {
       hasRequested = false;
+      doesFollow = false;
     } else {
       hasRequested = user.requests.includes(req.userId);
+      doesFollow = user.followers.includes(req.userId);
     }
 
     const userToSend = deleteSensitiveData(user);
-    return res.send(response("success", { ...userToSend, hasRequested }));
+    return res.send(response("success", { ...userToSend, hasRequested, doesFollow }));
   } catch (error) {
     return res.status(500).send(response("fail", error.message));
   }
@@ -133,9 +134,7 @@ async function changePassword(req, res) {
       const hash = await argon2.hash(password);
 
       await User.findByIdAndUpdate(req.userId, { password: hash });
-      return res
-        .clearCookie("auth-token")
-        .send(response("success", "Password successfully changed!"));
+      return res.send(response("success", "Password successfully changed!"));
     }
     return res.status(401).send(response("fail", "Wrong current password!"));
   } catch (error) {
@@ -144,18 +143,18 @@ async function changePassword(req, res) {
 }
 
 async function verifyLoggedIn(req, res) {
-  if (!req.cookies["auth-token"]) {
-    return res.status(401).send(response("fail", "Missing auth cookie"));
+  if (!req.headers.authorization) {
+    return res.status(401).send(response("fail", "Missing authorization"));
   }
 
   try {
-    const id = jwt.verify(req.cookies["auth-token"], process.env.JWT_KEY);
+    const id = jwt.verify(req.headers.authorization, process.env.JWT_KEY);
     const user = await User.findById(id);
 
     const userToSend = deleteSensitiveData(user);
     return res.send(response("success", userToSend));
   } catch (error) {
-    res.status(500).clearCookie("auth-token").send(response("fail", error.message));
+    res.status(500).send(response("fail", error.message));
   }
 }
 
