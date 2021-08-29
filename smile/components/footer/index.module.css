@@ -1,0 +1,29 @@
+.footer {
+  background-color: #fff;
+  border-top: 1.2px solid rgb(235, 235, 235);
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 16px 0;
+}
+
+.copyright,
+.btn {
+  font-size: 22px;
+}
+
+.copyright {
+  background: linear-gradient(45deg, #ff9494, #b257e6, #e657e6, #ff9494, #e657e6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.btn {
+  border: 0;
+  background: none;
+  color: #00376b;
+}
