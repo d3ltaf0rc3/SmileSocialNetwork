@@ -1,6 +1,6 @@
 export default async function handler(req, res) {
   try {
-    const resp = await fetch(`${process.env.API_URL}/api/user/verify/session`, {
+    const resp = await fetch(`${process.env.API_URL}/api/posts/get/feed`, {
       method: 'get',
       headers: {
         Authorization: req.cookies['auth-token'],
