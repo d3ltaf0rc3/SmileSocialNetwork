@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import AuthContext from '../contexts/authContext';
@@ -5,6 +6,7 @@ import Spinner from '../components/loading-spinner';
 import '../styles/globals.css';
 
 const MyApp = ({ Component, pageProps }) => {
+  const router = useRouter();
   const [user, setUser] = useState();
 
   const logIn = (usr) => {
@@ -13,6 +15,7 @@ const MyApp = ({ Component, pageProps }) => {
 
   const logOut = () => {
     setUser(null);
+    router.push('/login');
   };
 
   useEffect(() => {
@@ -25,7 +28,7 @@ const MyApp = ({ Component, pageProps }) => {
         if (res.success) {
           logIn(res.data);
         } else {
-          logOut();
+          setUser(null);
         }
       })
       .catch(() => logOut());
