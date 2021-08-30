@@ -21,7 +21,7 @@ async function register(req, res) {
     const user = new User({ username, password: hash });
     await user.save();
 
-    const token = jwt.sign(user._id.toString(), process.env.JWT_KEY);
+    const token = jwt.sign({ id: user.id }, process.env.JWT_KEY);
 
     const userToSend = deleteSensitiveData(user);
     return res.status(201).send(response("success", { user: userToSend, token }));
@@ -46,7 +46,7 @@ async function login(req, res) {
     const status = await argon2.verify(user.password, password);
 
     if (status) {
-      const token = jwt.sign(user.id, process.env.JWT_KEY);
+      const token = jwt.sign({ id: user.id }, process.env.JWT_KEY);
 
       const userToSend = deleteSensitiveData(user);
       return res.send(response("success", { user: userToSend, token }));
@@ -148,7 +148,7 @@ async function verifyLoggedIn(req, res) {
   }
 
   try {
-    const id = jwt.verify(req.headers.authorization, process.env.JWT_KEY);
+    const { id } = jwt.verify(req.headers.authorization, process.env.JWT_KEY);
     const user = await User.findById(id);
 
     const userToSend = deleteSensitiveData(user);
