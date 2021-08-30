@@ -1,0 +1,9 @@
+.logo {
+  text-align: center;
+}
+
+.logo a {
+  font-size: 48px;
+  color: #000;
+  font-family: 'Sacramento', sans-serif;
+}
