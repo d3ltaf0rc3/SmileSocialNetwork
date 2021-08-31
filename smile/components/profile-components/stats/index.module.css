@@ -1,0 +1,14 @@
+.stats {
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+}
+
+.stat {
+    margin-right: 40px;
+}
+
+.stat-number {
+    font-weight: 600;
+}

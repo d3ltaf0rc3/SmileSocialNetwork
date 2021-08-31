@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   flex-direction: column;
-  margin-top: 30px;
+  padding-top: 100px;
 }
 
 .empty-feed {
@@ -23,11 +23,6 @@
 
 .empty-feed span {
   opacity: 0.7;
-}
-
-.empty-feed img {
-  height: 80px;
-  width: 80px;
 }
 
 .img-container {

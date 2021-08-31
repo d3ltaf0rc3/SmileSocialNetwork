@@ -1,0 +1,33 @@
+.header {
+  background-color: #fff;
+  border-bottom: 1.2px solid rgb(235, 235, 235);
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 4;
+}
+
+.logo-container,
+.nav-icons {
+  width: 180px;
+}
+
+.nav,
+.nav-icons {
+  display: flex;
+  align-items: center;
+}
+
+.nav {
+  justify-content: space-around;
+  width: 80%;
+  margin: auto;
+}
+
+.nav-icons {
+  justify-content: space-between;
+}
+
+.icon {
+  width: 28px;
+}

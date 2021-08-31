@@ -1,0 +1,13 @@
+.post-actions {
+    margin-bottom: 15px;
+    font-size: 115%;
+}
+
+.post-action:first-child {
+    margin-right: 15px;
+}
+
+.post-action {
+    cursor: pointer;
+    height: 25px;
+}
