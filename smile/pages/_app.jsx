@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import AuthContext from '../contexts/authContext';
-import Spinner from '../components/loading-spinner';
+import Spinner from '../components/loading/spinner';
 import '../styles/globals.css';
 
 const MyApp = ({ Component, pageProps }) => {
@@ -35,7 +35,7 @@ const MyApp = ({ Component, pageProps }) => {
   }, []);
 
   if (user === undefined) {
-    return <Spinner />;
+    return <Spinner withWrapper />;
   }
 
   return (
