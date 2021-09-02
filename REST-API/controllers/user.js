@@ -143,7 +143,8 @@ async function changePassword(req, res) {
 }
 
 async function verifyLoggedIn(req, res) {
-  if (!req.headers.authorization) {
+  console.log(req.headers)
+  if (!req.headers.authorization || req.headers.authorization === 'null') {
     return res.status(401).send(response("fail", "Missing authorization"));
   }
 
