@@ -22,7 +22,7 @@ const MyApp = ({ Component, pageProps }) => {
   };
 
   useEffect(() => {
-    fetch(`${window.location.origin}/api/user/verifySession`, {
+    fetch(`${window.location.origin}/api/auth/verifySession`, {
       method: 'get',
       credentials: 'include',
     })
