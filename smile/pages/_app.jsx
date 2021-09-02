@@ -8,6 +8,7 @@ import '../styles/globals.css';
 const MyApp = ({ Component, pageProps }) => {
   const router = useRouter();
   const [user, setUser] = useState();
+  const noAuthRoutes = ['/login', '/register', '/error'];
 
   const logIn = (usr) => {
     setUser(usr);
@@ -15,7 +16,9 @@ const MyApp = ({ Component, pageProps }) => {
 
   const logOut = () => {
     setUser(null);
-    router.push('/login');
+    if (!noAuthRoutes.includes(router.pathname)) {
+      router.push('/login');
+    }
   };
 
   useEffect(() => {
@@ -28,7 +31,7 @@ const MyApp = ({ Component, pageProps }) => {
         if (res.success) {
           logIn(res.data);
         } else {
-          setUser(null);
+          logOut();
         }
       })
       .catch(() => logOut());
