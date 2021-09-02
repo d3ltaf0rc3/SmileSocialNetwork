@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import { useContext, useState } from 'react';
+import Head from 'next/head';
 import Footer from '../components/footer';
 import CredentialsForm from '../components/credentials-form';
 import AuthContext from '../contexts/authContext';
@@ -35,6 +36,9 @@ const RegisterPage = () => {
 
   return (
     <>
+      <Head>
+        <title>Register | Smile</title>
+      </Head>
       <CredentialsForm serverError={error} onSubmit={submitHandler} formType="register" />
       <Footer />
     </>
