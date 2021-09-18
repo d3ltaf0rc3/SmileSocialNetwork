@@ -34,3 +34,9 @@ cypress.env.json
 
 # vercel
 .vercel
+
+# Sentry
+.sentryclirc
+
+# Sentry
+.sentryclirc
