@@ -37,6 +37,3 @@ cypress.env.json
 
 # Sentry
 .sentryclirc
-
-# Sentry
-.sentryclirc
