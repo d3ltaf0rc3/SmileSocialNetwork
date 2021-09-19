@@ -1,5 +1,6 @@
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
+const Sentry = require("@sentry/node");
 const argon2 = require("argon2");
 const sanitizeString = require("../utils/sanitizeString");
 const deleteSensitiveData = require("../utils/deleteSensitiveData");
@@ -26,6 +27,7 @@ async function register(req, res) {
     const userToSend = deleteSensitiveData(user);
     return res.status(201).send(response("success", { user: userToSend, token }));
   } catch (error) {
+    Sentry.captureException(error);
     if (error.code === 11000 || error.code === 11001) {
       return res.status(409).send(response("fail", "Username already taken!"));
     }
@@ -54,6 +56,7 @@ async function login(req, res) {
       return res.status(401).send(response("fail", "Wrong username or password!"));
     }
   } catch (error) {
+    Sentry.captureException(error);
     return res.status(500).send(response("fail", error.message));
   }
 }
@@ -87,6 +90,7 @@ async function editUser(req, res) {
     const userToSend = deleteSensitiveData(user);
     return res.send(response("success", userToSend));
   } catch (error) {
+    Sentry.captureException(error);
     return res.status(500).send(response("fail", error.message));
   }
 }
@@ -114,6 +118,7 @@ async function getUser(req, res) {
     const userToSend = deleteSensitiveData(user);
     return res.send(response("success", { ...userToSend, hasRequested, doesFollow }));
   } catch (error) {
+    Sentry.captureException(error);
     return res.status(500).send(response("fail", error.message));
   }
 }
@@ -138,6 +143,7 @@ async function changePassword(req, res) {
     }
     return res.status(401).send(response("fail", "Wrong current password!"));
   } catch (error) {
+    Sentry.captureException(error);
     return res.status(500).send(response("fail", error.message));
   }
 }
@@ -154,6 +160,7 @@ async function verifyLoggedIn(req, res) {
     const userToSend = deleteSensitiveData(user);
     return res.send(response("success", userToSend));
   } catch (error) {
+    Sentry.captureException(error);
     res.status(500).send(response("fail", error.message));
   }
 }
@@ -175,6 +182,7 @@ async function searchUsers(req, res) {
     }
     return res.send(response("success", users));
   } catch (error) {
+    Sentry.captureException(error);
     return res.status(500).send(response("fail", error.message));
   }
 }
@@ -239,6 +247,7 @@ async function handleAction(req, res) {
 
     return res.send(response("success", "Action completed successfully!"));
   } catch (error) {
+    Sentry.captureException(error);
     return res.status(500).send(response("fail", error.message));
   }
 }
@@ -281,6 +290,7 @@ async function handleRequest(req, res) {
     }
     return res.send(response("success", "Request handled successfully!"));
   } catch (error) {
+    Sentry.captureException(error);
     return res.status(500).send(response("fail", error.message));
   }
 }
@@ -301,6 +311,7 @@ async function getUserPosts(req, res) {
 
     return res.send(response("success", user.posts));
   } catch (error) {
+    Sentry.captureException(error);
     return res.status(500).send(response("fail", error.message));
   }
 }
@@ -314,6 +325,7 @@ async function getRequests(req, res) {
 
     return res.send(response("success", requests));
   } catch (error) {
+    Sentry.captureException(error);
     return res.status(500).send(response("fail", error.message));
   }
 }

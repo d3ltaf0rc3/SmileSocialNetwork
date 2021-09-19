@@ -1,6 +1,7 @@
 const Post = require("../models/Post");
 const User = require("../models/User");
 const Comment = require("../models/Comment");
+const Sentry = require("@sentry/node");
 const cloudinary = require("cloudinary");
 const { validationResult } = require("express-validator");
 const response = require("../utils/responseGenerator");
@@ -34,6 +35,7 @@ async function createAPost(req, res) {
 
     return res.status(201).send(response("success", post));
   } catch (error) {
+    Sentry.captureException(error);
     return res.status(500).send(response("fail", error.message));
   }
 }
@@ -58,6 +60,7 @@ async function getPost(req, res) {
 
     return res.send(response("success", post));
   } catch (error) {
+    Sentry.captureException(error);
     return res.status(500).send(response("fail", error.message));
   }
 }
@@ -93,6 +96,7 @@ async function getFeed(req, res) {
     const sorted = posts.sort((a, b) => b.createdAt - a.createdAt);
     return res.send(response("success", sorted));
   } catch (error) {
+    Sentry.captureException(error);
     return res.status(500).json(response("fail", error.message));
   }
 }
@@ -125,6 +129,7 @@ async function handleAction(req, res) {
 
     return res.send(response("success", "Action completed successfully!"));
   } catch (error) {
+    Sentry.captureException(error);
     return res.status(500).send(response("fail", error.message));
   }
 }
@@ -153,6 +158,7 @@ async function addComment(req, res) {
 
     return res.status(201).send(response("success", comment));
   } catch (error) {
+    Sentry.captureException(error);
     return res.status(500).send(response("fail", error.message));
   }
 }
@@ -167,6 +173,7 @@ async function deleteResourceFromCloudinary(req, res) {
     }
     return res.send(response("success", "Resource successfully deleted!"));
   } catch (error) {
+    Sentry.captureException(error);
     return res.status(500).send(response("fail", error.message));
   }
 }
@@ -191,6 +198,7 @@ async function deletePost(req, res) {
 
     return res.send(response("success", "Post successfully deleted!"));
   } catch (error) {
+    Sentry.captureException(error);
     return res.status(500).send(response("fail", error.message));
   }
 }
@@ -212,6 +220,7 @@ async function editPost(req, res) {
 
     return res.send(response("success", post));
   } catch (error) {
+    Sentry.captureException(error);
     return res.status(500).send(response("fail", error.message));
   }
 }
