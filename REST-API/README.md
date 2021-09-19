@@ -25,6 +25,7 @@ This is the REST API for Smile Social Network.
   | CLOUD_NAME           | Cloudinary Cloud Name |
   | API_KEY              | Cloudinary API Key    |
   | API_SECRET           | Cloudinary API Secret |
+  | SENTRY_DSN           | Sentry.io DSN         |
 
 ## 3. Start the REST API
 
