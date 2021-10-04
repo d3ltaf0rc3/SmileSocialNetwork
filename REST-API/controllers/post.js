@@ -69,31 +69,27 @@ async function getFeed(req, res) {
   const posts = [];
 
   try {
-    const user = await User.findById(req.userId).populate({
-      path: "following",
-      populate: {
-        path: "posts",
-        populate: {
-          path: "postedBy comments",
-          select: "username profilePicture postedBy createdAt comment",
-          populate: {
+    const { following } = await User.findById(req.userId).select("following").populate("following");
+
+    for (const user of following) {
+      for (const post of user.posts) {
+        const currentPost = await Post.findById(post)
+          .populate({
             path: "postedBy",
-            select: "username",
-          },
-        },
-        options: {
-          limit: 10,
-        },
-      },
-    });
+            select: "username profilePicture"
+          })
+          .populate({
+            path: "comments",
+            populate: {
+              path: "postedBy",
+              select: "username profilePicture"
+            }
+          });
+        posts.push(currentPost);
+      }
+    }
 
-    user.following.forEach((user) => {
-      user.posts.forEach((post) => {
-        posts.push(post);
-      });
-    });
-
-    const sorted = posts.sort((a, b) => b.createdAt - a.createdAt);
+    const sorted = posts.sort((a, b) => b.createdAt - a.createdAt).slice(0, 10);
     return res.send(response("success", sorted));
   } catch (error) {
     Sentry.captureException(error);
