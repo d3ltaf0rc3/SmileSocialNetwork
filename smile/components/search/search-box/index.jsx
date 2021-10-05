@@ -1,47 +1,59 @@
 import { useEffect, useState } from 'react';
-import styles from './index.module.css';
+import Image from 'next/image';
 import Profile from '../result-profile';
+import styles from './index.module.css';
 
 const Search = ({ query, onMouseLeave }) => {
-  const [users, setUsers] = useState();
+  const [users, setUsers] = useState(null);
 
   useEffect(() => {
-    if (query.trim() !== '') {
-      fetch(`${process.env.REACT_APP_API_URL}/api/user/search`, {
+    if (query !== '') {
+      fetch(`${window.location.origin}/api/user/search`, {
         method: 'post',
         headers: {
           'Content-Type': 'application/json',
         },
-        credentials: 'include',
         body: JSON.stringify({
-          query: query.trim(),
+          query,
         }),
       })
         .then((res) => res.json())
-        .then((usrs) => setUsers(usrs))
+        .then((res) => {
+          if (res.success) {
+            setUsers(res.data);
+          } else {
+            console.error(res.data);
+            setUsers([]);
+          }
+        })
         .catch((err) => console.error(err));
     } else {
       setUsers([]);
     }
   }, [query]);
 
+  if (users === null) {
+    return (
+      <div className={styles.container} onMouseLeave={onMouseLeave}>
+        <div className={styles.arrow} />
+        <div style={{ textAlign: 'center', padding: '5px 0' }} className={styles.searchBox}>
+          <Image src="/loading.svg" width="50" height="50" alt="loading" />
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div onMouseLeave={onMouseLeave}>
+    <div className={styles.container} onMouseLeave={onMouseLeave}>
       <div className={styles.arrow} />
-      <div className={styles['search-box']}>
-        {users === undefined ? <div className={styles.error}>Loading...</div> : null}
-        {users.length > 0 ? (
-          users.map((user) => {
-            return (
-              <Profile
-                key={user.username}
-                location={user.name}
-                username={user.username}
-                imageUrl={user.profilePicture}
-              />
-            );
-          })
-        ) : (
+      <div className={styles.searchBox}>
+        {users.length > 0 ? users.map((user) => (
+          <Profile
+            key={user._id}
+            username={user.username}
+            imageUrl={user.profilePicture}
+          />
+        )) : (
           <div className={styles.error}>No results found</div>
         )}
       </div>
