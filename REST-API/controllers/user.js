@@ -177,9 +177,6 @@ async function searchUsers(req, res) {
       .limit(10)
       .select("username profilePicture");
 
-    if (users.length === 0) {
-      return res.status(404).send(response("fail", "No users matching your criteria were found"));
-    }
     return res.send(response("success", users));
   } catch (error) {
     Sentry.captureException(error);
