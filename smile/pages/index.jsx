@@ -1,39 +1,50 @@
-import { useContext, useEffect, useState } from 'react';
+import Head from 'next/head';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Header from '../components/header';
 import PostCard from '../components/feed-post-card';
-import UserContext from '../contexts/authContext';
 import PostLoading from '../components/loading/post-card';
+import requirePageAuth from '../utils/requirePageAuth';
 import styles from '../styles/home.module.css';
 
 const HomePage = () => {
-  const context = useContext(UserContext);
-  const [feed, setFeed] = useState();
+  const [feed, setFeed] = useState(null);
 
   useEffect(() => {
-    fetch(`${window.location.origin}/api/posts/getFeed`, {
-      method: 'get',
-      credentials: 'include',
-    })
+    fetch(`${window.location.origin}/api/posts/getFeed`)
       .then((res) => res.json())
       .then((res) => {
         if (res.success) {
           setFeed(res.data);
         } else {
-          console.error(res);
+          console.error(res.data);
         }
       })
-      .catch((err) => {
-        console.error(err);
-      });
+      .catch((err) => console.error(err));
   }, []);
+
+  if (feed === null) {
+    return (
+      <>
+        <Head>
+          <title>Feed | Smile</title>
+        </Head>
+        <Header />
+        <div className={styles.feed}>
+          <PostLoading />
+        </div>
+      </>
+    );
+  }
 
   return (
     <>
+      <Head>
+        <title>Feed | Smile</title>
+      </Head>
       <Header />
       <div className={styles.feed}>
-        {!feed ? <PostLoading /> : null}
-        {feed && feed.length > 0 ? (
+        {feed.length > 0 ? (
           feed.map((post) => (
             <PostCard
               id={post._id}
@@ -44,18 +55,18 @@ const HomePage = () => {
               profilePicture={post.postedBy.profilePicture}
               likes={post.likes}
               comments={post.comments}
-              imageUrl={post.imageUrl}
+              imageUrl={post.resource}
             />
           ))
         ) : (
-          <div className={styles['empty-feed']}>
-            <div className={styles['img-container']}>
+          <div className={styles.emptyFeed}>
+            <div className={styles.imgContainer}>
               <Image src="/home.svg" alt="home" height="80" width="80" />
             </div>
             <h1>Welcome to Smile</h1>
-            <span>
+            <p>
               When you follow people, you&apos;ll see the photos and videos they post here.
-            </span>
+            </p>
           </div>
         )}
       </div>
@@ -64,3 +75,5 @@ const HomePage = () => {
 };
 
 export default HomePage;
+
+export const getServerSideProps = requirePageAuth;
