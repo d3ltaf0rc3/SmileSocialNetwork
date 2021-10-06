@@ -5,9 +5,10 @@ import Header from '../components/header';
 import PostCard from '../components/feed-post-card';
 import PostLoading from '../components/loading/post-card';
 import requirePageAuth from '../utils/requirePageAuth';
+import AuthContext from '../contexts/authContext';
 import styles from '../styles/home.module.css';
 
-const HomePage = () => {
+const HomePage = ({ user }) => {
   const [feed, setFeed] = useState(null);
 
   useEffect(() => {
@@ -38,7 +39,11 @@ const HomePage = () => {
   }
 
   return (
-    <>
+    <AuthContext.Provider
+      value={{
+        user,
+      }}
+    >
       <Head>
         <title>Feed | Smile</title>
       </Head>
@@ -70,7 +75,7 @@ const HomePage = () => {
           </div>
         )}
       </div>
-    </>
+    </AuthContext.Provider>
   );
 };
 
