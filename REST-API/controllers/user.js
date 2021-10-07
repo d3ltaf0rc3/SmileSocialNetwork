@@ -116,7 +116,14 @@ async function getUser(req, res) {
     }
 
     const userToSend = deleteSensitiveData(user);
-    return res.send(response("success", { ...userToSend, hasRequested, doesFollow }));
+    return res.send(response("success", {
+      ...userToSend,
+      hasRequested,
+      doesFollow,
+      followers: user.followers.length,
+      following: user.following.length,
+      posts: user.posts.length
+    }));
   } catch (error) {
     Sentry.captureException(error);
     return res.status(500).send(response("fail", error.message));
