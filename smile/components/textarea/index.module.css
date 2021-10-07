@@ -1,19 +1,13 @@
-.container {
-    margin: 10px 0;
+.textarea {
+  border-radius: 3px;
+  border: 1px solid rgb(219, 219, 219);
+  color: rgb(38, 38, 38);
+  padding: 10px;
+  width: 100%;
+  background-color: rgb(235, 235, 235);
+  font-size: 16px;
 }
 
-.container textarea {
-    border-radius: 3px;
-    border: 1px solid rgb(219, 219, 219);
-    color: rgb(38, 38, 38);
-    padding: 10px;
-    height: 72px;
-    width: 100%;
-    background-color: rgb(235, 235, 235);
-    font-size: 16px;
-}
-
-.container textarea::placeholder {
-    color: #000;
-    text-align: center;
+.textarea::placeholder {
+  text-align: center;
 }
