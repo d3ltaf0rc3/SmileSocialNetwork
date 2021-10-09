@@ -8,7 +8,6 @@ const {
   register,
   login,
   logout,
-  verifyLoggedIn,
   searchUsers,
   getUserPosts,
   getRequests,
@@ -25,7 +24,6 @@ router.get("/get/requests", auth, getRequests);
 router.get("/get/:username", auth, getUser);
 router.get("/get/posts/:username", auth, getUserPosts);
 router.get("/logout", auth, logout);
-router.get("/verify/session", verifyLoggedIn);
 router.put("/edit", auth, editUserValidator, editUser);
 router.put("/change-password", auth, changePasswordValidator, passwordValidator, changePassword);
 router.put("/action/:action/:id", auth, handleAction);

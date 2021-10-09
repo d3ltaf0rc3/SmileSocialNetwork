@@ -155,23 +155,6 @@ async function changePassword(req, res) {
   }
 }
 
-async function verifyLoggedIn(req, res) {
-  if (!req.headers.authorization || req.headers.authorization === 'null') {
-    return res.status(401).send(response("fail", "Missing authorization"));
-  }
-
-  try {
-    const { id } = jwt.verify(req.headers.authorization, process.env.JWT_KEY);
-    const user = await User.findById(id);
-
-    const userToSend = deleteSensitiveData(user);
-    return res.send(response("success", userToSend));
-  } catch (error) {
-    Sentry.captureException(error);
-    res.status(500).send(response("fail", error.message));
-  }
-}
-
 async function searchUsers(req, res) {
   const query = sanitizeString(req.body.query);
 
@@ -341,7 +324,6 @@ module.exports = {
   editUser,
   changePassword,
   getUser,
-  verifyLoggedIn,
   searchUsers,
   handleAction,
   handleRequest,

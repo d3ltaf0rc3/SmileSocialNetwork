@@ -3,6 +3,7 @@ const Sentry = require("@sentry/node");
 const Tracing = require("@sentry/tracing");
 const postRouter = require("./routes/post");
 const userRouter = require("./routes/user");
+const sessionRouter = require("./routes/session");
 const app = express();
 
 Sentry.init({
@@ -23,6 +24,7 @@ require("./config/database")();
 
 app.use("/api/posts", postRouter);
 app.use("/api/user", userRouter);
+app.use("/api/session", sessionRouter);
 
 app.use(Sentry.Handlers.errorHandler());
 
