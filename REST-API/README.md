@@ -7,6 +7,7 @@ This is the REST API for Smile Social Network.
 - The REST API only works with a **MongoDB** database.
 - You need to setup Google ReCAPTCHA v2 or you can use the following server key (for testing purposes only) **`6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe`**
 - You need to have a **Cloudinary** account (used for storing images and videos)
+- You need to have a **Sentry.io** account (used for error tracking)
 
 ## 2. Project set up
 
