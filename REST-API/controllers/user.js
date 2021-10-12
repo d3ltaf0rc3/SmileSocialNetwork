@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const Session = require("../models/Session");
 const jwt = require("jsonwebtoken");
 const Sentry = require("@sentry/node");
 const argon2 = require("argon2");
@@ -23,6 +24,13 @@ async function register(req, res) {
     await user.save();
 
     const token = jwt.sign({ id: user.id }, process.env.JWT_KEY);
+    const session = new Session({
+      token,
+      createdAt: new Date(),
+      expiresAt: new Date(Date.now() + 604800000)
+    });
+    await session.save();
+    await User.findByIdAndUpdate(user.id, { $addToSet: { sessions: session.id } });
 
     const userToSend = deleteSensitiveData(user);
     return res.status(201).send(response("success", { user: userToSend, token }));
@@ -49,6 +57,13 @@ async function login(req, res) {
 
     if (status) {
       const token = jwt.sign({ id: user.id }, process.env.JWT_KEY);
+      const session = new Session({
+        token,
+        createdAt: new Date(),
+        expiresAt: new Date(Date.now() + 604800000)
+      });
+      await session.save();
+      await User.findByIdAndUpdate(user.id, { $addToSet: { sessions: session.id } });
 
       const userToSend = deleteSensitiveData(user);
       return res.send(response("success", { user: userToSend, token }));
@@ -62,9 +77,15 @@ async function login(req, res) {
 }
 
 async function logout(req, res) {
-  // Implement Redis store for session management
-  return res.send(response("success", "success"));
-  // return res.clearCookie("auth-token").send(response("success", "Logout is successful!"));
+  try {
+    await User.findByIdAndUpdate(req.userId, { $pull: { sessions: req.sessionId } });
+    await Session.findByIdAndDelete(req.sessionId);
+
+    return res.send(response("success", "Logout is successful!"));
+  } catch (error) {
+    Sentry.captureException(error);
+    return res.status(500).send(response("fail", error.message));
+  }
 }
 
 async function editUser(req, res) {
@@ -145,7 +166,8 @@ async function changePassword(req, res) {
     if (result) {
       const hash = await argon2.hash(password);
 
-      await User.findByIdAndUpdate(req.userId, { password: hash });
+      await User.findByIdAndUpdate(req.userId, { password: hash, $pull: { sessions: req.sessionId } });
+      await Session.findByIdAndDelete(req.sessionId);
       return res.send(response("success", "Password successfully changed!"));
     }
     return res.status(401).send(response("fail", "Wrong current password!"));

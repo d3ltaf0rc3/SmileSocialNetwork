@@ -55,6 +55,12 @@ const UserSchema = new mongoose.Schema({
       ref: "User",
     },
   ],
+  sessions: [
+    {
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: "Session",
+    }
+  ],
 });
 
 module.exports = mongoose.model("User", UserSchema);
