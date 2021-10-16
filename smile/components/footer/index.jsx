@@ -1,17 +1,26 @@
+import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import UserContext from '../../contexts/authContext';
 import styles from './index.module.css';
 
 const Footer = () => {
-  const { user, logOut } = useContext(UserContext);
+  const router = useRouter();
+  const { user } = useContext(UserContext);
 
   const clickHandler = () => {
     fetch(`${window.location.origin}/api/auth/logout`, {
       method: 'get',
       credentials: 'include',
     })
-      .then(() => logOut())
-      .catch(() => logOut());
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.success) {
+          router.push('/login');
+        } else {
+          console.error(res.data);
+        }
+      })
+      .catch((err) => console.error(err));
   };
 
   return (
