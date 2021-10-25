@@ -1,5 +1,5 @@
 export default async function requirePageAuth({ req }) {
-  const user = await fetch(`${process.env.API_URL}/api/user/verify/session`, {
+  const user = await fetch(`${process.env.API_URL}/api/session/verify`, {
     method: 'get',
     headers: {
       Authorization: req.cookies['auth-token'] || null,
