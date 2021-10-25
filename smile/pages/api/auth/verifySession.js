@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/nextjs';
 import { serialize } from 'cookie';
 
 export default async function handler(req, res) {
@@ -14,6 +15,7 @@ export default async function handler(req, res) {
     }
     return res.status(resp.status).send(data);
   } catch (error) {
+    Sentry.captureException(error);
     return res.status(500).send({
       success: false,
       data: error.message,
