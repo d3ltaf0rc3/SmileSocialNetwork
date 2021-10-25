@@ -8,14 +8,15 @@
 | /login            | Login page                                             |
 | /register         | Register page                                          |
 | /user/(username)  | User's profile page which contains their posts         |
-| /account/settings | The settings page allows you to edit your profile info |
-| /post/add         | Allows you to upload photos and videos                 |
+| /settings | The settings page allows you to edit your profile info |
+| /add-post         | Allows you to upload photos and videos                 |
 | /change-password  | Change Password Page                                   |
 | any other route   | Error Page                                             |
 
 ## Requirements
 
-- You need to setup Google ReCAPTCHA v2 or you can the use following site key (for testing purposes only) **`6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI`**
+- You need to setup **Google ReCAPTCHA v2** or you can the use following site key **(for testing purposes only)** **`6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI`**
+- You need to setup **Sentry.io** for Next.js
 
 ## Project set up and running
 
@@ -23,11 +24,12 @@
 - Create a **.env** file
 - Set the following variables:
 
-  | Variable           | Value                     |
-  | ------------------ | ------------------------- |
-  | REACT_APP_API_URL  | REST API URL              |
-  | REACT_APP_SITE_KEY | Google reCaptcha Site Key |
+  | Variable             | Value                     |
+  | -------------------- | ------------------------- |
+  | API_URL              | REST API URL              |
+  | NEXT_PUBLIC_SITE_KEY | Google reCaptcha Site Key |
 
-- Run **`npm run start`**
+- Setup Sentry.io - [learn more](https://docs.sentry.io/platforms/javascript/guides/nextjs/)
+- Run **`npm run dev`**
 
 ### The app runs on **`localhost:3000`**
