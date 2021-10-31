@@ -17,7 +17,7 @@ const UserSchema = new mongoose.Schema({
   profilePicture: {
     type: String,
     default:
-      "https://res.cloudinary.com/smile-social-network/image/upload/v1600976280/download_udtdbe.png",
+      "https://res.cloudinary.com/smile-social-network/image/upload/v1635235466/rvk7tbbczfwhhqrfpaty.png",
   },
   public_id: {
     type: String,
