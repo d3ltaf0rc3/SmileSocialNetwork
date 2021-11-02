@@ -7,6 +7,7 @@ const deleteSensitiveData = (user) => {
   delete copy.following;
   delete copy.posts;
   delete copy.sessions;
+  delete copy.__v;
 
   return copy;
 };
