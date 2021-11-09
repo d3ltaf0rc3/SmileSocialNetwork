@@ -35,15 +35,20 @@ async function register(req, res) {
     const userToSend = deleteSensitiveData(user);
     return res.status(201).send(response("success", { user: userToSend, token }));
   } catch (error) {
-    Sentry.captureException(error);
     if (error.code === 11000 || error.code === 11001) {
       return res.status(409).send(response("fail", "Username already taken!"));
     }
+    Sentry.captureException(error);
     return res.status(500).send(response("fail", error.message));
   }
 }
 
 async function login(req, res) {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).send(response("fail", errors.array()[0].msg));
+  }
+
   const { username, password } = req.body;
 
   try {
@@ -92,21 +97,12 @@ async function editUser(req, res) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).send(response("fail", errors.array()[0].msg));
-  } else if (
-    req.body.password ||
-    req.body.username ||
-    req.body.posts ||
-    req.body.followers ||
-    req.body.following ||
-    req.body.requests
-  ) {
-    return res.status(403).send(response("fail", "You are trying to edit readonly parameters"));
   }
 
-  const body = emptyStringToNull(req);
-
   try {
-    const user = await User.findByIdAndUpdate(req.userId, { ...body }, { new: true });
+    const body = emptyStringToNull({ name: req.body.name, description: req.body.description, isPrivate: req.body.isPrivate });
+
+    const user = await User.findByIdAndUpdate(req.userId, body, { new: true });
 
     const userToSend = deleteSensitiveData(user);
     return res.send(response("success", userToSend));
@@ -117,21 +113,22 @@ async function editUser(req, res) {
 }
 
 async function getUser(req, res) {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).send(response("fail", errors.array()[0].msg));
+  }
+
   const { username } = req.params;
 
   try {
     const user = await User.findOne({ username });
-
     if (user === null) {
       return res.status(404).send(response("fail", "User not found!"));
     }
 
-    let hasRequested;
-    let doesFollow;
-    if (req.userId === user._id) {
-      hasRequested = false;
-      doesFollow = false;
-    } else {
+    let hasRequested = false;
+    let doesFollow = false;
+    if (req.userId !== user._id) {
       hasRequested = user.requests.includes(req.userId);
       doesFollow = user.followers.includes(req.userId);
     }
@@ -166,11 +163,13 @@ async function changePassword(req, res) {
     if (result) {
       const hash = await argon2.hash(password);
 
-      await User.findByIdAndUpdate(req.userId, { password: hash, $pull: { sessions: req.sessionId } });
-      await Session.findByIdAndDelete(req.sessionId);
+      for (const session of user.sessions) {
+        await Session.findByIdAndDelete(session);
+      }
+      await User.findByIdAndUpdate(req.userId, { password: hash, sessions: [] });
       return res.send(response("success", "Password successfully changed!"));
     }
-    return res.status(401).send(response("fail", "Wrong current password!"));
+    return res.status(400).send(response("fail", "Wrong current password!"));
   } catch (error) {
     Sentry.captureException(error);
     return res.status(500).send(response("fail", error.message));
@@ -178,10 +177,10 @@ async function changePassword(req, res) {
 }
 
 async function searchUsers(req, res) {
-  const query = sanitizeString(req.body.query);
+  const query = sanitizeString(req.query.query);
 
   if (query === "") {
-    return res.status(404).send(response("fail", "No users matching your criteria were found"));
+    return res.send(response("success", []));
   }
 
   try {
@@ -197,8 +196,13 @@ async function searchUsers(req, res) {
 }
 
 async function handleAction(req, res) {
-  const id = req.params.id;
-  const action = req.params.action;
+  const { id, action } = req.params;
+
+  if (id === req.userId) {
+    return res.status(400).send(response("fail", "Cannot perform the following action on yourself!"));
+  } else if (action !== "unfollow" && action !== "follow" && action !== "cancel-request") {
+    return res.status(400).send(response("fail", "Unsupported action!"));
+  }
 
   try {
     const userToHandle = await User.findById(id);
@@ -238,10 +242,10 @@ async function handleAction(req, res) {
       }
 
       if (userToHandle.isPrivate) {
-        await User.findByIdAndUpdate(id, { $addToSet: { requests: req.userId } });
+        await User.findByIdAndUpdate(userToHandle._id, { $addToSet: { requests: req.userId } });
       } else {
-        await User.findByIdAndUpdate(id, { $addToSet: { followers: req.userId } });
-        await User.findByIdAndUpdate(req.userId, { $addToSet: { following: id } });
+        await User.findByIdAndUpdate(userToHandle._id, { $addToSet: { followers: req.userId } });
+        await User.findByIdAndUpdate(req.userId, { $addToSet: { following: userToHandle._id } });
       }
     } else if (action === "cancel-request") {
       if (!userToHandle.requests.includes(loggedUser._id)) {
@@ -249,9 +253,7 @@ async function handleAction(req, res) {
           .status(405)
           .send(response("fail", "Cannot cancel a request that you have not made!"));
       }
-      await User.findByIdAndUpdate(id, { $pull: { requests: req.userId } });
-    } else {
-      return res.status(400).send(response("fail", "Unsupported action!"));
+      await User.findByIdAndUpdate(userToHandle._id, { $pull: { requests: req.userId } });
     }
 
     return res.send(response("success", "Action completed successfully!"));
@@ -262,9 +264,11 @@ async function handleAction(req, res) {
 }
 
 async function handleRequest(req, res) {
-  const { id, action } = req.body;
+  const { id, action } = req.params;
 
-  if (action !== "accept" && action !== "deny") {
+  if (id === req.userId) {
+    return res.status(400).send(response("fail", "Cannot perform the following action on yourself!"));
+  } else if (action !== "accept" && action !== "deny") {
     return res.status(400).send(response("fail", "Action not supported!"));
   }
 
@@ -275,19 +279,10 @@ async function handleRequest(req, res) {
     if (userToHandle === null) {
       return res.status(404).send(response("fail", "User not found!"));
     } else if (!loggedUser.requests.includes(userToHandle._id)) {
-      return res.status(405).send(response("fail", "Cannot handle a user who hasn't requested!"));
+      return res.status(405).send(response("fail", "Cannot handle a non-existing request!"));
     }
 
     await User.findByIdAndUpdate(req.userId, { $pull: { requests: userToHandle._id } });
-
-    if (
-      userToHandle.following.includes(req.userId) &&
-      loggedUser.followers.includes(userToHandle._id)
-    ) {
-      return res
-        .status(405)
-        .send(response("fail", "Cannot handle a user who already is following you!"));
-    }
 
     if (action === "accept") {
       await User.findByIdAndUpdate(userToHandle._id, {
@@ -298,27 +293,6 @@ async function handleRequest(req, res) {
       });
     }
     return res.send(response("success", "Request handled successfully!"));
-  } catch (error) {
-    Sentry.captureException(error);
-    return res.status(500).send(response("fail", error.message));
-  }
-}
-
-async function getUserPosts(req, res) {
-  const { username } = req.params;
-
-  try {
-    const user = await User.findOne({ username }).populate({
-      path: "posts",
-      select: "resource resource_type",
-      options: { sort: { createdAt: -1 } },
-    });
-
-    if (user === null) {
-      return res.status(404).send(response("fail", "User not found!"));
-    }
-
-    return res.send(response("success", user.posts));
   } catch (error) {
     Sentry.captureException(error);
     return res.status(500).send(response("fail", error.message));
@@ -349,6 +323,5 @@ module.exports = {
   searchUsers,
   handleAction,
   handleRequest,
-  getUserPosts,
   getRequests,
 };

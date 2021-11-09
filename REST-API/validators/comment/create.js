@@ -6,5 +6,6 @@ module.exports = [
     .not()
     .isEmpty()
     .isLength({ max: "150" })
-    .withMessage("Comment cannot be more than 150 characters!"),
+    .withMessage("Comment cannot be more than 150 characters!")
+    .escape(),
 ];

@@ -9,28 +9,27 @@ const {
   login,
   logout,
   searchUsers,
-  getUserPosts,
   getRequests,
 } = require("../controllers/user");
 const verifyReCaptcha = require("../utils/verifyReCaptcha");
 const auth = require("../utils/auth");
-const usernameValidator = require("../validators/username");
-const passwordValidator = require("../validators/password");
-const editUserValidator = require("../validators/editUser");
-const changePasswordValidator = require("../validators/changePassword");
+const usernameValidator = require("../validators/user/username");
+const passwordValidator = require("../validators/user/password");
+const editUserValidator = require("../validators/user/edit");
+const changePasswordValidator = require("../validators/user/changePassword");
+const getUserValidator = require("../validators/user/get");
 const router = express.Router();
 
-router.get("/get/requests", auth, getRequests);
-router.get("/get/:username", auth, getUser);
-router.get("/get/posts/:username", auth, getUserPosts);
-router.get("/logout", auth, logout);
+router.get("/requests", auth, getRequests);
+router.get("/get/:username", getUserValidator, auth, getUser);
+router.get("/search", auth, searchUsers);
 router.put("/edit", auth, editUserValidator, editUser);
 router.put("/change-password", auth, changePasswordValidator, passwordValidator, changePassword);
 router.put("/action/:action/:id", auth, handleAction);
-router.put("/handle-request", auth, handleRequest);
+router.put("/request/:action/:id", auth, handleRequest);
 router.post("/register", usernameValidator, passwordValidator, register);
-router.post("/login", login);
+router.post("/login", usernameValidator, login);
+router.post("/logout", auth, logout);
 router.post("/verify/reCaptcha", verifyReCaptcha);
-router.post("/search", auth, searchUsers);
 
 module.exports = router;

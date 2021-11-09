@@ -65,6 +65,27 @@ async function getPost(req, res) {
   }
 }
 
+async function getUserPosts(req, res) {
+  const { username } = req.params;
+
+  try {
+    const user = await User.findOne({ username }).populate({
+      path: "posts",
+      select: "resource resource_type",
+      options: { sort: { createdAt: -1 } },
+    });
+
+    if (user === null) {
+      return res.status(404).send(response("fail", "User not found!"));
+    }
+
+    return res.send(response("success", user.posts));
+  } catch (error) {
+    Sentry.captureException(error);
+    return res.status(500).send(response("fail", error.message));
+  }
+}
+
 async function getFeed(req, res) {
   const posts = [];
 
@@ -224,6 +245,7 @@ async function editPost(req, res) {
 module.exports = {
   createAPost,
   getPost,
+  getUserPosts,
   getFeed,
   handleAction,
   addComment,
