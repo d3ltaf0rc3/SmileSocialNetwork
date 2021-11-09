@@ -14,11 +14,11 @@ module.exports = async (req, res, next) => {
     const session = await Session.findOne({ token: req.headers.authorization });
 
     if (session === null) {
-      return res.status(401).send(response("fail", "Session does not exist!"));
+      return res.status(401).send(response("fail", "Invalid session!"));
     } else if (new Date() >= new Date(session.expiresAt)) {
       await User.findByIdAndUpdate(id, { $pull: { sessions: session.id } });
       await Session.findByIdAndDelete(session.id);
-      return res.status(401).send(response("fail", "Session has expired!"));
+      return res.status(401).send(response("fail", "Invalid session!"));
     }
 
     req.userId = id;
@@ -26,6 +26,6 @@ module.exports = async (req, res, next) => {
     next();
   } catch (error) {
     Sentry.captureException(error);
-    return res.status(401).send(response("fail", "User not authenticated!"));
+    return res.status(401).send(response("fail", "Unauthorized!"));
   }
 };
