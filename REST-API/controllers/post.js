@@ -6,12 +6,6 @@ const cloudinary = require("cloudinary");
 const { validationResult } = require("express-validator");
 const response = require("../utils/responseGenerator");
 
-cloudinary.config({
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.API_KEY,
-  api_secret: process.env.API_SECRET,
-});
-
 async function createAPost(req, res) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {

@@ -1,4 +1,5 @@
 const express = require("express");
+const cloudinary = require("cloudinary");
 const Sentry = require("@sentry/node");
 const Tracing = require("@sentry/tracing");
 const postRouter = require("./routes/post");
@@ -21,6 +22,12 @@ app.use(Sentry.Handlers.tracingHandler());
 
 require("./config/express")(app);
 require("./config/database")();
+
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET,
+});
 
 app.use("/api/posts", postRouter);
 app.use("/api/user", userRouter);
