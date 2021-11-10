@@ -104,6 +104,13 @@ async function editUser(req, res) {
 
     const user = await User.findByIdAndUpdate(req.userId, body, { new: true });
 
+    if (!user.isPrivate && user.requests.length > 0) {
+      for (const userId of user.requests) {
+        await User.findByIdAndUpdate(user.id, { $pull: { requests: userId }, $addToSet: { followers: userId }});
+        await User.findByIdAndUpdate(userId, { $addToSet: { following: user.id } });
+      }
+    }
+
     const userToSend = deleteSensitiveData(user);
     return res.send(response("success", userToSend));
   } catch (error) {
