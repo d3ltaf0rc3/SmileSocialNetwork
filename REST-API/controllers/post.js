@@ -5,6 +5,7 @@ const Sentry = require("@sentry/node");
 const cloudinary = require("cloudinary");
 const { validationResult } = require("express-validator");
 const response = require("../utils/responseGenerator");
+const emptyStringToNull = require("../utils/emptyStringToNull");
 
 async function createAPost(req, res) {
   const errors = validationResult(req);
@@ -15,12 +16,10 @@ async function createAPost(req, res) {
   const { resource, location, description, public_id, resource_type } = req.body;
 
   try {
+    const body = emptyStringToNull({ resource, location, description, public_id, resource_type });
+
     const post = new Post({
-      resource,
-      location,
-      description,
-      public_id,
-      resource_type,
+      ...body,
       postedBy: req.userId,
       createdAt: Date.now(),
     });
@@ -50,6 +49,13 @@ async function getPost(req, res) {
 
     if (post === null) {
       return res.status(404).send(response("fail", "Post not found!"));
+    } else if (req.userId === post.postedBy.id) {
+      return res.send(response("success", post));
+    }
+
+    const postOwner = await User.findById(post.postedBy.id);
+    if (postOwner.isPrivate && !postOwner.followers.includes(req.userId)) {
+      return res.status(403).send(response("fail", "You don't have access to the following resource!"));
     }
 
     return res.send(response("success", post));
@@ -71,6 +77,12 @@ async function getUserPosts(req, res) {
 
     if (user === null) {
       return res.status(404).send(response("fail", "User not found!"));
+    }
+
+    if (req.userId === user.id) {
+      return res.send(response("success", user.posts));
+    } else if (user.isPrivate && !user.followers.includes(req.userId)) {
+      return res.status(403).send(response("fail", "You don't have access to the following resource!"));
     }
 
     return res.send(response("success", user.posts));
@@ -116,6 +128,10 @@ async function handleAction(req, res) {
   const postId = req.params.postId;
   const action = req.params.action;
 
+  if (action !== "like" && action !== "unlike") {
+    return res.status(405).send(response("fail", "Unsupported action!"));
+  }
+
   try {
     const post = await Post.findById(postId);
     if (post === null) {
@@ -134,55 +150,9 @@ async function handleAction(req, res) {
           .send(response("fail", "Cannot unlike a post you haven't already liked!"));
       }
       await Post.findByIdAndUpdate(postId, { $pull: { likes: req.userId } });
-    } else {
-      return res.status(400).send(response("fail", "Unsupported action!"));
     }
 
     return res.send(response("success", "Action completed successfully!"));
-  } catch (error) {
-    Sentry.captureException(error);
-    return res.status(500).send(response("fail", error.message));
-  }
-}
-
-async function addComment(req, res) {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).send(response("fail", errors.array()[0].msg));
-  }
-
-  const postId = req.params.postId;
-
-  try {
-    const post = await Post.findById(postId);
-    if (post === null) {
-      return res.status(404).send(response("fail", "Cannot add comment to a non-existing post!"));
-    }
-
-    const comment = new Comment({
-      postedBy: req.userId,
-      comment: req.body.comment,
-      createdAt: Date.now(),
-    });
-    await comment.save();
-    await Post.findByIdAndUpdate(post._id, { $addToSet: { comments: comment._id } });
-
-    return res.status(201).send(response("success", comment));
-  } catch (error) {
-    Sentry.captureException(error);
-    return res.status(500).send(response("fail", error.message));
-  }
-}
-
-async function deleteResourceFromCloudinary(req, res) {
-  const { public_id, resource_type } = req.query;
-
-  try {
-    const { result } = await cloudinary.v2.uploader.destroy(public_id, { resource_type });
-    if (result === "not found") {
-      return res.status(404).send(response("fail", "Resource not found!"));
-    }
-    return res.send(response("success", "Resource successfully deleted!"));
   } catch (error) {
     Sentry.captureException(error);
     return res.status(500).send(response("fail", error.message));
@@ -196,14 +166,16 @@ async function deletePost(req, res) {
     const post = await Post.findById(id);
     if (post === null) {
       return res.status(404).send(response("fail", "Post not found!"));
-    } else if (post.postedBy !== req.userId) {
+    } else if (post.postedBy.toString() !== req.userId) {
       return res.status(403).send(response("fail", "You can only delete your own posts!"));
     }
 
     await User.findByIdAndUpdate(req.userId, { $pull: { posts: post._id } });
-    await Promise.all(
-      post.comments.map(async (comment) => await Comment.findByIdAndDelete(comment._id))
-    );
+    if (post.comments.length > 0) {
+      await Promise.all(
+        post.comments.map(async (comment) => await Comment.findByIdAndDelete(comment._id))
+      );
+    }
     await cloudinary.v2.uploader.destroy(post.public_id, { resource_type: post.resource_type });
     await Post.findByIdAndDelete(post._id);
 
@@ -220,16 +192,22 @@ async function editPost(req, res) {
     return res.status(400).send(response("fail", errors.array()[0].msg));
   }
 
-  const postId = req.params.postId;
+  const { postId } = req.params;
   const { location, description } = req.body;
 
   try {
-    const post = await Post.findByIdAndUpdate(postId, { location, description }, { new: true });
+    const post = await Post.findById(postId);
     if (post === null) {
       return res.status(404).send(response("fail", "Post not found!"));
+    } else if (post.postedBy.toString() !== req.userId) {
+      return res.status(403).send(response("fail", "You can only edit your own posts!"));
     }
 
-    return res.send(response("success", post));
+    const body = emptyStringToNull({ location, description });
+
+    const newPost = await Post.findByIdAndUpdate(postId, body, { new: true });
+
+    return res.send(response("success", newPost));
   } catch (error) {
     Sentry.captureException(error);
     return res.status(500).send(response("fail", error.message));
@@ -242,8 +220,6 @@ module.exports = {
   getUserPosts,
   getFeed,
   handleAction,
-  addComment,
   deletePost,
   editPost,
-  deleteResourceFromCloudinary,
 };

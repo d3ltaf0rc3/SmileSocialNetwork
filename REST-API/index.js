@@ -5,6 +5,7 @@ const Tracing = require("@sentry/tracing");
 const postRouter = require("./routes/post");
 const userRouter = require("./routes/user");
 const sessionRouter = require("./routes/session");
+const commentRouter = require("./routes/comment");
 const app = express();
 
 Sentry.init({
@@ -29,9 +30,10 @@ cloudinary.config({
   api_secret: process.env.API_SECRET,
 });
 
-app.use("/api/posts", postRouter);
+app.use("/api/post", postRouter);
 app.use("/api/user", userRouter);
 app.use("/api/session", sessionRouter);
+app.use("/api/comment", commentRouter);
 
 app.use(Sentry.Handlers.errorHandler());
 
