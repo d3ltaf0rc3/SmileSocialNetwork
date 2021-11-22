@@ -16,6 +16,8 @@ module.exports = [
     }),
   body("resource_type", "Resource type is invalid!")
     .trim()
+    .not()
+    .isEmpty()
     .custom((value) => {
       if (value === "image" || value === "video") {
         return true;
@@ -25,10 +27,12 @@ module.exports = [
   body("location", "Location is invalid!")
     .trim()
     .isLength({ max: "30" })
-    .withMessage("Location cannot be more than 30 characters!"),
+    .withMessage("Location cannot be more than 30 characters!")
+    .escape(),
   body("description", "Description is invalid!")
     .trim()
     .isLength({ max: "150" })
-    .withMessage("Description cannot be more than 150 characters!"),
+    .withMessage("Description cannot be more than 150 characters!")
+    .escape(),
   body("public_id", "Public ID is required!").trim().not().isEmpty(),
 ];
