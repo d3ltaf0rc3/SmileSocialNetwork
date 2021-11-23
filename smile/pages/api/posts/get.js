@@ -2,8 +2,8 @@ import * as Sentry from '@sentry/nextjs';
 
 export default async function handler(req, res) {
   try {
-    const resp = await fetch(`${process.env.API_URL}/api/user/request/${req.body.action}/${req.body.id}`, {
-      method: 'put',
+    const resp = await fetch(`${process.env.API_URL}/api/post/get/${req.query.id}`, {
+      method: 'get',
       headers: {
         Authorization: req.cookies['auth-token'],
       },

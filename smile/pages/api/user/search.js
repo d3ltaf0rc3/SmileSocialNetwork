@@ -2,13 +2,11 @@ import * as Sentry from '@sentry/nextjs';
 
 export default async function handler(req, res) {
   try {
-    const resp = await fetch(`${process.env.API_URL}/api/user/search`, {
-      method: 'post',
+    const resp = await fetch(`${process.env.API_URL}/api/user/search?query=${req.query.query}`, {
+      method: 'get',
       headers: {
-        'Content-Type': 'application/json',
         Authorization: req.cookies['auth-token'],
       },
-      body: JSON.stringify(req.body),
     });
     const data = await resp.json();
     return res.status(resp.status).send(data);

@@ -12,7 +12,7 @@ export default async function handler(req, res) {
       body: JSON.stringify(req.body),
     });
     const data = await resp.json();
-    if (resp.status === 201) {
+    if (resp.status === 201 && data.success) {
       res.setHeader('Set-Cookie', serialize('auth-token', data.data.token, options));
     }
     return res.status(resp.status).send(data);

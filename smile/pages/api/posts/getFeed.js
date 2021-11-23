@@ -2,7 +2,7 @@ import * as Sentry from '@sentry/nextjs';
 
 export default async function handler(req, res) {
   try {
-    const resp = await fetch(`${process.env.API_URL}/api/posts/get/feed`, {
+    const resp = await fetch(`${process.env.API_URL}/api/post/feed`, {
       method: 'get',
       headers: {
         Authorization: req.cookies['auth-token'],
