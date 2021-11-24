@@ -45,7 +45,7 @@ const ChangePasswordPage = ({ user }) => {
             setError(res.data);
           }
         })
-        .catch((err) => setError(err.message));
+        .catch(() => setError('Our servers are currently unavailable. Try again later!'));
     }
   };
 
@@ -67,19 +67,19 @@ const ChangePasswordPage = ({ user }) => {
               type="password"
               value={oldPassword}
               placeholder="Old Password"
-              onChange={(e) => setOldPassword(e.target.value)}
+              onChange={(e) => setOldPassword(e.target.value.trim())}
             />
             <Input
               type="password"
               value={password}
               placeholder="Password"
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => setPassword(e.target.value.trim())}
             />
             <Input
               type="password"
               value={repeatPassword}
               placeholder="Repeat Password"
-              onChange={(e) => setRepeatPassword(e.target.value)}
+              onChange={(e) => setRepeatPassword(e.target.value.trim())}
             />
             <button type="button" onClick={changePassword} className={styles.btn}>
               Change password
