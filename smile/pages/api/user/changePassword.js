@@ -7,7 +7,7 @@ export default async function handler(req, res) {
       method: 'put',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: req.cookies['auth-token'],
+        Authorization: `Bearer ${req.cookies['auth-token']}`,
       },
       body: JSON.stringify(req.body),
     });

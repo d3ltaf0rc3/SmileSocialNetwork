@@ -6,7 +6,7 @@ export default async function handler(req, res) {
     const resp = await fetch(`${process.env.API_URL}/api/user/logout`, {
       method: 'post',
       headers: {
-        Authorization: req.cookies['auth-token'],
+        Authorization: `Bearer ${req.cookies['auth-token']}`,
       },
     });
     const data = await resp.json();

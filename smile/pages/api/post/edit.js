@@ -5,7 +5,7 @@ export default async function handler(req, res) {
     const resp = await fetch(`${process.env.API_URL}/api/post/edit/${req.query.id}`, {
       method: 'put',
       headers: {
-        Authorization: req.cookies['auth-token'],
+        Authorization: `Bearer ${req.cookies['auth-token']}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(req.body),
