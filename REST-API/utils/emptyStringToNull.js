@@ -1,13 +1,13 @@
-const emptyStringToNull = (body) => {
-  const bodyCopy = JSON.parse(JSON.stringify(body));
+const emptyStringToNull = (obj) => {
+  const copy = JSON.parse(JSON.stringify(obj));
 
-  for (const key in bodyCopy) {
-    if (bodyCopy[key] === "") {
-      bodyCopy[key] = null;
+  for (const key in copy) {
+    if (copy[key] === "") {
+      copy[key] = null;
     }
   }
 
-  return bodyCopy;
+  return copy;
 };
 
 module.exports = emptyStringToNull;
