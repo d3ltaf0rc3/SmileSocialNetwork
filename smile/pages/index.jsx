@@ -12,7 +12,7 @@ const HomePage = ({ user }) => {
   const [feed, setFeed] = useState(null);
 
   useEffect(() => {
-    fetch(`${window.location.origin}/api/posts/getFeed`)
+    fetch(`${window.location.origin}/api/post/getFeed`)
       .then((res) => res.json())
       .then((res) => {
         if (res.success) {
@@ -60,7 +60,7 @@ const HomePage = ({ user }) => {
               profilePicture={post.postedBy.profilePicture}
               likes={post.likes}
               comments={post.comments}
-              imageUrl={post.resource}
+              resource={post.resource}
             />
           ))
         ) : (
