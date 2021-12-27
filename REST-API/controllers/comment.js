@@ -26,7 +26,11 @@ async function addComment(req, res) {
     await comment.save();
     await Post.findByIdAndUpdate(post._id, { $addToSet: { comments: comment._id } });
 
-    return res.status(201).send(response("success", comment));
+    const commentToSend = await Comment.findById(comment.id).populate({
+      path: "postedBy",
+      select: "username profilePicture"
+    });
+    return res.status(201).send(response("success", commentToSend));
   } catch (error) {
     Sentry.captureException(error);
     return res.status(500).send(response("fail", error.message));
