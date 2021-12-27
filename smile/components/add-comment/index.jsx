@@ -1,40 +1,77 @@
-import { useState } from 'react';
-import Image from 'next/image';
+import { useEffect, useState } from 'react';
 import styles from './index.module.css';
 
-const AddComment = ({ id, setUpdate }) => {
+const AddComment = ({ postId, updateComments }) => {
   const [comment, setComment] = useState('');
+  const [isValid, setValid] = useState(false);
+  const [rows, setRows] = useState(1);
+  const textareaLineHeight = 18;
+  const minRows = 1;
+  const maxRows = 4;
+
+  useEffect(() => {
+    if (comment.length > 0 && comment.length <= 150) {
+      setValid(true);
+    } else {
+      setValid(false);
+    }
+  }, [comment]);
+
+  const handleChange = (e) => {
+    const previousRows = e.target.rows;
+    e.target.rows = minRows;
+
+    const currentRows = parseInt(e.target.scrollHeight / textareaLineHeight, 10);
+
+    if (currentRows === previousRows) {
+      e.target.rows = currentRows;
+    }
+
+    if (currentRows >= maxRows) {
+      e.target.rows = maxRows;
+      e.target.scrollTop = e.target.scrollHeight;
+    }
+
+    setRows(currentRows < maxRows ? currentRows : maxRows);
+    setComment(e.target.value);
+  };
 
   const addComment = () => {
-    if (comment.trim() !== '') {
-      fetch(`${process.env.REACT_APP_API_URL}/api/posts/add/comment/${id}`, {
-        method: 'put',
+    if (isValid) {
+      fetch(`${window.location.origin}/api/comment/add?id=${postId}`, {
+        method: 'post',
         headers: {
           'Content-Type': 'application/json',
         },
-        credentials: 'include',
         body: JSON.stringify({
-          comment,
+          comment: comment.trim(),
         }),
       })
-        .then(() => {
-          setComment('');
-          setUpdate();
+        .then((res) => res.json())
+        .then((res) => {
+          if (res.success) {
+            updateComments(res.data);
+            setComment('');
+          } else {
+            console.log(res.data);
+          }
+          setValid(false);
         })
         .catch((err) => console.error(err));
     }
   };
 
   return (
-    <div className={styles['add-comment']}>
+    <div className={styles.container}>
       <textarea
         value={comment}
-        onChange={(e) => setComment(e.target.value)}
-        id={id}
+        onChange={handleChange}
         placeholder="Add a comment..."
+        rows={rows}
+        maxLength="150"
       />
-      <button type="button" onClick={addComment}>
-        <Image src="/next.svg" alt="arrow" width="20" height="20" />
+      <button disabled={!isValid} type="button" onClick={addComment}>
+        Post
       </button>
     </div>
   );
