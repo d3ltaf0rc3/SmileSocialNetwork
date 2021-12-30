@@ -1,31 +1,29 @@
-.play-button {
-    width: 600px;
-    height: 600px;
-    position: absolute;
-    display: grid;
-    place-items: center;
+.container {
+  cursor: pointer;
+  min-width: 600px;
+  width: 100%;
+  position: relative;
 }
 
-.video-container {
-    cursor: pointer;
+.feedBtn,
+.postBtn {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
 }
 
-.post-image {
-    height: 600px;
-    width: 600px;
-    object-fit: cover;
+.post {
+  height: 600px;
 }
 
-.feed-post {
-    height: 700px;
-    width: 648px;
-    object-fit: cover;
+.feed {
+  height: 750px;
 }
 
-.feed-button {
-    height: 700px;
-    width: 648px;
-    position: absolute;
-    display: grid;
-    place-items: center;
+.post,
+.feed {
+  width: 100%;
+  object-fit: cover;
 }

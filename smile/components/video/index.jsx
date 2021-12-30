@@ -2,32 +2,32 @@ import { useRef, useState } from 'react';
 import Image from 'next/image';
 import styles from './index.module.css';
 
-const Video = ({ type, videoUrl }) => {
-  const [hideButton, setHide] = useState(false);
-  const videoRef = useRef(null);
+const Video = ({ type, src }) => {
+  const [showButton, setShow] = useState(true);
+  const videoRef = useRef();
 
   const setVideoPlayback = () => {
-    if (!hideButton) {
-      setHide(true);
+    if (showButton) {
       videoRef.current.play();
     } else {
-      setHide(false);
       videoRef.current.pause();
     }
+    setShow(!showButton);
   };
 
   return (
-    <div className={styles['video-container']}>
-      {hideButton ? null : (
-        <div className={type === 'feed' ? styles['feed-button'] : styles['play-button']}>
-          <Image src="/play.png" alt="play" width="50" height="50" />
+    <div className={styles.container}>
+      {showButton ? (
+        <div className={styles[`${type}Btn`]}>
+          <Image src="/play.png" alt="play" width="128" height="71" />
         </div>
-      )}
+      ) : null}
       <video
         ref={videoRef}
         onClick={setVideoPlayback}
-        className={type === 'feed' ? styles['feed-post'] : styles['post-image']}
-        src={videoUrl}
+        playsInline
+        className={styles[type]}
+        src={src}
         alt="post"
         loop
       />
