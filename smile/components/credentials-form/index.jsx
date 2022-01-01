@@ -50,7 +50,6 @@ const CredentialsForm = ({ formType, onSubmit, serverError }) => {
           <form className={styles.form} onSubmit={submitHandler}>
             <Input
               name="username"
-              type="text"
               placeholder="Username"
               onChange={(e) => setUsername(e.target.value)}
             />
