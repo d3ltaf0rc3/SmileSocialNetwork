@@ -31,6 +31,11 @@
   width: 250px;
 }
 
+.loading {
+  text-align: center;
+  padding: 5px 0;
+}
+
 .error {
   padding: 15px;
   text-align: center;
