@@ -106,7 +106,7 @@ async function editUser(req, res) {
 
     if (!user.isPrivate && user.requests.length > 0) {
       for (const userId of user.requests) {
-        await User.findByIdAndUpdate(user.id, { $pull: { requests: userId }, $addToSet: { followers: userId }});
+        await User.findByIdAndUpdate(user.id, { $pull: { requests: userId }, $addToSet: { followers: userId } });
         await User.findByIdAndUpdate(userId, { $addToSet: { following: user.id } });
       }
     }
@@ -320,6 +320,25 @@ async function getRequests(req, res) {
   }
 }
 
+async function changeProfilePicture(req, res) {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).send(response("fail", errors.array()[0].msg));
+  }
+
+  try {
+    const { resource, public_id } = req.body;
+
+    const updatedUser = await User.findByIdAndUpdate(req.userId, { profilePicture: resource, public_id }, { new: true });
+
+    const userToSend = deleteSensitiveData(updatedUser);
+    return res.send(response("success", userToSend));
+  } catch (error) {
+    Sentry.captureException(error);
+    return res.status(500).send(response("fail", error.message));
+  }
+}
+
 module.exports = {
   register,
   login,
@@ -331,4 +350,5 @@ module.exports = {
   handleAction,
   handleRequest,
   getRequests,
+  changeProfilePicture,
 };
