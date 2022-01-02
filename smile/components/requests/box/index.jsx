@@ -8,7 +8,7 @@ const RequestsBox = () => {
   const [update, setUpdate] = useState(false);
 
   useEffect(() => {
-    fetch(`${window.location.origin}/api/user/getRequests`)
+    fetch(`${window.location.origin}/api/user/requests`)
       .then((res) => res.json())
       .then((res) => {
         if (res.success) {
