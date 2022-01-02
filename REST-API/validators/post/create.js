@@ -1,19 +1,6 @@
 const { body } = require("express-validator");
 
 module.exports = [
-  body("resource", "Resource is invalid!")
-    .trim()
-    .not()
-    .isEmpty()
-    .custom((value) => {
-      if (
-        value.startsWith(`https://res.cloudinary.com/${process.env.CLOUD_NAME}/video/upload`) ||
-        value.startsWith(`https://res.cloudinary.com/${process.env.CLOUD_NAME}/image/upload`)
-      ) {
-        return true;
-      }
-      throw new Error("Resource URL doesn't match the required URL pattern!");
-    }),
   body("resource_type", "Resource type is invalid!")
     .trim()
     .not()
@@ -34,5 +21,4 @@ module.exports = [
     .isLength({ max: "150" })
     .withMessage("Description cannot be more than 150 characters!")
     .escape(),
-  body("public_id", "Public ID is required!").trim().not().isEmpty(),
 ];
