@@ -1,13 +1,22 @@
-import { Fragment, useState } from 'react';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import Image from 'next/image';
+import Head from 'next/head';
+import Script from 'next/script';
 import Header from '../components/header';
 import Input from '../components/input';
 import Textarea from '../components/textarea';
+import requirePageAuth from '../utils/requirePageAuth';
+import toast from '../utils/toast';
+import AuthContext from '../contexts/authContext';
 import styles from '../styles/add-post.module.css';
 
-const AddPostPage = (props) => {
+const AddPostPage = ({ user }) => {
+  const router = useRouter();
   const [post, setPost] = useState(null);
-  const [location, setLocation] = useState('');
-  const [caption, setCaption] = useState('');
+  const [location, setLocation] = useState(null);
+  const [caption, setCaption] = useState(null);
+  const previewUrl = 'https://res.cloudinary.com/smile-social-network/image/upload/v1637842731/tencangfvd7hbdze0q4k.png';
 
   const openWidget = () => {
     const widget = window.cloudinary.createUploadWidget(
@@ -15,120 +24,115 @@ const AddPostPage = (props) => {
         cloudName: 'smile-social-network',
         uploadPreset: 'user_posts',
       },
-      (error, result) => {
+      (err, result) => {
         if (result.event === 'success') {
-          setPost({ url: result.info.secure_url, public_id: result.info.public_id });
-        } else if (error) {
-          console.error(error);
+          setPost({
+            url: result.info.secure_url,
+            public_id: result.info.public_id,
+            resource_type: result.info.resource_type,
+          });
+        } else if (err) {
+          toast.notify('An error occurred while uploading your asset!', { type: 'failure' });
+          setPost(null);
         }
-      }
+      },
     );
-
     widget.open();
   };
 
-  const addPost = (e) => {
-    e.preventDefault();
-
-    fetch(`${process.env.REACT_APP_API_URL}/api/posts/add/post`, {
+  const addPost = () => {
+    fetch(`${window.location.origin}/api/post/create`, {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
       },
-      credentials: 'include',
       body: JSON.stringify({
-        imageUrl: post.url,
+        resource: post.url,
         location,
         description: caption,
         public_id: post.public_id,
+        resource_type: post.resource_type,
       }),
     })
-      .then(() => props.history.push('/'))
-      .catch((err) => console.error(err));
-  };
-
-  const removeImage = () => {
-    setPost(null);
-
-    fetch(`${process.env.REACT_APP_API_URL}/api/posts/delete/cloudinary`, {
-      method: 'delete',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(post),
-    });
-  };
-
-  const cancelHandler = () => {
-    if (post) {
-      removeImage();
-    }
-    props.history.push('/');
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.success) {
+          router.push('/');
+        } else {
+          toast.notify(res.data, { type: 'failure' });
+        }
+      })
+      .catch(() => toast.notify('Our servers are currently unreachable. Try again later!', { type: 'failure' }));
   };
 
   return (
-    <>
+    <AuthContext.Provider
+      value={{
+        user,
+      }}
+    >
+      <Head>
+        <title>Add a post | Smile</title>
+      </Head>
       <Header />
-
       <div className={styles.container}>
-        <header className={styles.heading}>
-          <h1>
-            <i className={`${styles.icon} fas fa-plus`}></i>Add a post
-          </h1>
-        </header>
-        <div className={styles['inner-container']}>
-          <div className={styles['image-container']}>
-            {post ? (
-              post.url.includes('video') ? (
-                <video className={styles.preview} src={post.url} alt="preview" autoPlay loop />
-              ) : (
-                <img className={styles.preview} src={post.url} alt="preview" />
-              )
-            ) : null}
-            {!post ? (
-              <img
-                className={styles.preview}
-                src="https://res.cloudinary.com/smile-social-network/image/upload/v1608133374/no-product-image_cb5nci.png"
+        <header className={styles.header}>Add a post</header>
+        <div className={styles.innerContainer}>
+          <div className={styles.preview}>
+            {post && post.resource_type === 'video' ? (
+              <video src={post.url} className={styles.video} alt="preview" autoPlay loop playsInline />
+            ) : (
+              <Image
+                objectFit="cover"
+                src={post?.url || previewUrl}
                 alt="preview"
+                width="450"
+                height="450"
+                quality={100}
               />
-            ) : null}
+            )}
             {post ? (
-              <button onClick={removeImage} className={`${styles.btn} ${styles.remove}`}>
-                <i className={`${styles.icon} fas fa-times`}></i>Remove image/video
+              <button
+                type="button"
+                onClick={() => toast.notify('This feature is currently disabled!', { type: 'failure' })}
+                className={`${styles.btn} ${styles.remove}`}
+              >
+                Remove image/video
               </button>
             ) : (
-              <button onClick={openWidget} className={styles.btn}>
-                <i className={`${styles.icon} fas fa-cloud-upload-alt`}></i>Upload image/video
+              <button type="button" onClick={openWidget} className={styles.btn}>
+                Upload image/video
               </button>
             )}
           </div>
-          <form className={styles.form} onSubmit={(e) => e.preventDefault()}>
-            <div>
-              <Input
-                onChange={(e) => setLocation(e.target.value)}
-                type="text"
-                placeholder="Location"
-              />
+          <form className={styles.form}>
+            <div className={styles.inputs}>
+              <Input onChange={(e) => setLocation(e.target.value)} placeholder="Location" />
               <Textarea
                 onChange={(e) => setCaption(e.target.value)}
                 placeholder="Write a caption..."
               />
             </div>
-
             <div className={styles.buttons}>
-              <button onClick={addPost} disabled={!post} className={styles.btn}>
-                <i className={`${styles.icon} fas fa-plus`}></i>Add post
+              <button type="button" onClick={addPost} disabled={!post} className={styles.btn}>
+                Add post
               </button>
-              <button onClick={cancelHandler} className={`${styles.btn} ${styles.remove}`}>
-                <i className={`${styles.icon} fas fa-times`}></i>Cancel
+              <button
+                type="button"
+                onClick={() => router.push('/')}
+                className={`${styles.btn} ${styles.remove}`}
+              >
+                Cancel
               </button>
             </div>
           </form>
         </div>
       </div>
-    </>
+      <Script id="cloudinary-widget" src="https://upload-widget.cloudinary.com/global/all.js" />
+    </AuthContext.Provider>
   );
 };
 
-export default withRouter(AddPostPage);
+export default AddPostPage;
+
+export const getServerSideProps = requirePageAuth;
