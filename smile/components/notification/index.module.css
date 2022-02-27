@@ -1,0 +1,54 @@
+.container {
+  width: 100%;
+  box-shadow: 0px 0px 1px #222222;
+  transition: 0.5s;
+  padding: 12px 64px 12px 20px;
+  border-radius: 4px;
+  line-height: 1.5;
+  animation: SlideInOut 5s ease-in-out;
+}
+
+.container:before {
+  content: '';
+  position: absolute;
+  width: 0;
+  border-left: 1px solid;
+  border-right: 2px solid;
+  border-bottom-right-radius: 3px;
+  border-top-right-radius: 3px;
+  left: 0;
+  top: 50%;
+  transform: translate(0, -50%);
+  height: 20px;
+}
+
+.failure {
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+}
+
+.success {
+  color: #155724;
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+}
+
+@keyframes SlideInOut {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  6% {
+    transform: translateY(-40px);
+    opacity: 1;
+  }
+  94% {
+    transform: translateY(-40px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0px);
+    opacity: 0;
+  }
+}
