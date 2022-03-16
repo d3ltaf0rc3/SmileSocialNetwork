@@ -3,11 +3,13 @@ const Session = require("../models/Session");
 const jwt = require("jsonwebtoken");
 const Sentry = require("@sentry/node");
 const argon2 = require("argon2");
+const cloudinary = require("cloudinary");
 const sanitizeString = require("../utils/sanitizeString");
 const deleteSensitiveData = require("../utils/deleteSensitiveData");
 const { validationResult } = require("express-validator");
 const response = require("../utils/responseGenerator");
 const emptyStringToNull = require("../utils/emptyStringToNull");
+const { DEFAULT_PICTURE } = require("../utils/constants");
 
 async function register(req, res) {
   const errors = validationResult(req);
@@ -324,10 +326,17 @@ async function changeProfilePicture(req, res) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).send(response("fail", errors.array()[0].msg));
+  } else if (req.body.resource.startsWith(`https://res.cloudinary.com/${process.env.CLOUD_NAME}/video/upload`)) {
+    return res.status(400).send(response("fail", "Profile picture cannot be a video file!"));
   }
 
   try {
     const { resource, public_id } = req.body;
+
+    const user = await User.findById(req.userId);
+    if (user.profilePicture !== DEFAULT_PICTURE) {
+      await cloudinary.v2.uploader.destroy(user.public_id, { resource_type: "image" });
+    }
 
     const updatedUser = await User.findByIdAndUpdate(req.userId, { profilePicture: resource, public_id }, { new: true });
 
