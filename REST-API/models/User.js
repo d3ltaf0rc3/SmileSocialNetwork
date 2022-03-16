@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { DEFAULT_PICTURE } = require("../utils/constants");
 
 const UserSchema = new mongoose.Schema({
   username: {
@@ -16,8 +17,7 @@ const UserSchema = new mongoose.Schema({
   },
   profilePicture: {
     type: String,
-    default:
-      "https://res.cloudinary.com/smile-social-network/image/upload/v1635235466/rvk7tbbczfwhhqrfpaty.png",
+    default: DEFAULT_PICTURE,
   },
   public_id: {
     type: String,
