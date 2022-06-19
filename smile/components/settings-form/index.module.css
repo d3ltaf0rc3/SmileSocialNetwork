@@ -1,110 +1,51 @@
-.input-container textarea {
-    height: 150px;
-    resize: none;
+.form {
+  margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 }
 
-.input-container {
-    margin: 20px 0;
-}
-
-.input-container label,
-.switch-box label {
-    font-size: 18px;
-}
-
-.switch-box {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    height: 70px;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-    -webkit-box-flex: 1;
-    -ms-flex: 1;
-    flex: 1;
-}
-
-.switch-box label {
-    margin-right: 15px;
-}
-
-input[type="checkbox"].switch {
-    font-size: 30px;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    width: 2.2em;
-    height: 1.1em;
-    background: #ddd;
-    border-radius: 3em;
-    position: relative;
-    cursor: pointer;
-    outline: none;
-    -webkit-transition: all .2s ease-in-out;
-    transition: all .2s ease-in-out;
-}
-
-input[type="checkbox"].switch:checked {
-    background: #0ebeff;
-}
-
-input[type="checkbox"].switch:after {
-    position: absolute;
-    content: "";
-    width: 1.1em;
-    height: 1.1em;
-    border-radius: 50%;
-    background: #fff;
-    -webkit-box-shadow: 0 0 .25em rgba(0, 0, 0, .3);
-    box-shadow: 0 0 .25em rgba(0, 0, 0, .3);
-    -webkit-transform: scale(.7);
-    transform: scale(.7);
-    left: 0;
-    -webkit-transition: all .2s ease-in-out;
-    transition: all .2s ease-in-out;
-}
-
-input[type="checkbox"].switch:checked:after {
-    left: calc(100% - 1.1em);
+.form textarea {
+  height: 150px;
+  resize: none;
 }
 
 .actions {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 450px;
-    margin: 3rem auto 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 45px;
 }
 
 .actions button {
-    color: #fff;
-    border-radius: 5px;
-    border: 1px solid #fff;
-    background-color: #0095f6;
-    cursor: pointer;
-    padding: 0.5rem 1.5rem;
-    font-size: 16px;
+  color: #fff;
+  border-radius: 5px;
+  border: 1px solid #0095f6;
+  background-color: #0095f6;
+  padding: 8px 24px;
+  font-size: 16px;
+  transition: 0.2s all ease-in-out;
+}
+
+.actions button:disabled {
+  pointer-events: none;
 }
 
 .actions button:hover {
-    border: 1px solid #0095f6;
-    background-color: #fff;
-    color: #0095f6;
+  background-color: #fff;
+  color: #0095f6;
 }
 
 .actions a {
-    color: #0095f6;
-    font-size: 16px;
-    font-weight: 600;
-}
-
-.actions a:hover {
-    text-decoration: underline;
+  color: #0095f6;
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .actions a:nth-child(2) {
-    color: #ed4956
+  color: #ed4956;
+}
+
+.actions a:hover {
+  text-decoration: underline;
 }

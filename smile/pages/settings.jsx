@@ -1,18 +1,19 @@
-import { useContext } from 'react';
-import { useRouter } from 'next/router';
+import Script from 'next/script';
+import Head from 'next/head';
+import { useState } from 'react';
 import Header from '../components/header';
 import Footer from '../components/footer';
 import SettingsForm from '../components/settings-form';
 import UserData from '../components/user-data';
-import UserContext from '../contexts/authContext';
-import Loading from '../components/loading-spinner';
+import requirePageAuth from '../utils/requirePageAuth';
+import toast from '../utils/toast';
+import AuthContext from '../contexts/authContext';
 import styles from '../styles/settings.module.css';
 
-const SettingsPage = () => {
-  const router = useRouter();
-  const context = useContext(UserContext);
-  const defaultUrl =
-    'https://res.cloudinary.com/smile-social-network/image/upload/v1600976280/download_udtdbe.png';
+const SettingsPage = ({ user }) => {
+  const [currUser, setUser] = useState(user);
+  const defaultUrl = 'https://res.cloudinary.com/smile-social-network/image/upload/v1635235466/rvk7tbbczfwhhqrfpaty.png';
+  const defaultId = 'rvk7tbbczfwhhqrfpaty';
 
   const openWidget = () => {
     const widget = window.cloudinary.createUploadWidget(
@@ -20,78 +21,80 @@ const SettingsPage = () => {
         cloudName: 'smile-social-network',
         uploadPreset: 'profile_pics',
       },
-      (error, result) => {
+      (err, result) => {
         if (result.event === 'success') {
-          if (context.user.profilePicture !== defaultUrl) {
-            fetch(`${process.env.REACT_APP_API_URL}/api/posts/delete/cloudinary`, {
-              method: 'delete',
-              credentials: 'include',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                public_id: context.user.public_id,
-                url: context.user.profilePicture,
-              }),
-            });
-          }
-          editUser(
-            { profilePicture: result.info.secure_url, public_id: result.info.public_id },
-            context,
-            router
-          );
-        } else if (error) {
-          console.error(error);
+          fetch(`${window.location.origin}/api/user/profilePicture`, {
+            method: 'put',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              resource: result.info.secure_url,
+              public_id: result.info.public_id,
+            }),
+          })
+            .then((res) => res.json())
+            .then((res) => {
+              if (res.success) {
+                setUser(res.data);
+                toast.notify('You have successfully updated your profile picture!', {
+                  type: 'success',
+                });
+              } else {
+                toast.notify(res.data, { type: 'failure' });
+              }
+            })
+            .catch(() => toast.notify('Our servers are currently unreachable. Try again later!', { type: 'failure' }));
+        } else if (err) {
+          toast.notify('An error occurred while uploading your asset!', { type: 'failure' });
         }
-      }
+      },
     );
     widget.open();
   };
 
   const removeProfilePic = () => {
-    if (context.user.profilePicture !== defaultUrl) {
-      fetch(`${process.env.REACT_APP_API_URL}/api/posts/delete/cloudinary`, {
-        method: 'delete',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          public_id: context.user.public_id,
-          url: context.user.profilePicture,
-        }),
-      });
-      editUser({ profilePicture: defaultUrl, public_id: null }, context, router);
-    }
+    fetch(`${window.location.origin}/api/user/profilePicture`, {
+      method: 'put',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        resource: defaultUrl,
+        public_id: defaultId,
+      }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.success) {
+          setUser(res.data);
+          toast.notify('You have successfully removed your profile picture!', { type: 'success' });
+        } else {
+          toast.notify(res.data, { type: 'failure' });
+        }
+      })
+      .catch(() => toast.notify('Our servers are currently unreachable. Try again later!', { type: 'failure' }));
   };
 
-  if (!context.user) {
-    return (
-      <div
-        style={{
-          width: '100vw',
-          height: 'calc(100vh - 300px)',
-          display: 'grid',
-          placeItems: 'center',
-        }}
-      >
-        <Loading />
-      </div>
-    );
-  }
-
   return (
-    <>
+    <AuthContext.Provider
+      value={{
+        user: currUser,
+      }}
+    >
+      <Head>
+        <title>Settings | Smile</title>
+      </Head>
       <Header />
-      <div className={styles['form-container']}>
-        <div className={styles['avatar-actions']}>
-          <UserData imageUrl={context.user.profilePicture} username={context.user.username} />
+      <div className={styles.container}>
+        <div className={styles.actions}>
+          <UserData imageUrl={currUser.profilePicture} username={currUser.username} />
           <div className={styles.buttons}>
-            <button type="button" className={styles.btn} onClick={openWidget}>
+            <button type="button" className={`${styles.btn} ${styles.blue}`} onClick={openWidget}>
               Change photo
             </button>
-            {context.user.profilePicture !== defaultUrl ? (
-              <button type="button" className={styles.btn} onClick={removeProfilePic}>
+            {currUser.profilePicture !== defaultUrl ? (
+              <button type="button" className={`${styles.btn} ${styles.red}`} onClick={removeProfilePic}>
                 Remove photo
               </button>
             ) : null}
@@ -100,8 +103,11 @@ const SettingsPage = () => {
         <SettingsForm />
       </div>
       <Footer />
-    </>
+      <Script id="cloudinary-widget-2" src="https://upload-widget.cloudinary.com/global/all.js" />
+    </AuthContext.Provider>
   );
 };
 
 export default SettingsPage;
+
+export const getServerSideProps = requirePageAuth;

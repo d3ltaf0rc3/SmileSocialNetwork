@@ -1,3 +1,7 @@
+.group label {
+  font-size: 18px;
+}
+
 .textarea {
   border-radius: 3px;
   border: 1px solid rgb(219, 219, 219);
