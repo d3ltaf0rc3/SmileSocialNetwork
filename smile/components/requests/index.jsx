@@ -13,7 +13,7 @@ const Requests = () => {
   return (
     <div className={styles.container}>
       <button className={styles.btn} onClick={handleClick} type="button">
-        <Image src="/heart.svg" alt="heart" width="28" height="28" />
+        <Image src="/heart.svg" alt="heart" width="28" height="28" quality={100} />
       </button>
       {displayBox ? <Box /> : null}
     </div>
