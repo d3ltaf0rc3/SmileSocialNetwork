@@ -12,7 +12,7 @@ const PostSchema = new mongoose.Schema({
   },
   location: {
     type: String,
-    default: null,
+    default: '',
   },
   resource: {
     type: String,
@@ -24,7 +24,7 @@ const PostSchema = new mongoose.Schema({
   },
   description: {
     type: String,
-    default: null,
+    default: '',
   },
   public_id: {
     type: String,

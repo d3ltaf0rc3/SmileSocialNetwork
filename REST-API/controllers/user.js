@@ -8,7 +8,6 @@ const sanitizeString = require("../utils/sanitizeString");
 const deleteSensitiveData = require("../utils/deleteSensitiveData");
 const { validationResult } = require("express-validator");
 const response = require("../utils/responseGenerator");
-const emptyStringToNull = require("../utils/emptyStringToNull");
 const { DEFAULT_PICTURE } = require("../utils/constants");
 
 async function register(req, res) {
@@ -101,10 +100,14 @@ async function editUser(req, res) {
     return res.status(400).send(response("fail", errors.array()[0].msg));
   }
 
-  try {
-    const body = emptyStringToNull({ name: req.body.name, description: req.body.description, isPrivate: req.body.isPrivate });
+  const { name, description, isPrivate } = req.body;
 
-    const user = await User.findByIdAndUpdate(req.userId, body, { new: true });
+  try {
+    const user = await User.findByIdAndUpdate(req.userId, {
+      name,
+      description,
+      isPrivate
+    }, { new: true });
 
     if (!user.isPrivate && user.requests.length > 0) {
       for (const userId of user.requests) {

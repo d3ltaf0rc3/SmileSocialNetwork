@@ -5,7 +5,6 @@ const Sentry = require("@sentry/node");
 const cloudinary = require("cloudinary");
 const { validationResult } = require("express-validator");
 const response = require("../utils/responseGenerator");
-const emptyStringToNull = require("../utils/emptyStringToNull");
 
 async function createAPost(req, res) {
   const errors = validationResult(req);
@@ -16,10 +15,12 @@ async function createAPost(req, res) {
   const { resource, location, description, public_id, resource_type } = req.body;
 
   try {
-    const body = emptyStringToNull({ resource, location, description, public_id, resource_type });
-
     const post = new Post({
-      ...body,
+      resource,
+      location,
+      description,
+      public_id,
+      resource_type,
       postedBy: req.userId,
       createdAt: Date.now(),
     });
@@ -203,9 +204,7 @@ async function editPost(req, res) {
       return res.status(403).send(response("fail", "You can only edit your own posts!"));
     }
 
-    const body = emptyStringToNull({ location, description });
-
-    const newPost = await Post.findByIdAndUpdate(postId, body, { new: true });
+    const newPost = await Post.findByIdAndUpdate(postId, { location, description }, { new: true });
 
     return res.send(response("success", newPost));
   } catch (error) {

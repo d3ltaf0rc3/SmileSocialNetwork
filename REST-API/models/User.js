@@ -9,7 +9,7 @@ const UserSchema = new mongoose.Schema({
   },
   name: {
     type: String,
-    default: null,
+    default: '',
   },
   password: {
     type: String,
@@ -25,7 +25,7 @@ const UserSchema = new mongoose.Schema({
   },
   description: {
     type: String,
-    default: null,
+    default: '',
   },
   isPrivate: {
     type: Boolean,
