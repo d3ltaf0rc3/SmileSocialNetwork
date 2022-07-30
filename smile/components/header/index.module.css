@@ -1,7 +1,7 @@
 .header {
   background-color: #fff;
   border-bottom: 1.2px solid rgb(235, 235, 235);
-  position: fixed;
+  position: sticky;
   top: 0;
   width: 100%;
   z-index: 4;
@@ -20,7 +20,7 @@
 
 .nav {
   justify-content: space-around;
-  width: 80%;
+  width: 50%;
   margin: auto;
 }
 
