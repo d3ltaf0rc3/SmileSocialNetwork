@@ -18,15 +18,19 @@ const HomePage = ({ user }) => {
         if (res.success) {
           setFeed(res.data);
         } else {
-          console.error(res.data);
+          setFeed([]);
         }
       })
-      .catch((err) => console.error(err));
+      .catch(() => setFeed([]));
   }, []);
 
   if (feed === null) {
     return (
-      <>
+      <AuthContext.Provider
+        value={{
+          user,
+        }}
+      >
         <Head>
           <title>Feed | Smile</title>
         </Head>
@@ -34,7 +38,7 @@ const HomePage = ({ user }) => {
         <div className={styles.feed}>
           <PostLoading />
         </div>
-      </>
+      </AuthContext.Provider>
     );
   }
 
@@ -69,9 +73,7 @@ const HomePage = ({ user }) => {
               <Image src="/home.svg" alt="home" height="80" width="80" />
             </div>
             <h1>Welcome to Smile</h1>
-            <p>
-              When you follow people, you&apos;ll see the photos and videos they post here.
-            </p>
+            <p>When you follow people, you&apos;ll see the photos and videos they post here.</p>
           </div>
         )}
       </div>
