@@ -4,11 +4,10 @@ import { useRouter } from 'next/router';
 import Input from '../input';
 import Textarea from '../textarea';
 import ToggleButton from '../toggle-button';
-import toast from '../../utils/toast';
 import UserContext from '../../contexts/authContext';
 import styles from './index.module.css';
 
-const SettingsForm = () => {
+const SettingsForm = ({ notify }) => {
   const { user } = useContext(UserContext);
   const router = useRouter();
   const [name, setName] = useState(user.name);
@@ -41,11 +40,11 @@ const SettingsForm = () => {
         if (res.success) {
           router.push(`/user/${res.data.username}`);
         } else {
-          toast.notify(res.data, { type: 'failure' });
+          notify(res.data, { type: 'failure' });
         }
       })
       .catch(() => {
-        toast.notify('Our servers are currently unreachable. Try again later!', {
+        notify('Our servers are currently unreachable. Try again later!', {
           type: 'failure',
         });
       });

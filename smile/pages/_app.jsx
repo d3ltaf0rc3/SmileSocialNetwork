@@ -1,19 +1,33 @@
 import Head from 'next/head';
-import { config } from '@fortawesome/fontawesome-svg-core';
-import '@fortawesome/fontawesome-svg-core/styles.css';
+import { useState } from 'react';
 import NotificationContainer from '../components/notification/container';
 import '../styles/globals.css';
 
-config.autoAddCss = false;
-
 const MyApp = ({ Component, pageProps }) => {
+  const [notification, setNotification] = useState(null);
+
+  const remove = () => {
+    if (notification) {
+      clearTimeout(notification.timeout);
+    }
+    setNotification(null);
+  };
+
+  const notify = (message, options) => {
+    if (notification) {
+      clearTimeout(notification.timeout);
+    }
+    const timeout = setTimeout(remove, 5000);
+    setNotification({ message, timeout, ...options });
+  };
+
   return (
     <>
       <Head>
         <title>Smile</title>
       </Head>
-      <Component {...pageProps} />
-      <NotificationContainer />
+      <Component {...pageProps} notify={notify} />
+      <NotificationContainer notification={notification} />
     </>
   );
 };

@@ -4,5 +4,6 @@
   right: 20px;
   min-width: 300px;
   max-width: 480px;
+  height: 48px;
   z-index: 10;
 }

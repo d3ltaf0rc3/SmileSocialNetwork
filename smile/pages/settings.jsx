@@ -6,11 +6,10 @@ import Footer from '../components/footer';
 import SettingsForm from '../components/settings-form';
 import UserData from '../components/user-data';
 import requirePageAuth from '../utils/requirePageAuth';
-import toast from '../utils/toast';
 import AuthContext from '../contexts/authContext';
 import styles from '../styles/settings.module.css';
 
-const SettingsPage = ({ user }) => {
+const SettingsPage = ({ user, notify }) => {
   const [currUser, setUser] = useState(user);
   const defaultUrl = 'https://res.cloudinary.com/smile-social-network/image/upload/v1635235466/rvk7tbbczfwhhqrfpaty.png';
   const defaultId = 'rvk7tbbczfwhhqrfpaty';
@@ -37,16 +36,16 @@ const SettingsPage = ({ user }) => {
             .then((res) => {
               if (res.success) {
                 setUser(res.data);
-                toast.notify('You have successfully updated your profile picture!', {
+                notify('You have successfully updated your profile picture!', {
                   type: 'success',
                 });
               } else {
-                toast.notify(res.data, { type: 'failure' });
+                notify(res.data, { type: 'failure' });
               }
             })
-            .catch(() => toast.notify('Our servers are currently unreachable. Try again later!', { type: 'failure' }));
+            .catch(() => notify('Our servers are currently unreachable. Try again later!', { type: 'failure' }));
         } else if (err) {
-          toast.notify('An error occurred while uploading your asset!', { type: 'failure' });
+          notify('An error occurred while uploading your asset!', { type: 'failure' });
         }
       },
     );
@@ -68,12 +67,12 @@ const SettingsPage = ({ user }) => {
       .then((res) => {
         if (res.success) {
           setUser(res.data);
-          toast.notify('You have successfully removed your profile picture!', { type: 'success' });
+          notify('You have successfully removed your profile picture!', { type: 'success' });
         } else {
-          toast.notify(res.data, { type: 'failure' });
+          notify(res.data, { type: 'failure' });
         }
       })
-      .catch(() => toast.notify('Our servers are currently unreachable. Try again later!', { type: 'failure' }));
+      .catch(() => notify('Our servers are currently unreachable. Try again later!', { type: 'failure' }));
   };
 
   return (

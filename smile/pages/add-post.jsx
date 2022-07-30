@@ -7,11 +7,10 @@ import Header from '../components/header';
 import Input from '../components/input';
 import Textarea from '../components/textarea';
 import requirePageAuth from '../utils/requirePageAuth';
-import toast from '../utils/toast';
 import AuthContext from '../contexts/authContext';
 import styles from '../styles/add-post.module.css';
 
-const AddPostPage = ({ user }) => {
+const AddPostPage = ({ user, notify }) => {
   const router = useRouter();
   const [post, setPost] = useState(null);
   const [location, setLocation] = useState(null);
@@ -32,7 +31,7 @@ const AddPostPage = ({ user }) => {
             resource_type: result.info.resource_type,
           });
         } else if (err) {
-          toast.notify('An error occurred while uploading your asset!', { type: 'failure' });
+          notify('An error occurred while uploading your asset!', { type: 'failure' });
           setPost(null);
         }
       },
@@ -59,10 +58,10 @@ const AddPostPage = ({ user }) => {
         if (res.success) {
           router.push('/');
         } else {
-          toast.notify(res.data, { type: 'failure' });
+          notify(res.data, { type: 'failure' });
         }
       })
-      .catch(() => toast.notify('Our servers are currently unreachable. Try again later!', { type: 'failure' }));
+      .catch(() => notify('Our servers are currently unreachable. Try again later!', { type: 'failure' }));
   };
 
   return (
@@ -94,7 +93,7 @@ const AddPostPage = ({ user }) => {
             {post ? (
               <button
                 type="button"
-                onClick={() => toast.notify('This feature is currently disabled!', { type: 'failure' })}
+                onClick={() => notify('This feature is currently disabled!', { type: 'failure' })}
                 className={`${styles.btn} ${styles.remove}`}
               >
                 Remove image/video

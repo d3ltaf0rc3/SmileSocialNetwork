@@ -1,9 +1,8 @@
+import { useId } from 'react';
 import styles from './index.module.css';
 
 const ToggleButton = ({ defaultValue, onChange, label }) => {
-  const id = `${label.replace(' ', '_').toLowerCase()}_${Math.floor(
-    100000 + Math.random() * 900000,
-  )}`;
+  const id = useId();
 
   return (
     <div className={styles.container}>
