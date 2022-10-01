@@ -1,7 +1,7 @@
 const cookieOptions = {
   expires: new Date(Date.now() + 604800000),
   httpOnly: true,
-  sameSite: 'Strict',
+  sameSite: 'strict',
   path: '/',
   secure: process.env.NODE_ENV === 'production',
 };
