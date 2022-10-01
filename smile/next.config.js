@@ -1,6 +1,7 @@
 const { withSentryConfig } = require('@sentry/nextjs');
 
 const moduleExports = {
+  swcMinify: true,
   reactStrictMode: true,
   images: {
     domains: ['res.cloudinary.com'],
