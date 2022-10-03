@@ -1,6 +1,10 @@
 const { withSentryConfig } = require('@sentry/nextjs');
 
 const moduleExports = {
+  sentry: {
+    hideSourceMaps: true,
+    autoInstrumentServerFunctions: true,
+  },
   swcMinify: true,
   reactStrictMode: true,
   images: {
