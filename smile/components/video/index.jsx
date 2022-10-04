@@ -18,7 +18,7 @@ const Video = ({ type, src }) => {
   return (
     <div className={styles.container}>
       {showButton ? (
-        <div className={styles[`${type}Btn`]}>
+        <div className={styles.playBtn}>
           <Image src="/play.png" alt="play" width="128" height="71" />
         </div>
       ) : null}

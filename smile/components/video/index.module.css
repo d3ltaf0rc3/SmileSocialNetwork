@@ -1,12 +1,11 @@
 .container {
   cursor: pointer;
   min-width: 600px;
-  width: 100%;
+  max-width: 750px;
   position: relative;
 }
 
-.feedBtn,
-.postBtn {
+.playBtn {
   position: absolute;
   display: grid;
   place-items: center;
@@ -14,16 +13,16 @@
   height: 100%;
 }
 
-.post {
-  height: 600px;
-}
-
-.feed {
-  height: 750px;
-}
-
 .post,
 .feed {
   width: 100%;
   object-fit: cover;
+}
+
+.post {
+  height: 800px;
+}
+
+.feed {
+  height: 750px;
 }
