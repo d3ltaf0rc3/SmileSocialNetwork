@@ -1,0 +1,26 @@
+.postContainer {
+  width: 1150px;
+  display: flex;
+}
+
+.imageHolder {
+  background-color: #efefef;
+  height: 800px;
+  width: 750px;
+}
+
+.sideContent {
+  background-color: #fff;
+}
+
+.postHeader {
+  border-bottom: 1px solid #efefef;
+}
+
+.commentSection {
+  height: 620px;
+}
+
+.actionSection {
+  border-top: 1px solid #efefef;
+}
