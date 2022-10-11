@@ -1,32 +1,63 @@
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Header from '../../components/header';
 import ProfileHeader from '../../components/profile-components/header';
 import PostsSection from '../../components/profile-components/posts';
+import Spinner from '../../components/loading/spinner';
 import Footer from '../../components/footer';
 import AuthContext from '../../contexts/authContext';
+import ProfileContext from '../../contexts/profileContext';
 import requirePageAuth from '../../utils/requirePageAuth';
 import styles from '../../styles/profile.module.css';
 
 const ProfilePage = ({ user }) => {
   const router = useRouter();
   const { username } = router.query;
+  const [profile, setProfile] = useState(null);
+
+  useEffect(() => {
+    if (profile !== null) {
+      setProfile(null);
+    }
+
+    fetch(`/api/user/get?username=${username}`)
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.success) {
+          setProfile(res.data);
+        } else {
+          router.push('/not-found');
+        }
+      })
+      .catch(() => router.push('/not-found'));
+  }, [username]);
+
+  if (profile === null) {
+    return <Spinner withWrapper />;
+  }
 
   return (
     <AuthContext.Provider
       value={{
-        user,
+        ...user,
       }}
     >
-      <Head>
-        <title>@{username} | Smile</title>
-      </Head>
-      <Header />
-      <div className={styles.container}>
-        <ProfileHeader username={username} />
-        <PostsSection username={username} />
-      </div>
-      <Footer />
+      <ProfileContext.Provider
+        value={{
+          ...profile,
+        }}
+      >
+        <Head>
+          <title>@{username} | Smile</title>
+        </Head>
+        <Header />
+        <div className={styles.container}>
+          <ProfileHeader />
+          <PostsSection />
+        </div>
+        <Footer />
+      </ProfileContext.Provider>
     </AuthContext.Provider>
   );
 };

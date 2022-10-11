@@ -1,15 +1,19 @@
 import React from 'react';
 
 const ProfileContext = React.createContext({
-  _id: null,
-  name: null,
-  profilePicture: null,
-  public_id: null,
-  description: null,
-  isPrivate: null,
-  username: null,
-  hasRequested: null,
-  doesFollow: null,
+  _id: undefined,
+  username: undefined,
+  name: undefined,
+  profilePicture: undefined,
+  public_id: undefined,
+  description: undefined,
+  isPrivate: undefined,
+  hasRequested: undefined,
+  doesFollow: undefined,
+  followers: undefined,
+  following: undefined,
+  posts: undefined,
+  updateProfile: () => {},
 });
 
 export default ProfileContext;
