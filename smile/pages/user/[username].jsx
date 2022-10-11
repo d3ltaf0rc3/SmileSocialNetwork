@@ -11,7 +11,7 @@ import ProfileContext from '../../contexts/profileContext';
 import requirePageAuth from '../../utils/requirePageAuth';
 import styles from '../../styles/profile.module.css';
 
-const ProfilePage = ({ user }) => {
+const ProfilePage = ({ user, notify }) => {
   const router = useRouter();
   const { username } = router.query;
   const [profile, setProfile] = useState(null);
@@ -53,8 +53,8 @@ const ProfilePage = ({ user }) => {
         </Head>
         <Header />
         <div className={styles.container}>
-          <ProfileHeader />
-          <PostsSection />
+          <ProfileHeader notify={notify} />
+          <PostsSection notify={notify} />
         </div>
         <Footer />
       </ProfileContext.Provider>

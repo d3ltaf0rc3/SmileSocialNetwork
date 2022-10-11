@@ -99,7 +99,7 @@ const SettingsPage = ({ user, notify }) => {
             ) : null}
           </div>
         </div>
-        <SettingsForm />
+        <SettingsForm notify={notify} />
       </div>
       <Footer />
       <Script id="cloudinary-widget-2" src="https://upload-widget.cloudinary.com/global/all.js" />
