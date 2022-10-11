@@ -78,7 +78,7 @@ const SettingsPage = ({ user, notify }) => {
   return (
     <AuthContext.Provider
       value={{
-        user: currUser,
+        ...currUser,
       }}
     >
       <Head>

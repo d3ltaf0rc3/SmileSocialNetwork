@@ -1,7 +1,7 @@
 import ContentLoader from 'react-content-loader';
 import styles from './index.module.css';
 
-const MyLoader = (props) => (
+const PostCardLoader = (props) => (
   <div className={styles.container}>
     <ContentLoader
       speed={2}
@@ -20,4 +20,4 @@ const MyLoader = (props) => (
   </div>
 );
 
-export default MyLoader;
+export default PostCardLoader;

@@ -1,7 +1,13 @@
 import React from 'react';
 
 const AuthContext = React.createContext({
-  user: undefined,
+  _id: undefined,
+  username: undefined,
+  name: undefined,
+  profilePicture: undefined,
+  public_id: undefined,
+  description: undefined,
+  isPrivate: undefined,
 });
 
 export default AuthContext;

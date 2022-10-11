@@ -28,7 +28,7 @@ const HomePage = ({ user }) => {
     return (
       <AuthContext.Provider
         value={{
-          user,
+          ...user,
         }}
       >
         <Head>
@@ -45,7 +45,7 @@ const HomePage = ({ user }) => {
   return (
     <AuthContext.Provider
       value={{
-        user,
+        ...user,
       }}
     >
       <Head>

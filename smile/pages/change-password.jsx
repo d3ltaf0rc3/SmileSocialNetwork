@@ -52,7 +52,7 @@ const ChangePasswordPage = ({ user }) => {
   return (
     <AuthContext.Provider
       value={{
-        user,
+        ...user,
       }}
     >
       <Head>

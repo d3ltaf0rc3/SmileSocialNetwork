@@ -67,7 +67,7 @@ const AddPostPage = ({ user, notify }) => {
   return (
     <AuthContext.Provider
       value={{
-        user,
+        ...user,
       }}
     >
       <Head>

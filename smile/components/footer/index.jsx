@@ -5,7 +5,7 @@ import styles from './index.module.css';
 
 const Footer = () => {
   const router = useRouter();
-  const { user } = useContext(UserContext);
+  const user = useContext(UserContext);
 
   const clickHandler = () => {
     fetch(`${window.location.origin}/api/auth/logout`, {
@@ -25,7 +25,7 @@ const Footer = () => {
 
   return (
     <footer className={styles.footer}>
-      <h1 className={styles.copyright}>&copy; 2021 Smile</h1>
+      <h1 className={styles.copyright}>&copy; 2022 Smile</h1>
       {user ? (
         <button type="button" onClick={clickHandler} className={styles.btn}>
           Logout

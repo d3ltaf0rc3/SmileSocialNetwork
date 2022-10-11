@@ -8,7 +8,7 @@ import UserContext from '../../contexts/authContext';
 import styles from './index.module.css';
 
 const SettingsForm = ({ notify }) => {
-  const { user } = useContext(UserContext);
+  const user = useContext(UserContext);
   const router = useRouter();
   const [name, setName] = useState(user.name);
   const [bio, setBio] = useState(user.description);
