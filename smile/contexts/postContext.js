@@ -11,6 +11,7 @@ const PostContext = React.createContext({
   resource_type: null,
   postedBy: null,
   createdAt: null,
+  updatePost: () => {},
 });
 
 export default PostContext;
