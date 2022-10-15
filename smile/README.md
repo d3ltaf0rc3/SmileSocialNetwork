@@ -21,6 +21,7 @@
 ## Project set up and running
 
 - After cloning the repo, run **`npm install`**
+- Setup Sentry.io - [learn more](https://docs.sentry.io/platforms/javascript/guides/nextjs/)
 - Create a **.env** file
 - Set the following variables:
 
@@ -28,8 +29,8 @@
   | -------------------- | ------------------------- |
   | API_URL              | REST API URL              |
   | NEXT_PUBLIC_SITE_KEY | Google reCaptcha Site Key |
+  | SENTRY_DSN           | Sentry DSN Link           |
 
-- Setup Sentry.io - [learn more](https://docs.sentry.io/platforms/javascript/guides/nextjs/)
 - Run **`npm run dev`**
 
 ### The app runs on **`localhost:3000`**
