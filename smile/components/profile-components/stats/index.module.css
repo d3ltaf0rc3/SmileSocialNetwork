@@ -1,14 +1,14 @@
-.stats {
-    margin-bottom: 30px;
-    display: flex;
-    align-items: center;
-    font-size: 14px;
+.statContainer {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  margin-bottom: 30px;
 }
 
 .stat {
-    margin-right: 40px;
+  font-size: 14px;
 }
 
-.stat-number {
-    font-weight: 600;
+.statNumber {
+  font-weight: 600;
 }
