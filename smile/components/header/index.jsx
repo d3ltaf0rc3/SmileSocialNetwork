@@ -8,7 +8,7 @@ import AuthContext from '../../contexts/authContext';
 import styles from './index.module.css';
 
 const Header = () => {
-  const { user } = useContext(AuthContext);
+  const user = useContext(AuthContext);
 
   return (
     <header className={styles.header}>
