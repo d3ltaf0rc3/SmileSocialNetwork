@@ -16,11 +16,7 @@ const ProfilePage = ({ user, notify }) => {
   const { username } = router.query;
   const [profile, setProfile] = useState(null);
 
-  useEffect(() => {
-    if (profile !== null) {
-      setProfile(null);
-    }
-
+  const getProfile = () => {
     fetch(`/api/user/get?username=${username}`)
       .then((res) => res.json())
       .then((res) => {
@@ -31,6 +27,14 @@ const ProfilePage = ({ user, notify }) => {
         }
       })
       .catch(() => router.push('/not-found'));
+  };
+
+  useEffect(() => {
+    if (profile !== null) {
+      setProfile(null);
+    }
+
+    getProfile();
   }, [username]);
 
   if (profile === null) {
@@ -46,6 +50,7 @@ const ProfilePage = ({ user, notify }) => {
       <ProfileContext.Provider
         value={{
           ...profile,
+          updateProfile: getProfile,
         }}
       >
         <Head>
