@@ -1,57 +1,11 @@
 .header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding: 2.5rem;
-    border-bottom: 1.6px solid rgb(235, 235, 235);
+  display: flex;
+  padding: 30px;
+  gap: 90px;
+  border-bottom: 1.6px solid rgb(235, 235, 235);
 }
 
-.stats-container {
-    margin-left: 5rem;
-    width: 40%;
-}
-
-.username {
-    margin-right: 25px;
-    font-size: 28px;
-    font-weight: 200;
-}
-
-.title {
-    margin-bottom: 30px;
-    display: flex;
-    align-items: center;
-}
-
-.button {
-    margin-right: 10px;
-    text-decoration: none;
-    color: inherit;
-    font-weight: 600;
-    padding: 5px 15px;
-    border: 1px solid #e6e6e6;
-    border-radius: 3px;
-    transition: all 0.3s ease-in-out;
-    font-size: 16px;
-}
-
-.button:hover {
-    background-color: #3f99ed;
-    color: white;
-    border-color: #3f99ed;
-}
-
-.bio {
-    font-size: 14px;
-    line-height: 125%;
-}
-
-.bio pre {
-    line-height: 24px;
-}
-
-.full-name {
-    font-weight: 600;
-    display: block;
-    margin-bottom: 0.4rem;
+.profilePicture {
+  border-radius: 50%;
+  margin-left: 50px;
 }

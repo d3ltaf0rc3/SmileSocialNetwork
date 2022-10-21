@@ -1,0 +1,39 @@
+.infoContainer {
+  width: 50%;
+}
+
+.title {
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+.username {
+  font-size: 28px;
+  font-weight: 300;
+}
+
+.button {
+  font-weight: 600;
+  padding: 5px 9px;
+  border: 1px solid #e6e6e6;
+  border-radius: 4px;
+  transition: all 0.3s ease-in-out;
+  font-size: 14px;
+}
+
+.button:hover {
+  background-color: #3f99ed;
+  color: white;
+  border-color: #3f99ed;
+}
+
+.bio {
+  font-size: 14px;
+}
+
+.name {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
