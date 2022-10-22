@@ -10,6 +10,7 @@ const moduleExports = {
   images: {
     domains: ['res.cloudinary.com'],
   },
+  output: 'standalone',
 };
 
 const SentryWebpackPluginOptions = {
