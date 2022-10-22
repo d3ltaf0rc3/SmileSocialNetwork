@@ -1,16 +1,20 @@
-.empty-profile {
+.emptyState {
   background-color: #fff;
   border-radius: 3px;
-  border: 1px solid rgb(219, 219, 219);
-  border-top: none;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 30px;
-  font-size: 18px;
+  border: 1px solid #dbdbdb;
+  padding: 50px;
+  text-align: center;
 }
 
-.empty-profile img {
-  height: 8vh;
-  margin-bottom: 15px;
+.emptyState h6 {
+  font-weight: 500;
+  font-size: 22px;
+}
+
+.imageContainer {
+  width: 98px;
+  margin: 0 auto 15px;
+  padding: 20px;
+  border-radius: 50%;
+  border: 2px solid #262626;
 }

@@ -1,47 +1,49 @@
 import { useContext, useEffect, useState } from 'react';
-import styles from './index.module.css';
 import GridPhoto from '../grid-photo';
+import ProfilePostLoader from '../../loading/profile-post';
 import ProfileContext from '../../../contexts/profileContext';
-import Spinner from '../../loading/spinner';
+import styles from './index.module.css';
 
-const PhotosGrid = () => {
+const PhotosGrid = ({ notify }) => {
   const profile = useContext(ProfileContext);
   const [posts, setPosts] = useState(null);
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/api/posts/getPosts/${profile._id}`, {
-      method: 'get',
-      credentials: 'include',
-    })
+    fetch(`/api/post/getUserPosts?username=${profile.username}`)
+      .then((res) => res.json())
       .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return res.text();
-      })
-      .then((res) => {
-        if (typeof res === 'object') {
-          setPosts(res);
+        if (res.success) {
+          setPosts(res.data);
         } else {
-          console.log(res);
+          notify(res.data, { type: 'failure' });
         }
       })
-      .catch((err) => console.log(err));
-  }, [profile]);
-
-  if (!posts) {
-    return (
-      <section className={styles.photos}>
-        <Spinner />
-      </section>
-    );
-  }
+      .catch(() => {
+        notify('Our servers are currently unreachable. Try again later!', { type: 'failure' });
+      });
+  }, [profile.username]);
 
   return (
     <section className={styles.photos}>
-      {posts.map((photo) => {
-        return <GridPhoto key={photo._id} image={photo.imageUrl} id={photo._id} />;
-      })}
+      {posts ? (
+        posts.map((photo) => (
+          <GridPhoto
+            key={photo._id}
+            resource={photo.resource}
+            resourceType={photo.resource_type}
+            id={photo._id}
+          />
+        ))
+      ) : (
+        <>
+          <ProfilePostLoader />
+          <ProfilePostLoader />
+          <ProfilePostLoader />
+          <ProfilePostLoader />
+          <ProfilePostLoader />
+          <ProfilePostLoader />
+        </>
+      )}
     </section>
   );
 };

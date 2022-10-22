@@ -1,21 +1,22 @@
 import { useState } from 'react';
-import styles from './index.module.css';
+import Image from 'next/future/image';
 import Post from '../../post-components';
+import styles from './index.module.css';
 
-const GridPhoto = ({ image, id }) => {
+const GridPhoto = ({ resource, resourceType, id }) => {
   const [displayPost, setDisplay] = useState(false);
 
   return (
-    <div>
+    <>
       <button onClick={() => setDisplay(true)} type="button" className={styles.photo}>
-        {image.includes('video') ? (
-          <video className={styles.content} src={image} alt="grid part" />
+        {resourceType === 'video' ? (
+          <video className={styles.content} src={resource} alt="grid part" />
         ) : (
-          <img className={styles.content} src={image} alt="grid part" />
+          <Image className={styles.content} src={resource} width="293" height="293" alt="grid part" quality={100} />
         )}
       </button>
-      {displayPost ? <Post closeImage={() => setDisplay(false)} id={id} /> : null}
-    </div>
+      {displayPost ? <Post closePost={() => setDisplay(false)} id={id} /> : null}
+    </>
   );
 };
 
