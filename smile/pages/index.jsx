@@ -8,7 +8,7 @@ import requirePageAuth from '../utils/requirePageAuth';
 import AuthContext from '../contexts/authContext';
 import styles from '../styles/home.module.css';
 
-const HomePage = ({ user }) => {
+const HomePage = ({ user, notify }) => {
   const [feed, setFeed] = useState(null);
 
   useEffect(() => {
@@ -65,6 +65,7 @@ const HomePage = ({ user }) => {
               likes={post.likes}
               comments={post.comments}
               resource={post.resource}
+              notify={notify}
             />
           ))
         ) : (
