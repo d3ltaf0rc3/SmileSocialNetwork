@@ -1,37 +1,58 @@
-import styles from './index.module.css';
+import { useContext, useState } from 'react';
+import Image from 'next/future/image';
 import PostHeader from './header';
 import CommentSection from './comment-section';
 import PostActions from './actions';
 import AddComment from '../add-comment';
 import Likes from './likes';
 import Video from '../video';
+import UserContext from '../../contexts/authContext';
+import styles from './index.module.css';
 
 const PostCard = ({
   username,
   location,
   profilePicture,
-  imageUrl,
-  setUpdate,
+  resource,
   likes,
   description,
   id,
   comments,
+  notify,
 }) => {
+  const user = useContext(UserContext);
+  const [postComments, setComments] = useState(comments);
+  const [postLikes, setLikes] = useState(likes);
+
+  const updateLikeCount = (action) => {
+    if (action === 'like') {
+      setLikes([...postLikes, user._id]);
+    } else {
+      setLikes(postLikes.filter((userId) => userId !== user._id));
+    }
+  };
+
   return (
     <div className={styles.card}>
       <PostHeader username={username} location={location} imageUrl={profilePicture} />
-      {imageUrl.includes('video') ? (
-        <Video type="feed" videoUrl={imageUrl} />
+      {resource.includes('video') ? (
+        <Video type="feed" src={resource} />
       ) : (
-        <img className={styles['post-image']} src={imageUrl} alt="post" />
+        <Image className={styles.photo} src={resource} width="650" height="650" alt="post" quality={100} />
       )}
-
-      <div className={styles['post-info']}>
-        <PostActions setUpdate={setUpdate} id={id} likes={likes} />
-        <Likes likes={likes.length} />
-        <CommentSection creator={username} description={description} comments={comments} />
-        <AddComment setUpdate={setUpdate} id={id} />
-      </div>
+      <PostActions
+        focusOnInput={() => {}}
+        updateLikes={updateLikeCount}
+        likes={postLikes}
+        id={id}
+        notify={notify}
+      />
+      <Likes likes={postLikes.length} />
+      <CommentSection creator={username} description={description} comments={postComments} />
+      <AddComment
+        updateComments={(comment) => setComments([...postComments, comment])}
+        postId={id}
+      />
     </div>
   );
 };

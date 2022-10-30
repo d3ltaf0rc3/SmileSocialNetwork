@@ -52,6 +52,7 @@ const AddComment = ({ postId, updateComments }) => {
           if (res.success) {
             updateComments(res.data);
             setComment('');
+            setRows(1);
           } else {
             console.log(res.data);
           }

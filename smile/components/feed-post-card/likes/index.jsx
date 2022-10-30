@@ -2,9 +2,9 @@ import styles from './index.module.css';
 
 const Likes = ({ likes }) => {
   return (
-    <span className={styles['post-likes']}>
+    <div className={styles.likesCount}>
       {likes} {likes === 1 ? 'like' : 'likes'}
-    </span>
+    </div>
   );
 };
 
