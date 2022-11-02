@@ -1,11 +1,17 @@
-import styles from './index.module.css';
+import Image from 'next/future/image';
 import Comment from '../../feed-post-card/comment';
-import Avatar from '../../user-avatar';
+import styles from './index.module.css';
 
 const PostComment = ({ imageUrl, author, comment }) => {
   return (
     <div className={styles.comment}>
-      <Avatar size="32" imageUrl={imageUrl} />
+      <Image
+        className={styles.avatar}
+        src={imageUrl}
+        alt="user"
+        width="32"
+        height="32"
+      />
       <Comment author={author} comment={comment} />
     </div>
   );

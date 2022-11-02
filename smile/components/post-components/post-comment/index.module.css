@@ -1,11 +1,11 @@
 .comment {
-    padding: 1rem;
-    display: flex;
-    align-items: flex-start;
-    font-size: 12px;
-    height: auto;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 
-.comment img {
-    margin-right: 14px;
+.avatar {
+  object-fit: cover;
+  border-radius: 50%;
 }
