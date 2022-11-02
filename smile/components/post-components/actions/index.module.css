@@ -1,13 +1,12 @@
-.post-actions {
-    margin-bottom: 15px;
-    font-size: 115%;
+.actionsContainer {
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 
-.post-action:first-child {
-    margin-right: 15px;
-}
-
-.post-action {
-    cursor: pointer;
-    height: 25px;
+.actionsContainer button {
+  height: 25px;
+  background: none;
+  border: none;
 }

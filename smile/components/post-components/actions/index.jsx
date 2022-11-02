@@ -1,45 +1,59 @@
 import { useContext } from 'react';
-import Image from 'next/image';
+import Image from 'next/future/image';
 import styles from './index.module.css';
 import PostContext from '../../../contexts/postContext';
 import UserContext from '../../../contexts/authContext';
 
-const PostActions = (props) => {
+const PostActions = ({ notify, focusOnInput }) => {
   const post = useContext(PostContext);
   const user = useContext(UserContext);
 
-  const likePost = () => {
-    fetch(`${process.env.REACT_APP_API_URL}/api/posts/action/like/${post._id}`, {
-      method: 'put',
-      credentials: 'include',
-    })
-      .then(() => props.setUpdate())
-      .catch((err) => console.error(err));
+  const updateLikes = (action) => {
+    if (action === 'like') {
+      post.updatePost({ ...post, likes: [...post.likes, user._id] });
+    } else {
+      post.updatePost({ ...post, likes: post.likes.filter((usr) => usr !== user._id) });
+    }
   };
 
-  const unlikePost = () => {
-    fetch(`${process.env.REACT_APP_API_URL}/api/posts/action/unlike/${post._id}`, {
+  const handleAction = (action) => {
+    fetch('/api/post/handleAction', {
       method: 'put',
-      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        action,
+        id: post._id,
+      }),
     })
-      .then(() => props.setUpdate())
-      .catch((err) => console.error(err));
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.success) {
+          updateLikes(action);
+        } else {
+          notify(res.data, { type: 'failure' });
+        }
+      })
+      .catch(() => {
+        notify('Our servers are currently unreachable. Try again later!', { type: 'failure' });
+      });
   };
 
   return (
-    <div className={styles['post-actions']}>
-      <span>
-        {post.likes.includes(user.user._id) ? (
-          <button type="button" onClick={unlikePost}>
-            <Image src="/heart.svg" width="25" height="25" alt="heart" />
-          </button>
-        ) : (
-          <button type="button" onClick={likePost}>
-            <Image src="/heart.svg" alt="heart" width="25" height="25" />
-          </button>
-        )}
-      </span>
-      <Image src="/comment.svg" alt="comment" width="25" height="25px" />
+    <div className={styles.actionsContainer}>
+      {post.likes.includes(user._id) ? (
+        <button type="button" onClick={() => handleAction('unlike')}>
+          <Image src="/red-heart.svg" alt="heart" width="25" height="25" />
+        </button>
+      ) : (
+        <button type="button" onClick={() => handleAction('like')}>
+          <Image src="/heart.svg" alt="heart" width="25" height="25" />
+        </button>
+      )}
+      <button type="button" onClick={focusOnInput}>
+        <Image src="/comment.svg" alt="comment" width="25" height="25" />
+      </button>
     </div>
   );
 };
