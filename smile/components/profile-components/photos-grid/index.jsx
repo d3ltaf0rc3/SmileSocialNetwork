@@ -32,6 +32,7 @@ const PhotosGrid = ({ notify }) => {
             resource={photo.resource}
             resourceType={photo.resource_type}
             id={photo._id}
+            notify={notify}
           />
         ))
       ) : (

@@ -3,7 +3,7 @@ import Image from 'next/future/image';
 import Post from '../../post-components';
 import styles from './index.module.css';
 
-const GridPhoto = ({ resource, resourceType, id }) => {
+const GridPhoto = ({ resource, resourceType, id, notify }) => {
   const [displayPost, setDisplay] = useState(false);
 
   return (
@@ -15,7 +15,7 @@ const GridPhoto = ({ resource, resourceType, id }) => {
           <Image className={styles.content} src={resource} width="293" height="293" alt="grid part" quality={100} />
         )}
       </button>
-      {displayPost ? <Post closePost={() => setDisplay(false)} id={id} /> : null}
+      {displayPost ? <Post notify={notify} closePost={() => setDisplay(false)} id={id} /> : null}
     </>
   );
 };

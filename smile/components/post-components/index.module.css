@@ -1,45 +1,30 @@
-.background {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 4;
+.postContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 4;
+  display: grid;
+  place-items: center;
 }
 
-.post-container {
-    background-color: #fff;
-    margin: 11.5rem auto;
-    height: 600px;
-    width: 935px;
-    z-index: 2;
-    display: flex;
-    flex-direction: row;
+.closeIcon {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
 }
 
-.post-image {
-    width: 600px;
-    object-fit: cover;
+.post {
+  background-color: #fff;
+  height: 800px;
+  z-index: 2;
+  display: flex;
 }
 
-.close-icon {
-    position: fixed;
-    top: 1rem;
-    right: 1rem;
-    cursor: pointer;
-}
-
-.aside {
-    width: 100%;
-}
-
-.menu-icon {
-    cursor: pointer;
-}
-
-.spinner-container {
-    position: absolute;
-    left: 50%;
-    bottom: 50%;
+.image {
+  object-fit: cover;
 }
