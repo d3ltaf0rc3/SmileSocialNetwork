@@ -1,35 +1,42 @@
 import { useContext, useState } from 'react';
 import { useRouter } from 'next/router';
+import Edit from '../edit';
 import styles from './index.module.css';
 import PostContext from '../../../contexts/postContext';
-import Edit from '../edit';
 
-const PostMenu = ({ setUpdate, closeMenu }) => {
+const PostMenu = ({ notify, close }) => {
   const post = useContext(PostContext);
   const [displayEdit, setDisplay] = useState(false);
   const router = useRouter();
 
+  const handleClick = () => setDisplay(true);
+
   const deletePost = () => {
-    fetch(`${process.env.REACT_APP_API_URL}/api/posts/delete/${post._id}`, {
+    fetch(`/api/post/delete?id=${post._id}`, {
       method: 'delete',
-      credentials: 'include',
     })
-      .then(() => router.push('/'))
-      .catch((err) => console.error(err));
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.success) {
+          router.push('/');
+        } else {
+          notify(res.data, { type: 'failure' });
+        }
+      })
+      .catch(() => {
+        notify('Our servers are currently unreachable. Try again later!', { type: 'failure' });
+      });
   };
 
   return (
-    <div>
-      <div className={styles.arrow} />
-      <div className={styles['menu-box']}>
-        <button onClick={() => setDisplay(true)} type="button" className={styles.option}>
-          Edit
-        </button>
-        <button onClick={deletePost} type="button" className={styles.option}>
-          Delete
-        </button>
-      </div>
-      {displayEdit ? <Edit setUpdate={setUpdate} closeMenu={closeMenu} /> : null}
+    <div className={styles.boxContainer}>
+      <button onClick={handleClick} type="button" className={styles.option}>
+        Edit
+      </button>
+      <button onClick={deletePost} type="button" className={styles.option}>
+        Delete
+      </button>
+      {displayEdit ? <Edit notify={notify} close={close} /> : null}
     </div>
   );
 };

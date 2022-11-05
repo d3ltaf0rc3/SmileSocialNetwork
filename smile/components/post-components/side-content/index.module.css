@@ -2,6 +2,19 @@
   width: 400px;
 }
 
+.headerContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+
+.menuBtn {
+  background: none;
+  border: none;
+  padding: 0 12px;
+}
+
 .content {
   height: 738px;
   border-top: 1px solid rgb(219, 219, 219);

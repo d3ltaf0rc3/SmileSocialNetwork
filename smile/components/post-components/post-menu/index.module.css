@@ -1,55 +1,25 @@
-.arrow {
-    height: 14px;
-    width: 14px;
-    z-index: 4;
-    transform: rotate(45deg);
-    position: absolute;
-    content: " ";
-    background-color: #fff;
-    margin: auto;
-    border-top: 1px solid rgb(219, 219, 219);
-    border-left: 1px solid rgb(219, 219, 219);
-}
-
-.menu-box {
-    position: absolute;
-    top: 232px;
-    right: 389px;
-    width: 243px;
-    height: 105px;
-    background-color: #fff;
-    border: 1px solid rgb(219, 219, 219);
-    border-top: 1px solid rgb(219, 219, 219);
-    border-radius: 20px;
-    z-index: 3;
+.boxContainer {
+  position: absolute;
+  width: 245px;
+  top: 50px;
+  right: -100px;
+  background-color: #fff;
+  border: 1px solid rgb(219, 219, 219);
+  border-top: 1px solid rgb(219, 219, 219);
+  border-radius: 20px;
+  z-index: 3;
 }
 
 .option {
-    padding: 1rem;
-    text-align: center;
-    font-size: 14px;
-    font-weight: 600;
+  padding: 15px 0;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: center;
+  font-weight: 600;
 }
 
 .option:nth-child(2) {
-    border-top: 1px solid rgb(219, 219, 219);
-    color: #ed4956
-}
-
-@media screen and (max-width: 1870px) {
-    .menu-box {
-        right: 250px;
-    }
-}
-
-@media screen and (max-width: 1500px) {
-    .menu-box {
-        right: 120px;
-    }
-}
-
-@media screen and (max-width: 1250px) {
-    .menu-box {
-        right: 0;
-    }
+  border-top: 1px solid rgb(219, 219, 219);
+  color: #ed4956;
 }
