@@ -26,8 +26,8 @@ const CredentialsForm = ({ formType, onSubmit, serverError }) => {
     e.preventDefault();
     setError('');
 
-    if (username.length < 2 || username.length > 18) {
-      setError('Username must be between 2 and 18 characters long!');
+    if (username.length < 2 || username.length > 32) {
+      setError('Username must be between 2 and 32 characters long!');
     } else if (!/^[\w.]+$/.test(username)) {
       setError('Username can only contain english letters, numbers, underscores and dots!');
     } else if (password.length < 8 || password.length > 18) {
@@ -77,7 +77,7 @@ const CredentialsForm = ({ formType, onSubmit, serverError }) => {
           <div className={styles.signUp}>
             Already have an account?{' '}
             <Link href="/login">
-              <a>Login instead</a>
+              Login instead
             </Link>
           </div>
         ) : null}
@@ -85,7 +85,7 @@ const CredentialsForm = ({ formType, onSubmit, serverError }) => {
           <div className={styles.signUp}>
             Don&apos;t have an account?{' '}
             <Link href="/register">
-              <a>Sign up</a>
+              Sign up
             </Link>
           </div>
         ) : null}

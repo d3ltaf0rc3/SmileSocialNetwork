@@ -1,4 +1,4 @@
-import Image from 'next/future/image';
+import Image from 'next/image';
 import { useContext } from 'react';
 import UserContext from '../../../contexts/authContext';
 import styles from './index.module.css';

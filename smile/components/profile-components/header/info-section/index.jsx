@@ -50,8 +50,8 @@ const InfoSection = ({ notify }) => {
   );
 
   const buttonEval = user.username === profile.username ? (
-    <Link href="/settings">
-      <a className={styles.button}>Edit profile</a>
+    <Link className={styles.button} href="/settings">
+      Edit profile
     </Link>
   ) : (
     doesFollow

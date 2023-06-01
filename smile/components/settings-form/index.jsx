@@ -74,10 +74,10 @@ const SettingsForm = ({ notify }) => {
           Save changes
         </button>
         <Link href={`/user/${user.username}`}>
-          <a>Cancel</a>
+          Cancel
         </Link>
         <Link href="/change-password">
-          <a>Change password</a>
+          Change password
         </Link>
       </div>
     </form>

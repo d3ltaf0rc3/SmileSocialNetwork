@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import Image from 'next/future/image';
+import Image from 'next/image';
 import InfoSection from './info-section';
 import ProfileContext from '../../../contexts/profileContext';
 import styles from './index.module.css';

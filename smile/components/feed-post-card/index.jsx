@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import Image from 'next/future/image';
+import Image from 'next/image';
 import PostHeader from './header';
 import CommentSection from './comment-section';
 import PostActions from './actions';

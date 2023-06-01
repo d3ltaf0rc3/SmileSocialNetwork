@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import Image from 'next/future/image';
+import Image from 'next/image';
 import SideContent from './side-content';
 import Video from '../video';
 import PostContext from '../../contexts/postContext';

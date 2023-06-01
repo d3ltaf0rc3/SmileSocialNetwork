@@ -1,4 +1,4 @@
-import Image from 'next/future/image';
+import Image from 'next/image';
 import Comment from '../../feed-post-card/comment';
 import styles from './index.module.css';
 

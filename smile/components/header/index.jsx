@@ -20,9 +20,7 @@ const Header = () => {
         <ul className={styles.navIcons}>
           <li>
             <Link href="/">
-              <a>
-                <Image src="/home.svg" alt="home" width="28" height="28" quality={100} />
-              </a>
+              <Image src="/home.svg" alt="home" width="28" height="28" quality={100} />
             </Link>
           </li>
           <li>
@@ -30,16 +28,12 @@ const Header = () => {
           </li>
           <li>
             <Link href="/add-post">
-              <a>
-                <Image src="/plus.svg" alt="add post" width="28" height="28" quality={100} />
-              </a>
+              <Image src="/plus.svg" alt="add post" width="28" height="28" quality={100} />
             </Link>
           </li>
           <li>
             <Link href={`/user/${user?.username}`}>
-              <a>
-                <Image src="/user.svg" alt="profile" width="28" height="28" quality={100} />
-              </a>
+              <Image src="/user.svg" alt="profile" width="28" height="28" quality={100} />
             </Link>
           </li>
         </ul>

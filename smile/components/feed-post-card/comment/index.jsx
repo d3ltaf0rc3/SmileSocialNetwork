@@ -4,8 +4,8 @@ import styles from './index.module.css';
 const Comment = ({ author, comment }) => {
   return (
     <div className={styles.comment}>
-      <Link href={`/user/${author}`}>
-        <a className={styles.link}>{author}</a>
+      <Link className={styles.link} href={`/user/${author}`}>
+        {author}
       </Link>
       {comment}
     </div>

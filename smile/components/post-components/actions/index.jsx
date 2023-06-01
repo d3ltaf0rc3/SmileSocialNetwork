@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import Image from 'next/future/image';
+import Image from 'next/image';
 import styles from './index.module.css';
 import PostContext from '../../../contexts/postContext';
 import UserContext from '../../../contexts/authContext';
