@@ -16,17 +16,18 @@ This is the REST API for Smile Social Network.
 - Run **npm install**
 - Create a **_.env_** file which contains the following variables:
 
-  | Variable             | Value                 |
-  | -------------------- | --------------------- |
-  | DB_URL               | MongoDB Database URL  |
-  | JWT_KEY              | JWT secret key        |
-  | RECAPTCHA_SERVER_KEY | reCAPTCHA SERVER KEY  |
-  | PORT                 | Port for REST API     |
-  | APP_URL              | URL of the Front-end  |
-  | CLOUD_NAME           | Cloudinary Cloud Name |
-  | API_KEY              | Cloudinary API Key    |
-  | API_SECRET           | Cloudinary API Secret |
-  | SENTRY_DSN           | Sentry.io DSN         |
+  | Variable             | Value                        |
+  | -------------------- | ---------------------------- |
+  | DB_URL               | MongoDB Database URL         |
+  | JWT_KEY              | JWT secret key               |
+  | RECAPTCHA_SERVER_KEY | reCAPTCHA SERVER KEY         |
+  | PORT                 | Port for REST API            |
+  | APP_URL              | URL of the Front-end         |
+  | CLOUD_NAME           | Cloudinary Cloud Name        |
+  | API_KEY              | Cloudinary API Key           |
+  | API_SECRET           | Cloudinary API Secret        |
+  | SENTRY_DSN           | Sentry.io DSN                |
+  | NODE_ENV             | 'production' or 'development |
 
 ## 3. Start the REST API
 
