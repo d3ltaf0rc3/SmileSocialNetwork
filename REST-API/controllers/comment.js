@@ -1,15 +1,9 @@
 const Post = require("../models/Post");
 const Comment = require("../models/Comment");
 const Sentry = require("@sentry/node");
-const { validationResult } = require("express-validator");
 const response = require("../utils/responseGenerator");
 
 async function addComment(req, res) {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).send(response("fail", errors.array()[0].msg));
-  }
-
   const postId = req.params.postId;
 
   try {
@@ -28,7 +22,7 @@ async function addComment(req, res) {
 
     const commentToSend = await Comment.findById(comment.id).populate({
       path: "postedBy",
-      select: "username profilePicture"
+      select: "username profilePicture",
     });
     return res.status(201).send(response("success", commentToSend));
   } catch (error) {
@@ -39,4 +33,4 @@ async function addComment(req, res) {
 
 module.exports = {
   addComment,
-}
+};

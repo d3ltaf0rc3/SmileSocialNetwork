@@ -3,15 +3,9 @@ const User = require("../models/User");
 const Comment = require("../models/Comment");
 const Sentry = require("@sentry/node");
 const cloudinary = require("cloudinary");
-const { validationResult } = require("express-validator");
 const response = require("../utils/responseGenerator");
 
 async function createAPost(req, res) {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).send(response("fail", errors.array()[0].msg));
-  }
-
   const { resource, location, description, public_id, resource_type } = req.body;
 
   try {
@@ -104,13 +98,13 @@ async function getFeed(req, res) {
         const currentPost = await Post.findById(post)
           .populate({
             path: "postedBy",
-            select: "username profilePicture"
+            select: "username profilePicture",
           })
           .populate({
             path: "comments",
             populate: {
               path: "postedBy",
-              select: "username profilePicture"
+              select: "username profilePicture",
             }
           });
         posts.push(currentPost);
@@ -188,11 +182,6 @@ async function deletePost(req, res) {
 }
 
 async function editPost(req, res) {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).send(response("fail", errors.array()[0].msg));
-  }
-
   const { postId } = req.params;
   const { location, description } = req.body;
 

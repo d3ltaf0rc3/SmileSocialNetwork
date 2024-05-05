@@ -6,16 +6,10 @@ const argon2 = require("argon2");
 const cloudinary = require("cloudinary");
 const sanitizeString = require("../utils/sanitizeString");
 const deleteSensitiveData = require("../utils/deleteSensitiveData");
-const { validationResult } = require("express-validator");
 const response = require("../utils/responseGenerator");
 const { DEFAULT_PICTURE } = require("../utils/constants");
 
 async function register(req, res) {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).send(response("fail", errors.array()[0].msg));
-  }
-
   const { username, password } = req.body;
 
   try {
@@ -45,11 +39,6 @@ async function register(req, res) {
 }
 
 async function login(req, res) {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).send(response("fail", errors.array()[0].msg));
-  }
-
   const { username, password } = req.body;
 
   try {
@@ -66,7 +55,7 @@ async function login(req, res) {
       const session = new Session({
         token,
         createdAt: new Date(),
-        expiresAt: new Date(Date.now() + 604800000)
+        expiresAt: new Date(Date.now() + 604800000),
       });
       await session.save();
       await User.findByIdAndUpdate(user.id, { $addToSet: { sessions: session.id } });
@@ -95,18 +84,13 @@ async function logout(req, res) {
 }
 
 async function editUser(req, res) {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).send(response("fail", errors.array()[0].msg));
-  }
-
   const { name, description, isPrivate } = req.body;
 
   try {
     const user = await User.findByIdAndUpdate(req.userId, {
       name,
       description,
-      isPrivate
+      isPrivate,
     }, { new: true });
 
     if (!user.isPrivate && user.requests.length > 0) {
@@ -125,11 +109,6 @@ async function editUser(req, res) {
 }
 
 async function getUser(req, res) {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).send(response("fail", errors.array()[0].msg));
-  }
-
   const { username } = req.params;
 
   try {
@@ -161,11 +140,6 @@ async function getUser(req, res) {
 }
 
 async function changePassword(req, res) {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).send(response("fail", errors.array()[0].msg));
-  }
-
   const { oldPassword, password } = req.body;
 
   try {
@@ -326,10 +300,7 @@ async function getRequests(req, res) {
 }
 
 async function changeProfilePicture(req, res) {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).send(response("fail", errors.array()[0].msg));
-  } else if (req.body.resource.startsWith(`https://res.cloudinary.com/${process.env.CLOUD_NAME}/video/upload`)) {
+  if (req.body.resource.startsWith(`https://res.cloudinary.com/${process.env.CLOUD_NAME}/video/upload`)) {
     return res.status(400).send(response("fail", "Profile picture cannot be a video file!"));
   }
 

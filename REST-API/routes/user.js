@@ -20,18 +20,19 @@ const editUserValidator = require("../validators/user/edit");
 const changePasswordValidator = require("../validators/user/changePassword");
 const getUserValidator = require("../validators/user/get");
 const cloudinaryValidator = require("../validators/cloudinary");
+const validationErrorHandler = require("../utils/validationErrorHandler");
 const router = express.Router();
 
 router.get("/requests", auth, getRequests);
-router.get("/get/:username", getUserValidator, auth, getUser);
+router.get("/get/:username", auth, getUserValidator, validationErrorHandler, getUser);
 router.get("/search", auth, searchUsers);
-router.put("/edit", auth, editUserValidator, editUser);
-router.put("/edit/profile-picture", auth, cloudinaryValidator, changeProfilePicture);
-router.put("/change-password", auth, changePasswordValidator, passwordValidator, changePassword);
+router.put("/edit", auth, editUserValidator, validationErrorHandler, editUser);
+router.put("/edit/profile-picture", auth, cloudinaryValidator, validationErrorHandler, changeProfilePicture);
+router.put("/change-password", auth, changePasswordValidator, passwordValidator, validationErrorHandler, changePassword);
 router.put("/action/:action/:id", auth, handleAction);
 router.put("/request/:action/:id", auth, handleRequest);
-router.post("/register", usernameValidator, passwordValidator, register);
-router.post("/login", usernameValidator, login);
+router.post("/register", usernameValidator, passwordValidator, validationErrorHandler, register);
+router.post("/login", usernameValidator, validationErrorHandler, login);
 router.post("/logout", auth, logout);
 router.post("/verify/reCaptcha", verifyReCaptcha);
 
